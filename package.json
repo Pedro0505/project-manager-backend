@@ -1,0 +1,41 @@
+{
+  "name": "project-manager-backend",
+  "version": "1.0.0",
+  "description": "-- Project Manager --",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pedro0505/project-manager-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pedro0505/project-manager-backend/issues"
+  },
+  "homepage": "https://github.com/Pedro0505/project-manager-backend#readme",
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.2",
+    "@types/node": "^17.0.22",
+    "@typescript-eslint/eslint-plugin": "^5.16.0",
+    "@typescript-eslint/parser": "^5.16.0",
+    "eslint": "^8.11.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "prisma": "^3.11.0",
+    "ts-node": "^10.7.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "argon2": "^0.28.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "express-rescue": "^1.1.31",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1"
+  }
+}
