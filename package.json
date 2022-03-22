@@ -4,7 +4,9 @@
   "description": "-- Project Manager --",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./dist/app.js",
+    "dev": "tsnd ./src/app.ts"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,7 @@
   "homepage": "https://github.com/Pedro0505/project-manager-backend#readme",
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",
+    "@types/express": "^4.17.13",
     "@types/node": "^17.0.22",
     "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.16.0",
@@ -33,6 +36,7 @@
   "dependencies": {
     "argon2": "^0.28.5",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "express-rescue": "^1.1.31",
     "joi": "^17.6.0",
