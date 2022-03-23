@@ -14,8 +14,10 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
     const decoded = jwt.verify(authorization, JWT_SECRET) as IDecoded;
 
     req.tokenData = decoded.tokenData;
+
+    return next();
   } catch (error) {
-    next(new UnauthorizedError('Expired or invalid token'));
+    return next(new UnauthorizedError('Expired or invalid token'));
   }
 };
 

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import JwtGenerate from '../../helpers/JwtGenerate';
 import * as UserService from '../../services/User';
 
 const register = async (req: Request, res: Response) => {
@@ -6,7 +7,9 @@ const register = async (req: Request, res: Response) => {
 
   const result = await UserService.register({ firstName, lastName, email, password });
 
-  res.status(200).json({ data: result });
+  const token = JwtGenerate({ email });
+
+  res.status(200).json({ data: result, token });
 };
 
 export default register;

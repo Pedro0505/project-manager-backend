@@ -1,7 +1,10 @@
 import { IPayloadJwt } from "../../interfaces/IPayloadJwt";
 
-declare namespace Express {
-  interface Request {
-    tokenData?: IPayloadJwt
+
+declare global{
+  namespace Express {
+      interface Request {
+        tokenData?: IPayloadJwt
+      }
   }
 }
