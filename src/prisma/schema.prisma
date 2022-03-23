@@ -22,31 +22,31 @@ model User {
 }
 
 model Workspace {
-  id      Int               @id @default(autoincrement())
-  name    String
+  id       Int               @id @default(autoincrement())
+  name     String
   owner_id Int
-  owner   User              @relation(fields: [owner_id], references: [id])
-  columns WorkspaceColumn[]
+  owner    User              @relation(fields: [owner_id], references: [id])
+  columns  WorkspaceColumn[]
 
   @@map("workspace")
 }
 
 model WorkspaceColumn {
-  id           Int       @id @default(autoincrement())
+  id           Int             @id @default(autoincrement())
   title        String
   workspace_id Int
-  workspace    Workspace @relation(fields: [workspace_id], references: [id])
-  cards WorkspaceCard[]
+  workspace    Workspace       @relation(fields: [workspace_id], references: [id])
+  cards        WorkspaceCard[]
 
   @@map("workspace_column")
 }
 
 model WorkspaceCard {
-  id              Int             @id @default(autoincrement())
-  content         String
-  title           String
-  column_id       Int
-  column WorkspaceColumn @relation(fields: [column_id], references: [id])
+  id        Int             @id @default(autoincrement())
+  content   String
+  title     String
+  column_id Int
+  column    WorkspaceColumn @relation(fields: [column_id], references: [id])
 
   @@map("workspace_card")
 }
