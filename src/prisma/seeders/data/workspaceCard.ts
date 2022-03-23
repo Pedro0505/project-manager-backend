@@ -1,4 +1,4 @@
-import { IWorkspaceCard } from '../@types';
+import { IWorkspaceCard } from '../../../interfaces/prisma';
 
 const workspaceCardData: IWorkspaceCard[] = [
   {

@@ -1,6 +1,4 @@
-import userData from './user';
-import workspaceData from './workspace';
-import workspaceColumnData from './workspaceColumn';
-import workspaceCardData from './workspaceCard';
-
-export default { userData, workspaceCardData, workspaceColumnData, workspaceData };
+export { default as userData } from './user';
+export { default as workspaceData } from './workspace';
+export { default as workspaceColumnData } from './workspaceColumn';
+export { default as workspaceCardData } from './workspaceCard';

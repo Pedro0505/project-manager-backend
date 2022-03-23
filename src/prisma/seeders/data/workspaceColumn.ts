@@ -1,4 +1,4 @@
-import { IWorkspaceCollumn } from '../@types';
+import { IWorkspaceCollumn } from '../../../interfaces/prisma';
 
 const workspaceData: IWorkspaceCollumn[] = [
   {
