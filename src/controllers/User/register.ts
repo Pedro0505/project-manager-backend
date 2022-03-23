@@ -9,7 +9,7 @@ const register = async (req: Request, res: Response) => {
 
   const token = JwtGenerate({ email });
 
-  res.status(200).json({ data: result, token });
+  res.status(201).json({ data: result, token });
 };
 
 export default register;

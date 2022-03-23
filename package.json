@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "prestart": "tsc",
     "start": "node ./dist/app.js",
-    "dev": "tsnd --exit-child ./src/app.ts"
+    "dev": "tsnd --exit-child ./src/app.ts",
+    "migrate": "prisma migrate dev",
+    "reset": "prisma migrate reset"
   },
   "prisma": {
     "seed": "ts-node src/prisma/seeders/seed.ts",
