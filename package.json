@@ -9,7 +9,8 @@
     "dev": "tsnd --exit-child ./src/app.ts"
   },
   "prisma": {
-    "seed": "ts-node src/prisma/seeders/seed.ts"
+    "seed": "ts-node src/prisma/seeders/seed.ts",
+    "schema": "src/prisma/schema.prisma"
   },
   "repository": {
     "type": "git",
