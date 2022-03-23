@@ -6,7 +6,7 @@ const register = async (req: Request, res: Response) => {
 
   const result = await UserService.register({ firstName, lastName, email, password });
 
-  res.status(200).json(result);
+  res.status(200).json({ data: result });
 };
 
 export default register;

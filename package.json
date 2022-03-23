@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@prisma/client": "^3.11.0",
+    "@types/jsonwebtoken": "^8.5.8",
     "argon2": "^0.28.5",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
