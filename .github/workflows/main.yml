@@ -2,15 +2,19 @@ on: [pull_request]
 
 jobs:
   eslint:
-    name: eslint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v1
-    - name: install node v12
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12
-    - name: eslint
-      uses: icrawl/action-eslint@v1
-      with:
-        custom-glob: src
+        - name: Verifica o repositório do Git
+          uses: actions/checkout@v2
+
+        - name: Instala o node com a versão
+          uses: actions/setup-node@v1
+          with:
+            node-version: 12
+
+
+        - name: instalando as dependências
+          run: npm install
+
+        - name: executando o lint para verificar se a erros
+          run: npx eslint .
