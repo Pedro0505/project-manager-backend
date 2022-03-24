@@ -10,9 +10,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12
-    - name: yarn install
-      run: yarn install
     - name: eslint
       uses: icrawl/action-eslint@v1
       with:
-        custom-glob: apps # only if a different glob is needed, default: src
+        custom-glob: src
