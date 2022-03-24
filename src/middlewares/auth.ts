@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import UnauthorizedError from '../helpers/UnauthorizedError';
-import { IDecoded } from '../interfaces/IDecoded';
+import { IDecoded } from '../interfaces/jwt/IDecoded';
 
 const auth = (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;

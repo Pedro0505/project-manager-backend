@@ -3,4 +3,4 @@ interface IWorkspace {
   owner_id: number;
 }
 
-export default IWorkspace;
+export { IWorkspace };

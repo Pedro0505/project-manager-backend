@@ -12,4 +12,4 @@ const register = async (req: Request, res: Response) => {
   res.status(201).json({ data: result, token });
 };
 
-export default register;
+export { register };

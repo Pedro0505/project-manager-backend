@@ -4,4 +4,4 @@ interface IWorkspaceCard {
   title: string;
 }
 
-export default IWorkspaceCard;
+export { IWorkspaceCard };

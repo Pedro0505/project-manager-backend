@@ -1,4 +1,4 @@
-export { default as UserRoutes } from './User.routes';
-export { default as WorkspaceRoutes } from './Workspace.routes';
-export { default as WorkspaceCardRoutes } from './WorkspaceCard.routes';
-export { default as WorkspaceColumnRoutes } from './WorkspaceColumn.routes';
+export * from './User.routes';
+export * from './Workspace.routes';
+export * from './WorkspaceCard.routes';
+export * from './WorkspaceColumn.routes';

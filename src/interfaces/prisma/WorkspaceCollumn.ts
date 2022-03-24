@@ -3,4 +3,4 @@ interface IWorkspaceCollumn {
   title: string;
 }
 
-export default IWorkspaceCollumn;
+export { IWorkspaceCollumn };
