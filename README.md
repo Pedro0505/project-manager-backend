@@ -30,13 +30,17 @@ Exemplo de body:
 
 ## Validações:
 
+### User
+
 - firstName
   - string
   - min(3)
+  - max(60)
   - required
 - lastName
   - string
   - min(3)
+  - max(60)
   - required
 - email
   - string
@@ -47,3 +51,39 @@ Exemplo de body:
   - string
   - min(6)
   - required
+
+### Workspace
+
+- name
+  - string
+  - min(3)
+  - max(60)
+  - required
+- ownerId
+  - required
+  - tem que existir o userId correspondente
+
+### WorkspaceColumn
+
+- title
+  - string
+  - min(3)
+  - max(60)
+  - required
+- workspaceId
+  - required
+  - tem que existir o workspaceId correspondente
+
+### WorkspaceCard
+
+- title
+  - string
+  - min(3)
+  - max(60)
+  - required
+- content
+  - string
+  - max(200)
+- columnId
+  - required
+  - tem que existir o columnId correspondente
