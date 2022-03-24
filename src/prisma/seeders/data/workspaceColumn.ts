@@ -3,11 +3,11 @@ import { IWorkspaceCollumn } from '../../../interfaces/prisma';
 const workspaceData: IWorkspaceCollumn[] = [
   {
     title: 'Para Fazer',
-    workspace_id: 1,
+    workspaceId: 1,
   },
   {
     title: 'Feito',
-    workspace_id: 2,
+    workspaceId: 2,
   },
 ];
 

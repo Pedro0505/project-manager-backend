@@ -2,12 +2,12 @@ import { IWorkspaceCard } from '../../../interfaces/prisma';
 
 const workspaceCardData: IWorkspaceCard[] = [
   {
-    column_id: 1,
+    columnId: 1,
     content: 'Fazer req 10',
     title: 'Projeto Store Manager',
   },
   {
-    column_id: 2,
+    columnId: 2,
     content: 'Fazer req 5',
     title: 'Projeto Blogs Api',
   },

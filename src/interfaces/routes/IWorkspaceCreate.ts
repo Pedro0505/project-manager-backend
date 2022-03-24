@@ -1,5 +1,5 @@
 interface IWorkspaceCreate {
-  owerId: number;
+  ownerId: number;
   workspaceName: string;
 }
 

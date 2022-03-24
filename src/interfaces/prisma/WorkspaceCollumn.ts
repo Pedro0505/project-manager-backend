@@ -1,5 +1,5 @@
 interface IWorkspaceCollumn {
-  workspace_id: number;
+  workspaceId: number;
   title: string;
 }
 
