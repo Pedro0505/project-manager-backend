@@ -4,7 +4,7 @@
   "description": "-- Project Manager --",
   "main": "index.js",
   "scripts": {
-    "pretest": "NODE_ENV=test prisma migrate deploy --schema src/prisma/schema.test.prisma",
+    "pretest": "NODE_ENV=test prisma migrate reset --force --skip-seed --schema src/prisma/schema.test.prisma",
     "test": "NODE_ENV=test jest",
     "prestart": "tsc",
     "start": "node ./dist/app.js",

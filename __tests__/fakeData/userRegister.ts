@@ -1,12 +1,13 @@
-import { IUser, IUserSafe } from '../../src/interfaces/prisma';
+import { IUser } from '../../src/interfaces/prisma';
+import { IUserRegister } from '../../src/interfaces/routes';
 
-interface IUserRegister {
+interface IUserRegisterTest {
   requestMock: IUser;
   requestConflictMock: IUser;
-  responseMock: IUserSafe;
+  responseMock: IUserRegister;
 }
 
-export const userRegister: IUserRegister = {
+export const userRegister: IUserRegisterTest = {
   requestMock: {
     email: 'simpson@gmail.com',
     firstName: 'Homer',
@@ -22,6 +23,7 @@ export const userRegister: IUserRegister = {
   },
 
   responseMock: {
+    id: 2,
     email: 'simpson@gmail.com',
     firstName: 'Homer',
     lastName: 'Simpson',
