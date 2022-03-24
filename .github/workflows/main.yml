@@ -2,19 +2,17 @@ on: [pull_request]
 
 jobs:
   eslint:
+    name: eslint
     runs-on: ubuntu-latest
     steps:
-        - name: Verifica o repositório do Git
-          uses: actions/checkout@v2
-
-        - name: Instala o node com a versão
-          uses: actions/setup-node@v1
-          with:
-            node-version: 14
-
-
-        - name: instalando as dependências
-          run: npm install
-
-        - name: executando o lint para verificar se a erros
-          run: npx eslint ./src
+    - uses: actions/checkout@v1
+    - name: install node v12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - name: yarn install
+      run: yarn install
+    - name: eslint
+      uses: icrawl/action-eslint@v1
+      with:
+        custom-glob: apps # only if a different glob is needed, default: src
