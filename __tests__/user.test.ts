@@ -39,4 +39,3 @@ describe('Testes em /user', () => {
     });
   });
 });
-
