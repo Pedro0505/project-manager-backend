@@ -2,5 +2,5 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  modulePathIgnorePatterns: ['__tests__/fakeData'],
+  modulePathIgnorePatterns: ['__tests__/fakeData', '__tests__/commonTests'],
 };
