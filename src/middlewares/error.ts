@@ -5,11 +5,11 @@ const errorMiddleware = (err: IError, _req: Request, res: Response, _next: NextF
   if (err.code && typeof err.code === 'number') {
     const { code, message } = err;
 
-    return res.status(code).json({ message });
+    return res.status(code).json({ error: { message } });
   }
 
   console.log(err);
-  return res.status(500).json({ message: err.message });
+  return res.status(500).json({ error: { message: err.message } });
 };
 
-export default errorMiddleware;
+export { errorMiddleware };

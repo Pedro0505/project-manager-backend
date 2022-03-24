@@ -2,14 +2,14 @@ import { IUser } from '../../../interfaces/prisma';
 
 const userData: IUser[] = [
   {
-    first_name: 'Pedro',
-    last_name: 'Henrique',
+    firstName: 'Pedro',
+    lastName: 'Henrique',
     email: 'pedro@gmail.com',
     password: '123',
   },
   {
-    first_name: 'Matheus',
-    last_name: 'Santos',
+    firstName: 'Matheus',
+    lastName: 'Santos',
     email: 'matheus@gmail.com',
     password: '123',
   },
