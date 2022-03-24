@@ -6,7 +6,7 @@ const Create = async (req: Request, res: Response) => {
 
   const result = await Service.Create({ ownerId: userId, workspaceName });
 
-  return res.status(201).json({ data: result });
+  res.status(201).json({ data: result });
 };
 
 export { Create };

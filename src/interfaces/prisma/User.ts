@@ -1,8 +1,3 @@
-interface IUserLogin {
-  email: string;
-  password: string;
-}
-
 interface IUserSafe {
   firstName: string;
   lastName: string;
@@ -13,4 +8,4 @@ interface IUser extends IUserSafe {
   password: string;
 }
 
-export { IUser, IUserSafe, IUserLogin };
+export { IUser, IUserSafe };
