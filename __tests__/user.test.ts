@@ -18,7 +18,7 @@ describe('Testes em /user', () => {
     await prisma.$disconnect();
   });
 
-  describe.only('POST /user/register', () => {
+  describe('POST /user/register', () => {
     it('quando o usuário é cadastrado com sucesso', async () => {
       const { status, body } = await request(app)
         .post('/user/register')
@@ -105,6 +105,53 @@ describe('Testes em /user', () => {
       expect(() => {
         jwt.verify(body.token, process.env.JWT_SECRET as string);
       }).not.toThrow();
+    });
+
+    describe('quando o body é inválido', () => {
+      invalidBody<IUser, string | number>({
+        field: 'email',
+        baseBody: fakeData.userLogin.requestMock,
+        verb: 'post',
+        endpoint: '/user/login',
+        assertions: [
+          { title: 'como um número', errorMessage: 'must be a string', bodyOverlaod: 2 },
+          { title: 'é de um formato inválido', errorMessage: 'must be a valid email', bodyOverlaod: 'a@.co' },
+          { title: 'não foi enviado', errorMessage: 'is required', bodyOverlaod: undefined },
+        ],
+      });
+
+      invalidBody<IUser, string | number>({
+        field: 'password',
+        baseBody: fakeData.userLogin.requestMock,
+        verb: 'post',
+        endpoint: '/user/login',
+        assertions: [
+          { title: 'como um número', errorMessage: 'must be a string', bodyOverlaod: 2 },
+          { title: 'com menos de 6 caracters', errorMessage: 'is at least 6 characters long', bodyOverlaod: 'abcde' },
+          { title: 'com mais de 20 caracters', errorMessage: 'is up to 20 characters long', bodyOverlaod: 'a'.repeat(21) },
+          { title: 'não foi enviado', errorMessage: 'is required', bodyOverlaod: undefined },
+        ],
+      });
+    });
+
+    it('quando o email não está cadastrado', async () => {
+      const { status, body } = await request(app)
+        .post('/user/login')
+        .send(fakeData.userLogin.requestWrongEmailMock);
+
+      expect(status).toBe(404);
+      expect(body.error).toBeDefined();
+      expect(body.error.message).toMatch('email not found');
+    });
+
+    it('quando a senha está inválida', async () => {
+      const { status, body } = await request(app)
+        .post('/user/login')
+        .send(fakeData.userLogin.requestWrongPasswordMock);
+
+      expect(status).toBe(401);
+      expect(body.error).toBeDefined();
+      expect(body.error.message).toMatch('wrong password');
     });
   });
 });
