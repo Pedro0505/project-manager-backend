@@ -1,24 +1,24 @@
-// import { Request, Response, NextFunction } from 'express';
-// import jwt from 'jsonwebtoken';
-// import UnauthorizedError from '../helpers/UnauthorizedError';
-// import { IDecoded } from '../interfaces/IDecoded';
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import UnauthorizedError from '../helpers/UnauthorizedError';
+import { IDecoded } from '../interfaces/IDecoded';
 
-// const auth = (req: Request, res: Response, next: NextFunction) => {
-//   const { authorization } = req.headers;
+const auth = (req: Request, res: Response, next: NextFunction) => {
+  const { authorization } = req.headers;
 
-//   if (!authorization) return next(new UnauthorizedError('Token Not Found'));
+  if (!authorization) return next(new UnauthorizedError('Token Not Found'));
 
-//   try {
-//     const JWT_SECRET = process.env.JWT_SECRET || 'BatatinhaFrita123';
+  try {
+    const JWT_SECRET = process.env.JWT_SECRET || 'BatatinhaFrita123';
 
-//     const decoded = jwt.verify(authorization, JWT_SECRET) as IDecoded;
+    const decoded = jwt.verify(authorization, JWT_SECRET) as IDecoded;
 
-//     req.tokenData = decoded.tokenData;
+    req.tokenData = decoded.tokenData;
 
-//     return next();
-//   } catch (error) {
-//     return next(new UnauthorizedError('Expired or invalid token'));
-//   }
-// };
+    return next();
+  } catch (error) {
+    return next(new UnauthorizedError('Expired or invalid token'));
+  }
+};
 
-// export default auth;
+export default auth;
