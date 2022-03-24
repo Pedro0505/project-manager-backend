@@ -16,7 +16,7 @@ export const user = {
 
   lastName: joi.string().min(3).max(60).required()
     .messages({
-      'string.min': 'lastName is at least 3 characters long',
+      'string.min': '"lastName" is at least 3 characters long',
       'string.max': '"lastName" is up to 60 characters long',
       'any.required': '"lastName" is required',
     }),
