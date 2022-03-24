@@ -12,4 +12,4 @@ const errorMiddleware = (err: IError, _req: Request, res: Response, _next: NextF
   return res.status(500).json({ error: { message: err.message } });
 };
 
-export default errorMiddleware;
+export { errorMiddleware };

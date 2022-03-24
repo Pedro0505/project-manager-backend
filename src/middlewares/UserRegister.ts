@@ -15,10 +15,9 @@ const validateUserRegister = (req: Request, _res: Response, next: NextFunction) 
   const { email, firstName, lastName, password }: IUser = req.body;
   const { error } = schema.validate({ email, firstName, lastName, password });
 
-  console.log(req.body, error);
   if (error) return next(new BadRequestError(error.message));
 
   next();
 };
 
-export default validateUserRegister;
+export { validateUserRegister };

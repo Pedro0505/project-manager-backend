@@ -9,7 +9,7 @@
 //   if (!authorization) return next(new UnauthorizedError('Token Not Found'));
 
 //   try {
-//     const JWT_SECRET = process.env.JWT_SECRET || 'BatatinhaFrita123';
+//     const JWT_SECRET = process.env.JWT_SECRET as string;
 
 //     const decoded = jwt.verify(authorization, JWT_SECRET) as IDecoded;
 

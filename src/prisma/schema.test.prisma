@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL_TEST")
+}
+
+model User {
+  id         Int         @id @default(autoincrement())
+  firstName  String      @map("first_name")
+  lastName   String      @map("last_name")
+  email      String      @unique
+  password   String
+  workspaces Workspace[]
+
+  @@map("users")
+}
+
+model Workspace {
+  id       Int               @id @default(autoincrement())
+  name     String
+  owner_id Int
+  owner    User              @relation(fields: [owner_id], references: [id])
+  columns  WorkspaceColumn[]
+
+  @@map("workspace")
+}
+
+model WorkspaceColumn {
+  id           Int             @id @default(autoincrement())
+  title        String
+  workspace_id Int
+  workspace    Workspace       @relation(fields: [workspace_id], references: [id])
+  cards        WorkspaceCard[]
+
+  @@map("workspace_column")
+}
+
+model WorkspaceCard {
+  id        Int             @id @default(autoincrement())
+  content   String
+  title     String
+  column_id Int
+  column    WorkspaceColumn @relation(fields: [column_id], references: [id])
+
+  @@map("workspace_card")
+}
