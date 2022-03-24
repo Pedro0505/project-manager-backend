@@ -1,7 +1,7 @@
 interface IWorkspaceCard {
-  column_id: number;
+  columnId: number;
   content: string;
   title: string;
 }
 
-export default IWorkspaceCard;
+export { IWorkspaceCard };

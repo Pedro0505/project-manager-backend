@@ -7,4 +7,4 @@ const UserRoutes = express.Router();
 
 UserRoutes.post('/register', validateUserRegister, rescue(register));
 
-export default UserRoutes;
+export { UserRoutes };

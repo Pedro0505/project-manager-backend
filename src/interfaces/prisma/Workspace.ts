@@ -1,6 +1,6 @@
 interface IWorkspace {
   name: string;
-  owner_id: number;
+  ownerId: number;
 }
 
-export default IWorkspace;
+export { IWorkspace };

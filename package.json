@@ -10,7 +10,7 @@
     "start": "node ./dist/app.js",
     "dev": "tsnd --exit-child ./src/server.ts",
     "migrate": "prisma migrate dev",
-    "reset": "prisma migrate reset"
+    "reset": "prisma migrate reset --force"
   },
   "prisma": {
     "seed": "ts-node src/prisma/seeders/seed.ts",

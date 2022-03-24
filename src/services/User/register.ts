@@ -1,10 +1,12 @@
 import prisma from '../../prisma';
-import { IUser, IUserSafe } from '../../interfaces/prisma';
+import { IUser } from '../../interfaces/prisma';
+import { IUserRegister } from '../../interfaces/routes/IUserRegister';
 
-const register = async ({ firstName, lastName, email, password }: IUser): Promise<IUserSafe> => {
-  await prisma.user.create({ data: { firstName, lastName, email, password } });
+const register = async ({ firstName, lastName, email, password }: IUser):
+  Promise<IUserRegister> => {
+  const result = await prisma.user.create({ data: { firstName, lastName, email, password } });
 
-  return { firstName, lastName, email };
+  return { id: result.id, firstName, lastName, email };
 };
 
-export default register;
+export { register };

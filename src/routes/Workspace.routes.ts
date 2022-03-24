@@ -1,5 +1,8 @@
 import express from 'express';
+import * as Controller from '../controllers/Workspace';
 
 const WorkspaceRoutes = express.Router();
 
-export default WorkspaceRoutes;
+WorkspaceRoutes.post('/', Controller.Create);
+
+export { WorkspaceRoutes };

@@ -1,4 +1,4 @@
-import { IPayloadJwt } from "../../interfaces/IPayloadJwt";
+import { IPayloadJwt } from "../../interfaces/jwt/IPayloadJwt";
 
 declare module 'express-serve-static-core' {
   interface Request {

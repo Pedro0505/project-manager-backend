@@ -1,5 +1,8 @@
 import express from 'express';
+import * as Controller from '../controllers/WorkspaceColumn';
 
 const WorkspaceColumnRoutes = express.Router();
 
-export default WorkspaceColumnRoutes;
+WorkspaceColumnRoutes.post('/', Controller.Create);
+
+export { WorkspaceColumnRoutes };

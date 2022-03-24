@@ -1,13 +1,13 @@
-import { IWorkspaceCollumn } from '../../../interfaces/prisma';
+import { IWorkspaceColumn } from '../../../interfaces/prisma';
 
-const workspaceData: IWorkspaceCollumn[] = [
+const workspaceData: IWorkspaceColumn[] = [
   {
     title: 'Para Fazer',
-    workspace_id: 1,
+    workspaceId: 1,
   },
   {
     title: 'Feito',
-    workspace_id: 2,
+    workspaceId: 2,
   },
 ];
 
