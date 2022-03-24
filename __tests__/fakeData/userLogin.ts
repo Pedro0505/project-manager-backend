@@ -1,4 +1,4 @@
-import { IUserLogin } from '../../src/interfaces/prisma';
+import { IUserLogin } from '../../src/interfaces/routes';
 
 interface IUserLoginTest {
   requestMock: IUserLogin;
