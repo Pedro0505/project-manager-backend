@@ -4,17 +4,19 @@ jobs:
   eslint:
     runs-on: ubuntu-20.04
     steps:
-        - name: Verifica o repositório do Git
-          uses: actions/checkout@v2
+      - name: Verifica o repositório do Git
+        uses: actions/checkout@v2
 
-        - name: Instala o node com a versão
-          uses: actions/setup-node@v1
-          with:
-            node-version: 12
+      - name: Instala o node com a versão
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
 
+      - name: instalando as dependências
+        run: npm install
 
-        - name: instalando as dependências
-          run: npm install
+      - name: executando o lint para verificar se a erros
+        run: npx eslint . --ext .ts
 
-        - name: executando o lint para verificar se a erros
-          run: npx eslint . --ext .ts
+      - name: Executa os testes de integração
+        run: npm test
