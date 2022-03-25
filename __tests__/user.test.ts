@@ -1,6 +1,7 @@
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
+import { resetDB } from './utils';
 import app from '../src/app';
 import prisma from '../src/prisma';
 import * as fakeData from './fakeData';
@@ -9,6 +10,8 @@ import { IUser } from '../src/interfaces/prisma';
 
 describe('Testes em /user', () => {
   beforeAll(async () => {
+    await resetDB();
+
     await prisma.user.create({ data: fakeData.userRegister.requestConflictMock });
   });
 

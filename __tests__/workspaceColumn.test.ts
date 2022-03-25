@@ -2,17 +2,22 @@ import request from 'supertest';
 import app from '../src/app';
 import prisma from '../src/prisma';
 import * as fakeData from './fakeData';
+import { resetDB } from './utils';
 
 describe('POST /column', () => {
   beforeAll(async () => {
+    await resetDB();
+
     await prisma.user.create({ data: fakeData.userRegister.requestConflictMock });
     await prisma.workspace.create({ data: fakeData.workspaceColumnCreate.workspaceCreate });
   });
 
   afterAll(async () => {
-    await prisma.workspaceColumn.deleteMany();
-    await prisma.workspace.deleteMany();
-    await prisma.user.deleteMany();
+    const deleteWorkspaceColumn = prisma.workspaceColumn.deleteMany();
+    const deleteWorkspace = prisma.workspace.deleteMany();
+    const deleteUser = prisma.user.deleteMany();
+
+    await prisma.$transaction([deleteWorkspaceColumn, deleteWorkspace, deleteUser])
 
     await prisma.$disconnect();
   });
