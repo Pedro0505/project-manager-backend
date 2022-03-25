@@ -1,16 +1,16 @@
-interface requestWorkspace {
+interface IRequestWorkspace {
   userId: number,
   workspaceName: string,
 }
 
-interface responseWorkspace {
+interface IResponseWorkspace {
   id: number,
   workspaceName: string,
 }
 
 interface IWorkspaceTest {
-  requestMock: requestWorkspace;
-  responseMock: responseWorkspace;
+  requestMock: IRequestWorkspace;
+  responseMock: IResponseWorkspace;
 }
 
 export { IWorkspaceTest };
