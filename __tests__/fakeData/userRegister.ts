@@ -1,11 +1,4 @@
-import { IUser } from '../../src/interfaces/prisma';
-import { IUserRegister } from '../../src/interfaces/routes';
-
-interface IUserRegisterTest {
-  requestMock: IUser;
-  requestConflictMock: IUser;
-  responseMock: IUserRegister;
-}
+import { IUserRegisterTest } from "./interface";
 
 export const userRegister: IUserRegisterTest = {
   requestMock: {

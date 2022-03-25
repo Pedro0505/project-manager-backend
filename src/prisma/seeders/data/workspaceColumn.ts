@@ -1,6 +1,6 @@
 import { IWorkspaceColumn } from '../../../interfaces/prisma';
 
-const workspaceData: IWorkspaceColumn[] = [
+const workspaceDataColumn: IWorkspaceColumn[] = [
   {
     title: 'Para Fazer',
     workspaceId: 1,
@@ -11,4 +11,4 @@ const workspaceData: IWorkspaceColumn[] = [
   },
 ];
 
-export default workspaceData;
+export { workspaceDataColumn };

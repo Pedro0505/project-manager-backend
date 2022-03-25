@@ -5,14 +5,14 @@ const userData: IUser[] = [
     firstName: 'Pedro',
     lastName: 'Henrique',
     email: 'pedro@gmail.com',
-    password: '123',
+    password: '12345678',
   },
   {
     firstName: 'Matheus',
     lastName: 'Santos',
     email: 'matheus@gmail.com',
-    password: '123',
+    password: '12345678',
   },
 ];
 
-export default userData;
+export { userData };

@@ -11,4 +11,4 @@ const workspaceData: IWorkspace[] = [
   },
 ];
 
-export default workspaceData;
+export { workspaceData };

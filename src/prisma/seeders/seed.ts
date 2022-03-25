@@ -1,10 +1,10 @@
 import prisma from '../index';
-import { userData, workspaceData, workspaceColumnData, workspaceCardData } from './data';
+import { userData, workspaceData, workspaceDataColumn, workspaceCardData } from './data';
 
 async function main() {
   await prisma.user.createMany({ data: userData });
   await prisma.workspace.createMany({ data: workspaceData });
-  await prisma.workspaceColumn.createMany({ data: workspaceColumnData });
+  await prisma.workspaceColumn.createMany({ data: workspaceDataColumn });
   await prisma.workspaceCard.createMany({ data: workspaceCardData });
 }
 

@@ -13,4 +13,4 @@ const workspaceCardData: IWorkspaceCard[] = [
   },
 ];
 
-export default workspaceCardData;
+export { workspaceCardData };

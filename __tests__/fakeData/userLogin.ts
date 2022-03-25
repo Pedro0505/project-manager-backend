@@ -1,10 +1,4 @@
-import { IUserLogin } from '../../src/interfaces/routes';
-
-interface IUserLoginTest {
-  requestMock: IUserLogin;
-  requestWrongEmailMock: IUserLogin;
-  requestWrongPasswordMock: IUserLogin;
-}
+import { IUserLoginTest } from "./interface";
 
 export const userLogin: IUserLoginTest = {
   requestMock: {
