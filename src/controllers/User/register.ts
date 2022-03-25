@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import JwtGenerate from '../../helpers/JwtGenerate';
 import * as UserService from '../../services/User';
 
+// register: RequestHandler
 const register = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
 
