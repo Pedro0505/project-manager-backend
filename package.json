@@ -7,7 +7,7 @@
     "pretest": "NODE_ENV=test prisma migrate reset --force --skip-seed --schema src/prisma/schema.test.prisma",
     "test": "NODE_ENV=test jest",
     "prestart": "tsc",
-    "start": "node ./dist/app.js",
+    "start": "node ./dist/server.js",
     "dev": "tsnd --exit-child ./src/server.ts",
     "migrate": "prisma migrate dev",
     "reset": "prisma migrate reset --force"
@@ -29,6 +29,7 @@
   "homepage": "https://github.com/Pedro0505/project-manager-backend#readme",
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.22",
