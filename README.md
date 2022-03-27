@@ -34,8 +34,8 @@ Exemplo de body:
 
 ```json
 {
-	"userId": 1, 
-	"workspaceName": "Projects"
+  "userId": 1, 
+  "workspaceName": "Projects"
 }
 ```
 #### POST /column
@@ -45,7 +45,7 @@ Exemplo de body:
 ```json
 {
   "workspaceId": 1,
-	"title": "Project To Do List"
+  "title": "Project To Do List"
 }
 ```
 
@@ -55,9 +55,9 @@ Exemplo de body:
 
 ```json
 {
-	"columnId": 3,
-	"title": "Requeriment 1",
-	"content": "Do tomorrow" 
+  "columnId": 3,
+  "title": "Requeriment 1",
+  "content": "Do tomorrow" 
 }
 ```
 
