@@ -28,6 +28,39 @@ Exemplo de body:
 }
 ```
 
+#### POST /workspace
+
+Exemplo de body:
+
+```json
+{
+	"userId": 1, 
+	"workspaceName": "Projects"
+}
+```
+#### POST /column
+
+Exemplo de body:
+
+```json
+{
+  "workspaceId": 1,
+	"title": "Project To Do List"
+}
+```
+
+#### POST /card
+
+Exemplo de body:
+
+```json
+{
+	"columnId": 3,
+	"title": "Requeriment 1",
+	"content": "Do tomorrow" 
+}
+
+
 ## Validações:
 
 ### User
