@@ -8,5 +8,6 @@ const WorkspaceRoutes = express.Router();
 
 WorkspaceRoutes.post('/', auth, validateCreateWorkspace, rescue(Controller.Create));
 WorkspaceRoutes.get('/', auth, rescue(Controller.GetAll));
+WorkspaceRoutes.get('/:id', auth, rescue(Controller.getById));
 
 export { WorkspaceRoutes };
