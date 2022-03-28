@@ -34,10 +34,11 @@ Exemplo de body:
 
 ```json
 {
-  "userId": 1, 
+  "userId": 1,
   "workspaceName": "Projects"
 }
 ```
+
 #### POST /column
 
 Exemplo de body:
@@ -57,7 +58,55 @@ Exemplo de body:
 {
   "columnId": 3,
   "title": "Requeriment 1",
-  "content": "Do tomorrow" 
+  "content": "Do tomorrow"
+}
+```
+
+#### GET /workspace/:id
+
+Exemplo de resposta:
+
+```json
+{
+  "data": {
+    "id": 2,
+    "name": "Store Manager",
+    "ownerId": 2,
+    "columns": [
+      {
+        "id": 1,
+        "title": "Para Fazer",
+        "workspaceId": 2,
+        "cards": [
+          {
+            "id": 1,
+            "content": "Fazer req 10",
+            "title": "Projeto Store Manager",
+            "columnId": 1
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Fazendo",
+        "workspaceId": 2,
+        "cards": [
+          {
+            "id": 2,
+            "content": "Fazer req 5",
+            "title": "Projeto Blogs Api",
+            "columnId": 2
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Finalizado",
+        "workspaceId": 2,
+        "cards": []
+      }
+    ]
+  }
 }
 ```
 
