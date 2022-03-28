@@ -29,4 +29,43 @@ export const user = {
     }),
 };
 
-export const lint = 2;
+export const workspace = {
+  userId: joi.number().required().strict().integer()
+    .messages({
+      'any.required': 'userId is required',
+    }),
+  workspaceName: joi.string().min(1).required()
+    .messages({
+      'string.min': '"workspaceName" is at least 1 characters long',
+      'any.required': 'workspaceName is required',
+    }),
+};
+
+export const workspaceColumn = {
+  workspaceId: joi.number().required().strict().integer()
+    .messages({
+      'any.required': 'workspaceId is required',
+    }),
+  title: joi.string().min(1).required()
+    .messages({
+      'string.min': '"title" is at least 1 characters long',
+      'any.required': 'title is required',
+    }),
+};
+
+export const workspaceCard = {
+  columnId: joi.number().required().strict().integer()
+    .messages({
+      'any.required': 'columnId is required',
+    }),
+  title: joi.string().min(1).required()
+    .messages({
+      'string.min': '"title" is at least 1 characters long',
+      'any.required': 'title is required',
+    }),
+  content: joi.string().min(1).required()
+    .messages({
+      'string.min': '"content" is at least 1 characters long',
+      'any.required': 'content is required',
+    }),
+};
