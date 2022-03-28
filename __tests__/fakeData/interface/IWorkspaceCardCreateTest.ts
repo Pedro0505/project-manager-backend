@@ -22,4 +22,4 @@ interface IWorkspaceCardCreateTest {
   workspaceColumnCreate: IRequestWorkspaceColumn;
 }
 
-export { IWorkspaceCardCreateTest };
+export { IWorkspaceCardCreateTest, IRequestWorkspaceCard };

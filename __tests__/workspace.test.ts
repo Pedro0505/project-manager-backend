@@ -1,8 +1,9 @@
 import request from 'supertest';
 import app from '../src/app';
 import prisma from '../src/prisma';
+import { invalidBody } from './commonTests';
 import * as fakeData from './fakeData';
-import { userRegisterLogin } from './fakeData';
+import { IRequestWorkspace, userRegisterLogin } from './fakeData';
 import { fakeLogin } from './fakeData/interface/fakeLogin';
 import { resetDB } from './utils';
 
@@ -38,5 +39,29 @@ describe('POST /workspace', () => {
 
     expect(status).toBe(201);
     expect(body.data).toStrictEqual(fakeData.workspaceCreate.responseMock);
-  })
+  });
+
+  describe('quando o body do workspace é invalido', () => {
+    invalidBody<IRequestWorkspace, string | number>({
+      field: 'userId',
+      baseBody: fakeData.workspaceCreate.requestMock,
+      verb: 'post',
+      endpoint: '/workspace',
+      assertions: [
+        { title: 'não foi enviado', errorMessage: 'is required', bodyOverlaod: undefined },
+        { title: 'como uma string', errorMessage: 'must be a number', bodyOverlaod: "2" },
+      ]
+    })
+
+    invalidBody<IRequestWorkspace, string | number>({
+      field: 'workspaceName',
+      baseBody: fakeData.workspaceCreate.requestMock,
+      verb: 'post',
+      endpoint: '/workspace',
+      assertions: [
+        { title: 'não foi enviado', errorMessage: 'is required', bodyOverlaod: undefined },
+        { title: 'quando é vazio', errorMessage: 'is not allowed to be empty', bodyOverlaod: '' },
+      ]
+    })
+  });
 });
