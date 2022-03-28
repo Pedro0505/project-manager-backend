@@ -1,3 +1,4 @@
+import * as argon2 from 'argon2';
 import JwtGenerate from '../../helpers/JwtGenerate';
 import NotFoundError from '../../helpers/NotFoundError';
 import UnauthorizedError from '../../helpers/UnauthorizedError';
@@ -9,7 +10,7 @@ const Login = async ({ email, password }: IUserLogin): Promise<string> => {
 
   if (!result) throw new NotFoundError('email not found');
 
-  const verify = result.password === password;
+  const verify = await argon2.verify(result.password, password);
 
   if (!verify) throw new UnauthorizedError('wrong password');
 

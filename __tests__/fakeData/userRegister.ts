@@ -1,6 +1,8 @@
-import { IUserRegisterTest } from "./interface";
+import * as argon2 from 'argon2';
+import { IUserRegisterTest } from './interface';
+import { IUser } from '../../src/interfaces/prisma';
 
-export const userRegister: IUserRegisterTest = {
+const userRegister: IUserRegisterTest = {
   requestMock: {
     email: 'simpson@gmail.com',
     firstName: 'Homer',
@@ -22,3 +24,12 @@ export const userRegister: IUserRegisterTest = {
     lastName: 'Simpson',
   },
 };
+
+const userRegisterLogin = async (): Promise<IUser> => ({
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'johndoe@gmail.com',
+  password: await argon2.hash('123456'),
+})
+
+export { userRegister, userRegisterLogin }

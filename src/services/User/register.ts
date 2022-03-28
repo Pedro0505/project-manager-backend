@@ -1,3 +1,4 @@
+import * as argon2 from 'argon2';
 import prisma from '../../prisma';
 import { IUser } from '../../interfaces/prisma';
 import { IUserRegister } from '../../interfaces/routes/IUserRegister';
@@ -9,7 +10,9 @@ const register = async ({ firstName, lastName, email, password }: IUser):
 
   if (exist) throw new ConflictError('email already registered');
 
-  const result = await prisma.user.create({ data: { firstName, lastName, email, password } });
+  const hash = await argon2.hash(password);
+
+  const result = await prisma.user.create({ data: { firstName, lastName, email, password: hash } });
 
   return { id: result.id, firstName, lastName, email };
 };
