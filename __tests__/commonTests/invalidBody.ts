@@ -8,11 +8,13 @@ interface IAssertion<U> {
   errorMessage: string;
 }
 
+const TOKEN = process.env.TOKEN_ADMIN;
+
 interface IInvalidBody<T, U> {
   field: keyof T;
   baseBody: object;
   assertions: IAssertion<U>[];
-  endpoint: string;
+  endpoint: '/user/register' | '/user/login' | '/workspace' | '/column' | '/card';
   verb: 'get' | 'post' | 'delete' | 'put';
 }
 
@@ -21,6 +23,7 @@ export const invalidBody = <T, U>(data: IInvalidBody<T, U>) => {
     it(`"${data.field}" ${assertion.title}`, async () => {
       const { status, body } = await request(app)
         [data.verb](data.endpoint)
+        .set('Authorization', TOKEN)
         .send({ ...data.baseBody, [data.field]: assertion.bodyOverlaod });
 
       expect(status).toBe(400);

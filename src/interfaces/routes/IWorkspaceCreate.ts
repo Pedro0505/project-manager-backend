@@ -8,4 +8,9 @@ interface IWorkspaceCreateReturn {
   workspaceName: string;
 }
 
-export { IWorkspaceCreate, IWorkspaceCreateReturn };
+interface IRequestWorkspaceBody {
+  userId: number,
+  workspaceName: string,
+}
+
+export { IWorkspaceCreate, IWorkspaceCreateReturn, IRequestWorkspaceBody };

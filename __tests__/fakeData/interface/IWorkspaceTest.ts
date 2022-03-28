@@ -13,4 +13,4 @@ interface IWorkspaceTest {
   responseMock: IResponseWorkspace;
 }
 
-export { IWorkspaceTest };
+export { IWorkspaceTest, IRequestWorkspace };

@@ -19,4 +19,4 @@ interface IWorkspaceColumnCreateTest {
   workspaceCreate: IWorkspaceCreateRequest;
 }
 
-export { IWorkspaceColumnCreateTest };
+export { IWorkspaceColumnCreateTest, IRequestWorkspaceColumn };
