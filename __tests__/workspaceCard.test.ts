@@ -35,7 +35,7 @@ describe('POST /card', () => {
     expect(body.data).toStrictEqual(fakeData.workspaceCardCreate.responseMock);
   });
 
-  describe.only('quando o body do workspacecard é invalido', () => {
+  describe('quando o body do workspacecard é invalido', () => {
     invalidBody<IRequestWorkspaceCard, string | number>({
       field: 'columnId',
       baseBody: fakeData.workspaceCardCreate.requestMock,
