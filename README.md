@@ -50,6 +50,16 @@ Exemplo de body:
 }
 ```
 
+#### PUT /column/:id
+
+Exemplo de body:
+
+```json
+{
+  "title": "Project To Do List Updated"
+}
+```
+
 #### POST /card
 
 Exemplo de body:
