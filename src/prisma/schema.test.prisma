@@ -25,7 +25,7 @@ model Workspace {
   id      Int               @id @default(autoincrement())
   name    String
   ownerId Int               @map("owner_id")
-  owner   User              @relation(fields: [ownerId], references: [id])
+  owner   User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   columns WorkspaceColumn[]
 
   @@map("workspace")
@@ -35,7 +35,7 @@ model WorkspaceColumn {
   id          Int             @id @default(autoincrement())
   title       String
   workspaceId Int             @map("workspace_id")
-  workspace   Workspace       @relation(fields: [workspaceId], references: [id])
+  workspace   Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   cards       WorkspaceCard[]
 
   @@map("workspace_column")
@@ -44,9 +44,9 @@ model WorkspaceColumn {
 model WorkspaceCard {
   id       Int             @id @default(autoincrement())
   content  String
-  title    String
+  title    String?
   columnId Int             @map("column_id")
-  column   WorkspaceColumn @relation(fields: [columnId], references: [id])
+  column   WorkspaceColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
 
   @@map("workspace_card")
 }
