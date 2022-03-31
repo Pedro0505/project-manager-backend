@@ -8,5 +8,6 @@ const WorkspaceColumnRoutes = express.Router();
 
 WorkspaceColumnRoutes.post('/', validateCreateWorkspaceColumn, rescue(Controller.create));
 WorkspaceColumnRoutes.put('/:id', auth, rescue(Controller.update));
+WorkspaceColumnRoutes.delete('/:id', auth, rescue(Controller.exclude));
 
 export { WorkspaceColumnRoutes };
