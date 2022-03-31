@@ -6,7 +6,7 @@ import { validateCreateWorkspaceColumn } from '../middlewares/CreateWorkspaceCol
 
 const WorkspaceColumnRoutes = express.Router();
 
-WorkspaceColumnRoutes.post('/', validateCreateWorkspaceColumn, rescue(Controller.Create));
+WorkspaceColumnRoutes.post('/', validateCreateWorkspaceColumn, rescue(Controller.create));
 WorkspaceColumnRoutes.put('/:id', auth, rescue(Controller.update));
 
 export { WorkspaceColumnRoutes };

@@ -5,7 +5,7 @@ import UnauthorizedError from '../../helpers/UnauthorizedError';
 import { IUserLogin } from '../../interfaces/routes';
 import prisma from '../../prisma';
 
-const Login = async ({ email, password }: IUserLogin): Promise<string> => {
+const login = async ({ email, password }: IUserLogin): Promise<string> => {
   const result = await prisma.user.findFirst({ where: { email } });
 
   if (!result) throw new NotFoundError('email not found');
@@ -19,4 +19,4 @@ const Login = async ({ email, password }: IUserLogin): Promise<string> => {
   return token;
 };
 
-export { Login };
+export { login };

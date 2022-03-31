@@ -2,7 +2,7 @@ import { IUserDBResponse } from '../../interfaces/routes/IUserDBResponse';
 import { IWorkspaceDBResponse } from '../../interfaces/routes/IWorkspaceDBResponse';
 import prisma from '../../prisma';
 
-const GetAll = async (email: string) => {
+const getAll = async (email: string) => {
   const { id } = await prisma.user.findFirst({ where: { email } }) as IUserDBResponse;
 
   const getAllWorkspace = await prisma.workspace.findMany(
@@ -12,4 +12,4 @@ const GetAll = async (email: string) => {
   return getAllWorkspace;
 };
 
-export { GetAll };
+export { getAll };

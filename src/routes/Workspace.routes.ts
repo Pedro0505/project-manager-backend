@@ -6,8 +6,8 @@ import auth from '../middlewares/auth';
 
 const WorkspaceRoutes = express.Router();
 
-WorkspaceRoutes.post('/', auth, validateCreateWorkspace, rescue(Controller.Create));
-WorkspaceRoutes.get('/', auth, rescue(Controller.GetAll));
+WorkspaceRoutes.post('/', auth, validateCreateWorkspace, rescue(Controller.create));
+WorkspaceRoutes.get('/', auth, rescue(Controller.getAll));
 WorkspaceRoutes.get('/:id', auth, rescue(Controller.getById));
 
 export { WorkspaceRoutes };

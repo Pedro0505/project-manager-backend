@@ -1,7 +1,7 @@
 import { IWorkspaceCardCreate, IWorkspaceCardCreateReturn } from '../../interfaces/routes';
 import prisma from '../../prisma';
 
-const Create = async ({ content, title, columnId }: IWorkspaceCardCreate)
+const create = async ({ content, title, columnId }: IWorkspaceCardCreate)
 : Promise<IWorkspaceCardCreateReturn> => {
   const result = await prisma.workspaceCard.create({ data: { content, title, columnId } });
 
@@ -12,4 +12,4 @@ const Create = async ({ content, title, columnId }: IWorkspaceCardCreate)
   };
 };
 
-export { Create };
+export { create };

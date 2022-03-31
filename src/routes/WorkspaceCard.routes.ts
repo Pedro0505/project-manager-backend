@@ -5,6 +5,6 @@ import { validateCreateWorkspaceCard } from '../middlewares/CreateWorkspaceCard'
 
 const WorkspaceCardRoutes = express.Router();
 
-WorkspaceCardRoutes.post('/', validateCreateWorkspaceCard, rescue(Controller.Create));
+WorkspaceCardRoutes.post('/', validateCreateWorkspaceCard, rescue(Controller.create));
 
 export { WorkspaceCardRoutes };
