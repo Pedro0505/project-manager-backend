@@ -8,7 +8,7 @@ const register = async (req: Request, res: Response) => {
 
   const result = await UserService.register({ firstName, lastName, email, password });
 
-  const token = JwtGenerate({ email });
+  const token = JwtGenerate({ email, userId: result.id });
 
   res.status(201).json({ data: result, token });
 };

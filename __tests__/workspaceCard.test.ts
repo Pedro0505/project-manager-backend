@@ -48,17 +48,6 @@ describe('POST /card', () => {
     })
 
     invalidBody<IRequestWorkspaceCard, string | number>({
-      field: 'title',
-      baseBody: fakeData.workspaceCardCreate.requestMock,
-      verb: 'post',
-      endpoint: '/card',
-      assertions: [
-        { title: 'não foi enviado', errorMessage: 'is required', bodyOverlaod: undefined },
-        { title: 'quando é vazio', errorMessage: 'is not allowed to be empty', bodyOverlaod: '' },
-      ]
-    })
-
-    invalidBody<IRequestWorkspaceCard, string | number>({
       field: 'content',
       baseBody: fakeData.workspaceCardCreate.requestMock,
       verb: 'post',

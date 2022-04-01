@@ -14,7 +14,7 @@ const login = async ({ email, password }: IUserLogin): Promise<string> => {
 
   if (!verify) throw new UnauthorizedError('wrong password');
 
-  const token = JwtGenerate({ email });
+  const token = JwtGenerate({ email, userId: result.id });
 
   return token;
 };
