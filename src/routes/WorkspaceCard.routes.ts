@@ -8,5 +8,6 @@ const WorkspaceCardRoutes = express.Router();
 
 WorkspaceCardRoutes.post('/', auth, validateCreateWorkspaceCard, rescue(Controller.create));
 WorkspaceCardRoutes.delete('/:id', auth, rescue(Controller.exclude));
+WorkspaceCardRoutes.put('/:id', auth, rescue(Controller.update));
 
 export { WorkspaceCardRoutes };

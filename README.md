@@ -73,6 +73,21 @@ Exemplo de body:
 }
 ```
 
+#### PUT /card/:id
+
+Exemplo de body:
+
+> Pode ser passado qualquer combinação de parâmetros
+
+```json
+{
+  "columnId": 2,
+  "index": 2,
+  "title": "Requeriment 1",
+  "content": "Do Today"
+}
+```
+
 #### GET /workspace/:id
 
 Exemplo de resposta:
