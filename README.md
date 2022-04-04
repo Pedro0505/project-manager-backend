@@ -67,6 +67,7 @@ Exemplo de body:
 ```json
 {
   "columnId": 3,
+  "index": 4,
   "title": "Requeriment 1",
   "content": "Do tomorrow"
 }
@@ -172,7 +173,8 @@ Exemplo de resposta:
   - string
   - min(3)
   - max(60)
-  - required
+- index
+  - number
 - content
   - string
   - max(200)

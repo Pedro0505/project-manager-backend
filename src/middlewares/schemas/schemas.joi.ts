@@ -57,6 +57,7 @@ export const workspaceCard = {
       'any.required': '"columnId" is required',
     }),
   title: joi.string(),
+  index: joi.number(),
   content: joi.string().required()
     .messages({
       'any.required': '"content" is required',
