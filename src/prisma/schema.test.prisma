@@ -33,6 +33,7 @@ model Workspace {
 
 model WorkspaceColumn {
   id          Int             @id @default(autoincrement())
+  index       Int             @default(999)
   title       String
   workspaceId Int             @map("workspace_id")
   workspace   Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
@@ -43,6 +44,7 @@ model WorkspaceColumn {
 
 model WorkspaceCard {
   id       Int             @id @default(autoincrement())
+  index    Int             @default(999)
   content  String
   title    String?
   columnId Int             @map("column_id")
