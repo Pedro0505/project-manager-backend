@@ -46,7 +46,8 @@ Exemplo de body:
 ```json
 {
   "workspaceId": 1,
-  "title": "Project To Do List"
+  "title": "Project To Do List",
+  "index": 6
 }
 ```
 
@@ -54,9 +55,12 @@ Exemplo de body:
 
 Exemplo de body:
 
+> Pode ser passado qualquer combinação de parâmetros
+
 ```json
 {
-  "title": "Project To Do List Updated"
+  "title": "Project To Do List Updated",
+  "index": 8
 }
 ```
 
