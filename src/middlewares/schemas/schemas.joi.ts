@@ -63,3 +63,22 @@ export const workspaceCard = {
       'any.required': '"content" is required',
     }),
 };
+
+export const workspaceCardUpdate = {
+  columnId: joi.number().strict()
+    .messages({
+      'number.base': '"columnId" must be a number',
+    }),
+  index: joi.number().strict()
+    .messages({
+      'number.base': '"index" must be a number',
+    }),
+  title: joi.string()
+    .messages({
+      'string.base': '"title" must be a string',
+    }),
+  content: joi.string()
+    .messages({
+      'string.base': '"content" must be a string',
+    }),
+};

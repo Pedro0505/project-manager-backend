@@ -10,6 +10,12 @@ const update = async (
 
   if (!selectedCard) throw new NotFoundError('Card not found');
 
+  if (payload.columnId) {
+    const cardExist = await prisma.workspaceColumn.findUnique({ where: { id: payload.columnId } });
+
+    if (!cardExist) throw new NotFoundError('Column not found');
+  }
+
   const result = await prisma.workspaceCard.update({ where: { id }, data: payload });
 
   return result;

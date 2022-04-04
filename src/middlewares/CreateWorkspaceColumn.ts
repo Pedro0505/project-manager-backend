@@ -4,7 +4,7 @@ import { workspaceColumn } from './schemas/schemas.joi';
 import BadRequestError from '../helpers/BadRequestError';
 import { IWorkspaceColumn } from '../interfaces/prisma';
 
-const schema = joi.object({
+const schema = joi.object<IWorkspaceColumn>({
   workspaceId: workspaceColumn.workspaceId,
   title: workspaceColumn.title,
 });

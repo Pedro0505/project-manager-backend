@@ -4,7 +4,7 @@ import { workspace } from './schemas/schemas.joi';
 import BadRequestError from '../helpers/BadRequestError';
 import { IRequestWorkspaceBody } from '../interfaces/routes';
 
-const schema = joi.object({
+const schema = joi.object<IRequestWorkspaceBody>({
   userId: workspace.userId,
   workspaceName: workspace.workspaceName,
 });
