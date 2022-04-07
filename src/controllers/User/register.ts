@@ -4,9 +4,13 @@ import * as UserService from '../../services/User';
 
 // register: RequestHandler
 const register = async (req: Request, res: Response) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password, uuid } = req.body;
 
-  const result = await UserService.register({ firstName, lastName, email, password });
+  const result = await UserService.register({ firstName,
+    lastName,
+    email,
+    password,
+    uuid });
 
   const token = JwtGenerate({ email, userId: result.id });
 

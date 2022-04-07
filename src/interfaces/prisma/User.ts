@@ -6,6 +6,7 @@ interface IUserSafe {
 
 interface IUser extends IUserSafe {
   password: string;
+  uuid?: string;
 }
 
 export { IUser, IUserSafe };
