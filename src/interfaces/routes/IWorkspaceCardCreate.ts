@@ -2,14 +2,14 @@ export interface IWorkspaceCardCreate {
   index?: number;
   content: string;
   title?: string;
-  columnId: number;
+  columnId: string;
 }
 
 export interface IWorkspaceCardUpdate {
   index?: number;
   content?: string;
   title?: string;
-  columnId?: number;
+  columnId?: string;
 }
 
 export interface IWorkspaceCardResponse {

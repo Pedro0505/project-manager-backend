@@ -1,11 +1,13 @@
-import { IWorkspaceCardCreate, IWorkspaceCardResponse } from '../../interfaces/routes';
+import { generateUuid } from '../../helpers';
+import { IWorkspaceCardCreate } from '../../interfaces/routes';
 import prisma from '../../prisma';
 
-const create = async ({ content, title, columnId, index }: IWorkspaceCardCreate)
-: Promise<IWorkspaceCardResponse> => {
-  const result = await prisma.workspaceCard.create({ data: { content, title, columnId, index } });
+const create = async (newcard: IWorkspaceCardCreate) => {
+  const { content, title, columnId, index } = newcard;
 
-  return result;
+  return prisma.workspaceCard.create({
+    data: { content, title, columnId, index, id: generateUuid() },
+  });
 };
 
 export { create };
