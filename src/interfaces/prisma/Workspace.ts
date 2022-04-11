@@ -1,6 +1,10 @@
 interface IWorkspace {
   name: string;
-  ownerId: number;
+  ownerId: string;
 }
 
-export { IWorkspace };
+interface IWorkspaceModel extends IWorkspace {
+  id: string;
+}
+
+export { IWorkspace, IWorkspaceModel };
