@@ -30,7 +30,7 @@ export const user = {
 };
 
 export const workspace = {
-  userId: joi.number().required().strict()
+  userId: joi.string().required().strict()
     .messages({
       'any.required': '"userId" is required',
     }),
@@ -41,7 +41,7 @@ export const workspace = {
 };
 
 export const workspaceColumn = {
-  workspaceId: joi.number().required().strict()
+  workspaceId: joi.string().required().strict()
     .messages({
       'any.required': '"workspaceId" is required',
     }),
@@ -52,7 +52,7 @@ export const workspaceColumn = {
 };
 
 export const workspaceCard = {
-  columnId: joi.number().required().strict()
+  columnId: joi.string().required().strict()
     .messages({
       'any.required': '"columnId" is required',
     }),
@@ -65,7 +65,7 @@ export const workspaceCard = {
 };
 
 export const workspaceCardUpdate = {
-  columnId: joi.number().strict()
+  columnId: joi.string().strict()
     .messages({
       'number.base': '"columnId" must be a number',
     }),
