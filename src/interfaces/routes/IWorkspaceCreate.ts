@@ -1,15 +1,15 @@
 interface IWorkspaceCreate {
-  ownerId: number;
+  ownerId: string;
   workspaceName: string;
 }
 
 interface IWorkspaceCreateReturn {
-  id: number;
+  id: string;
   workspaceName: string;
 }
 
 interface IRequestWorkspaceBody {
-  userId: number,
+  userId: string,
   workspaceName: string,
 }
 
