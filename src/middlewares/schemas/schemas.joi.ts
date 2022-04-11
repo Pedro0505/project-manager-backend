@@ -21,7 +21,7 @@ export const user = {
       'any.required': '"lastName" is required',
     }),
 
-  password: joi.string().min(6).required()
+  password: joi.string().min(6).max(20).required()
     .messages({
       'string.min': '"password" is at least 6 characters long',
       'string.max': '"password" is up to 20 characters long',
