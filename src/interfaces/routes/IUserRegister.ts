@@ -1,6 +1,6 @@
 import { IUserSafe } from '../prisma';
 
 export interface IUserRegister extends IUserSafe {
-  id: number;
+  id: string;
   uuid?: string;
 }
