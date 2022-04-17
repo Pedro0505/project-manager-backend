@@ -4,8 +4,10 @@ import * as Service from '../../services/Workspace';
 const getById = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { userId } = req.tokenData;
+  let workspace;
 
-  const workspace = await Service.getById(id, userId);
+  if (req.query?.includeColumns === 'true') workspace = await Service.getWithColumns(id, userId);
+  else workspace = await Service.getById(id, userId);
 
   res.status(200).json({ data: workspace });
 };

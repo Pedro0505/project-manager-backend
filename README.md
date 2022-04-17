@@ -101,6 +101,20 @@ Exemplo de resposta:
   "data": {
     "id": "186fced2-77a7-4545-9492-f8f18ed86ec8",
     "name": "Store Manager",
+    "ownerId": "672cfaa7-0c19-46e4-92b0-b377019ac381"
+  }
+}
+```
+
+- Com `includeColumns=true`
+
+Exemplo de resposta:
+
+```json
+{
+  "data": {
+    "id": "186fced2-77a7-4545-9492-f8f18ed86ec8",
+    "name": "Store Manager",
     "ownerId": "672cfaa7-0c19-46e4-92b0-b377019ac381",
     "columns": [
       {
