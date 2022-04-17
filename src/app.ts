@@ -7,7 +7,7 @@ import 'dotenv/config';
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: '*', methods: ['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS'] }));
 
 app.use('/user', UserRoutes);
 app.use('/workspace', WorkspaceRoutes);
