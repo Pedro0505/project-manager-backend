@@ -26,7 +26,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Sobe os containers
-        run: docker-compose up --build
+        run: docker-compose up --build -d
+
+      - name: Run tests
+        run: docker-compose exec -T backend npm test
 
       - name: Derruba os containers
         if: always()

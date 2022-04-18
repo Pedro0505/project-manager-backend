@@ -10,4 +10,4 @@ COPY . .
 
 RUN npx prisma generate --schema src/prisma/schema.test.prisma
 
-CMD [ "npm", "test" ]
+CMD [ "npm", "start" ]
