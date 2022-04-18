@@ -9,7 +9,6 @@ interface IWorkspaceCreateReturn {
 }
 
 interface IRequestWorkspaceBody {
-  userId: string,
   workspaceName: string,
 }
 
