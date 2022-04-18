@@ -1,5 +1,4 @@
 interface IRequestWorkspace {
-  userId: number,
   workspaceName: string,
 }
 
