@@ -2,7 +2,7 @@ import { hash } from 'argon2';
 import { IUserModel } from '../../src/interfaces/prisma';
 
 export const matheus = async (): Promise<IUserModel> => ({
-  id: '64bc581e-937d-4de1-bc5b-82279d56856e',
+  id: '21119b9d-af80-4e9f-8987-047f8f50a5fa',
   firstName: 'Matheus',
   lastName: 'Santos',
   email: 'matheus@gmail.com',
