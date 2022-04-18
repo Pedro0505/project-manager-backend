@@ -11,17 +11,17 @@ import { IUser } from '../src/interfaces/prisma';
 import { IUserRegister } from '../src/interfaces/routes';
 
 describe('Testes em /user', () => {
-  beforeAll(async () => {
-    await prisma.user.create({ data: await seeds.matheus() });
-  });
-
-  afterAll(async () => {
-    await prisma.user.deleteMany();
-
-    await prisma.$disconnect();
-  });
-
   describe('POST /user/register', () => {
+    beforeAll(async () => {
+      await prisma.user.create({ data: await seeds.matheus() });
+    });
+
+    afterAll(async () => {
+      await prisma.user.deleteMany();
+
+      await prisma.$disconnect();
+    });
+
     it('quando o usuário é cadastrado com sucesso', async () => {
       const { status, body } = await request(app)
         .post('/user/register')
@@ -34,7 +34,7 @@ describe('Testes em /user', () => {
       expect(firstName).toBe(fakeData.user.register.response.firstName);
       expect(lastName).toBe(fakeData.user.register.response.lastName);
       expect(() => {
-        jwt.verify(body.token, process.env.JWT_SECRET as string);
+        jwt.verify(body.token, process.env.JWT_SECRET);
       }).not.toThrow();
     });
 
@@ -131,21 +131,31 @@ describe('Testes em /user', () => {
   });
 
   describe('POST /user/login', () => {
+    beforeAll(async () => {
+      await prisma.user.create({ data: await seeds.matheus() });
+    });
+
+    afterAll(async () => {
+      await prisma.user.deleteMany();
+
+      await prisma.$disconnect();
+    });
+
     it('quando o login é feito com sucesso', async () => {
       const { status, body } = await request(app)
         .post('/user/login')
-        .send(fakeData.userLogin.requestMock);
+        .send(fakeData.user.login.request);
 
       expect(status).toBe(200);
       expect(() => {
-        jwt.verify(body.token, process.env.JWT_SECRET as string);
+        jwt.verify(body.token, process.env.JWT_SECRET);
       }).not.toThrow();
     });
 
     describe('quando o body é inválido', () => {
       invalidBody<IUser, string | number>({
         field: 'email',
-        baseBody: fakeData.userLogin.requestMock,
+        baseBody: fakeData.user.login.request,
         verb: 'post',
         endpoint: '/user/login',
         assertions: [
@@ -161,7 +171,7 @@ describe('Testes em /user', () => {
 
       invalidBody<IUser, string | number>({
         field: 'password',
-        baseBody: fakeData.userLogin.requestMock,
+        baseBody: fakeData.user.login.request,
         verb: 'post',
         endpoint: '/user/login',
         assertions: [
@@ -184,7 +194,7 @@ describe('Testes em /user', () => {
     it('quando o email não está cadastrado', async () => {
       const { status, body } = await request(app)
         .post('/user/login')
-        .send(fakeData.userLogin.requestWrongEmailMock);
+        .send(fakeData.user.login.requestUnregisteredEmail);
 
       expect(status).toBe(404);
       expect(body.error).toBeDefined();
@@ -194,7 +204,7 @@ describe('Testes em /user', () => {
     it('quando a senha está inválida', async () => {
       const { status, body } = await request(app)
         .post('/user/login')
-        .send(fakeData.userLogin.requestWrongPasswordMock);
+        .send(fakeData.user.login.requestWrongPassword);
 
       expect(status).toBe(401);
       expect(body.error).toBeDefined();
