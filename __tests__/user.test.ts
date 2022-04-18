@@ -6,7 +6,6 @@ import prisma from '../src/prisma';
 import { verifyUuid } from './utils';
 import * as fakeData from './fakeData';
 import * as seeds from './seeds';
-import { invalidBody } from './commonTests';
 import { IUser } from '../src/interfaces/prisma';
 import { IUserRegister } from '../src/interfaces/routes';
 

@@ -50,7 +50,7 @@ describe('Testes em /workspace', () => {
         expect(body.error.message).toMatch('"workspaceName" is required');
       });
 
-      it('quando "workspaceName" é uma string vazia', async () => {
+      it('"workspaceName" é uma string vazia', async () => {
         const { status, body } = await request(app)
           .post('/workspace')
           .set('Authorization', token)
@@ -59,6 +59,29 @@ describe('Testes em /workspace', () => {
         expect(status).toBe(400);
         expect(body.error).toBeDefined();
         expect(body.error.message).toMatch('"workspaceName" is not allowed to be empty');
+      });
+    });
+
+    describe('quando o auth da problema', () => {
+      it('token não enviado', async () => {
+        const { status, body } = await request(app)
+          .post('/workspace')
+          .send(fakeData.workspace.create.request);
+
+        expect(status).toBe(401);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('token not found');
+      });
+
+      it('token inválido', async () => {
+        const { status, body } = await request(app)
+          .post('/workspace')
+          .set('Authorization', 'matheuspedroprojectmanager')
+          .send(fakeData.workspace.create.request);
+
+        expect(status).toBe(401);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('expired or invalid token');
       });
     });
   });
