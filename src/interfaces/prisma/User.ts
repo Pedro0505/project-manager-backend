@@ -9,4 +9,8 @@ interface IUser extends IUserSafe {
   uuid?: string;
 }
 
-export { IUser, IUserSafe };
+interface IUserModel extends IUser {
+  id: string;
+}
+
+export { IUser, IUserSafe, IUserModel };

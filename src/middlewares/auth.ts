@@ -6,7 +6,7 @@ import { IDecoded } from '../interfaces/jwt/IDecoded';
 const auth = (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
 
-  if (!authorization) return next(new UnauthorizedError('Token Not Found'));
+  if (!authorization) return next(new UnauthorizedError('token not found'));
 
   try {
     const { JWT_SECRET } = process.env;
@@ -17,7 +17,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
 
     return next();
   } catch (error) {
-    return next(new UnauthorizedError('Expired or invalid token'));
+    return next(new UnauthorizedError('expired or invalid token'));
   }
 };
 

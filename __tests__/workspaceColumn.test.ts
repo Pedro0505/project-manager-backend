@@ -1,59 +1,141 @@
 import request from 'supertest';
 import app from '../src/app';
 import prisma from '../src/prisma';
-import { invalidBody } from './commonTests';
 import * as fakeData from './fakeData';
-import { IRequestWorkspaceColumn } from './fakeData';
-import { resetDB } from './utils';
+import * as seeds from './seeds';
+import { verifyUuid } from './utils';
 
-describe('POST /column', () => {
-  beforeAll(async () => {
-    await resetDB();
+describe('Testes em /column', () => {
+  describe('POST /column', () => {
+    let token: string;
 
-    await prisma.user.create({ data: fakeData.userRegister.requestConflictMock });
-    await prisma.workspace.create({ data: fakeData.workspaceColumnCreate.workspaceCreate });
-  });
+    beforeAll(async () => {
+      const [matheus, pedro] = await Promise.all([seeds.matheus(), seeds.pedro()]);
 
-  afterAll(async () => {
-    const deleteWorkspaceColumn = prisma.workspaceColumn.deleteMany();
-    const deleteWorkspace = prisma.workspace.deleteMany();
-    const deleteUser = prisma.user.deleteMany();
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [matheus, pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+        prisma.workspaceColumn.createMany({ data: seeds.allWorkspaceColumns }),
+      ]);
 
-    await prisma.$transaction([deleteWorkspaceColumn, deleteWorkspace, deleteUser])
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+    });
 
-    await prisma.$disconnect();
-  });
+    afterAll(async () => {
+      await prisma.$transaction([
+        prisma.workspaceColumn.deleteMany(),
+        prisma.workspace.deleteMany(),
+        prisma.user.deleteMany(),
+      ]);
 
-  it('Quando o workspace é criado com sucesso', async () => {
-    const { status, body } = await request(app)
-    .post('/column')
-    .send(fakeData.workspaceColumnCreate.requestMock);
+      await prisma.$disconnect();
+    });
 
-    expect(status).toBe(201);
-    expect(body.data).toStrictEqual(fakeData.workspaceColumnCreate.responseMock);
-  });
+    it('quando o workspaceColumn é criado com sucesso', async () => {
+      const { status, body } = await request(app)
+        .post('/column')
+        .set('Authorization', token)
+        .send(fakeData.workspaceColumn.create.request);
 
-  describe('quando o body do workspace é invalido', () => {
-    invalidBody<IRequestWorkspaceColumn, string | number>({
-      field: 'workspaceId',
-      baseBody: fakeData.workspaceColumnCreate.requestMock,
-      verb: 'post',
-      endpoint: '/column',
-      assertions: [
-        { title: 'não foi enviado', errorMessage: 'is required', bodyOverlaod: undefined },
-        { title: 'como uma string', errorMessage: 'must be a number', bodyOverlaod: "2" },
-      ]
-    })
+      expect(status).toBe(201);
+      expect(verifyUuid(body.data.id)).toBe(true);
+      expect({
+        title: body.data.title,
+        workspaceId: body.data.workspaceId,
+        index: body.data.index,
+      }).toStrictEqual(fakeData.workspaceColumn.create.response);
+    });
 
-    invalidBody<IRequestWorkspaceColumn, string | number>({
-      field: 'title',
-      baseBody: fakeData.workspaceColumnCreate.requestMock,
-      verb: 'post',
-      endpoint: '/column',
-      assertions: [
-        { title: 'não foi enviado', errorMessage: 'is required', bodyOverlaod: undefined },
-        { title: 'quando é vazio', errorMessage: 'is not allowed to be empty', bodyOverlaod: '' },
-      ]
-    })
+    describe('quando o body do workspace é invalido', () => {
+      it('"workspaceId" não foi enviado', async () => {
+        const { status, body } = await request(app)
+          .post('/column')
+          .set('Authorization', token)
+          .send({ ...fakeData.workspaceColumn.create.request, workspaceId: undefined });
+
+        expect(status).toBe(400);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('"workspaceId" is required');
+      });
+
+      it('"workspaceId" como um number', async () => {
+        const { status, body } = await request(app)
+          .post('/column')
+          .set('Authorization', token)
+          .send({ ...fakeData.workspaceColumn.create.request, workspaceId: 2 });
+
+        expect(status).toBe(400);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('"workspaceId" must be a string');
+      });
+
+      it('"title" não foi enviado', async () => {
+        const { status, body } = await request(app)
+          .post('/column')
+          .set('Authorization', token)
+          .send({ ...fakeData.workspaceColumn.create.request, title: undefined });
+
+        expect(status).toBe(400);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('"title" is required');
+      });
+
+      it('"title" como um number', async () => {
+        const { status, body } = await request(app)
+          .post('/column')
+          .set('Authorization', token)
+          .send({ ...fakeData.workspaceColumn.create.request, title: 2 });
+
+        expect(status).toBe(400);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('"title" must be a string');
+      });
+
+      it('"index" não foi enviado', async () => {
+        const { status, body } = await request(app)
+          .post('/column')
+          .set('Authorization', token)
+          .send({ ...fakeData.workspaceColumn.create.request, index: undefined });
+
+        expect(status).toBe(400);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('"index" is required');
+      });
+
+      it('"index" como uma string', async () => {
+        const { status, body } = await request(app)
+          .post('/column')
+          .set('Authorization', token)
+          .send({ ...fakeData.workspaceColumn.create.request, index: 'a' });
+
+        expect(status).toBe(400);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('"index" must be a number');
+      });
+    });
+
+    describe('quando o auth da problema', () => {
+      it('token não enviado', async () => {
+        const { status, body } = await request(app)
+          .post('/column')
+          .send(fakeData.workspaceColumn.create.request);
+
+        expect(status).toBe(401);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('token not found');
+      });
+
+      it('token inválido', async () => {
+        const { status, body } = await request(app)
+          .post('/column')
+          .set('Authorization', 'matheuspedroprojectmanager')
+          .send(fakeData.workspaceColumn.create.request);
+
+        expect(status).toBe(401);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('expired or invalid token');
+      });
+    });
   });
 });

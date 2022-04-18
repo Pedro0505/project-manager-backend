@@ -21,7 +21,7 @@ export const user = {
       'any.required': '"lastName" is required',
     }),
 
-  password: joi.string().min(6).required()
+  password: joi.string().min(6).max(20).required()
     .messages({
       'string.min': '"password" is at least 6 characters long',
       'string.max': '"password" is up to 20 characters long',
@@ -30,7 +30,7 @@ export const user = {
 };
 
 export const workspace = {
-  userId: joi.number().required().strict()
+  userId: joi.string().required().strict()
     .messages({
       'any.required': '"userId" is required',
     }),
@@ -41,7 +41,7 @@ export const workspace = {
 };
 
 export const workspaceColumn = {
-  workspaceId: joi.number().required().strict()
+  workspaceId: joi.string().required().strict()
     .messages({
       'any.required': '"workspaceId" is required',
     }),
@@ -49,15 +49,16 @@ export const workspaceColumn = {
     .messages({
       'any.required': '"title" is required',
     }),
+  index: joi.number().required(),
 };
 
 export const workspaceCard = {
-  columnId: joi.number().required().strict()
+  columnId: joi.string().required().strict()
     .messages({
       'any.required': '"columnId" is required',
     }),
   title: joi.string(),
-  index: joi.number(),
+  index: joi.number().required(),
   content: joi.string().required()
     .messages({
       'any.required': '"content" is required',
@@ -65,7 +66,7 @@ export const workspaceCard = {
 };
 
 export const workspaceCardUpdate = {
-  columnId: joi.number().strict()
+  columnId: joi.string().strict()
     .messages({
       'number.base': '"columnId" must be a number',
     }),

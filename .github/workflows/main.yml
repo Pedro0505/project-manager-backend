@@ -7,13 +7,30 @@ jobs:
       - name: Verifica o repositório do Git
         uses: actions/checkout@v2
 
-      - name: Instala o node com a versão
+      - name: Instala o node com a versão 16
         uses: actions/setup-node@v2
         with:
           node-version: '16'
 
-      - name: instalando as dependências
+      - name: Instalando as dependências
         run: npm install
 
-      - name: executando o lint para verificar se a erros
+      - name: Executando o lint para verificar se há erros
         run: npx eslint . --ext .ts
+
+  tests:
+    runs-on: ubuntu-20.04
+    needs: [eslint]
+    steps:
+      - name: Verifica o repositório do Git
+        uses: actions/checkout@v2
+
+      - name: Sobe os containers
+        run: docker-compose up --build -d
+
+      - name: Run tests
+        run: docker-compose exec -T backend npm test
+
+      - name: Derruba os containers
+        if: always()
+        run: docker-compose down --rmi all --volumes --remove-orphans

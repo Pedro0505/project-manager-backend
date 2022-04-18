@@ -1,6 +1,11 @@
 interface IWorkspaceColumn {
-  workspaceId: number;
+  workspaceId: string;
   title: string;
+  index: number;
 }
 
-export { IWorkspaceColumn };
+interface IWorkspaceColumnModel extends IWorkspaceColumn {
+  id: string;
+}
+
+export { IWorkspaceColumn, IWorkspaceColumnModel };

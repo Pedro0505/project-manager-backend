@@ -1,24 +1,19 @@
 import NotFoundError from '../../helpers/NotFoundError';
-import { IWorkspaceCardUpdate, IWorkspaceCardResponse } from '../../interfaces/routes';
+import { IWorkspaceCardUpdate } from '../../interfaces/routes';
 import prisma from '../../prisma';
 
-const update = async (
-  id: number,
-  payload: IWorkspaceCardUpdate,
-): Promise<IWorkspaceCardResponse> => {
+const update = async (id: string, payload: IWorkspaceCardUpdate) => {
   const selectedCard = await prisma.workspaceCard.findUnique({ where: { id } });
 
   if (!selectedCard) throw new NotFoundError('Card not found');
 
   if (payload.columnId) {
-    const cardExist = await prisma.workspaceColumn.findUnique({ where: { id: payload.columnId } });
+    const column = await prisma.workspaceColumn.findUnique({ where: { id: payload.columnId } });
 
-    if (!cardExist) throw new NotFoundError('Column not found');
+    if (!column) throw new NotFoundError('Column not found');
   }
 
-  const result = await prisma.workspaceCard.update({ where: { id }, data: payload });
-
-  return result;
+  return prisma.workspaceCard.update({ where: { id }, data: payload });
 };
 
 export { update };

@@ -34,7 +34,7 @@ Exemplo de body:
 
 ```json
 {
-  "userId": 1,
+  "userId": "672cfaa7-0c19-46e4-92b0-b377019ac381",
   "workspaceName": "Projects"
 }
 ```
@@ -45,7 +45,7 @@ Exemplo de body:
 
 ```json
 {
-  "workspaceId": 1,
+  "workspaceId": "bd07675d-1582-461d-98b8-55522642bfff",
   "title": "Project To Do List",
   "index": 6
 }
@@ -70,7 +70,7 @@ Exemplo de body:
 
 ```json
 {
-  "columnId": 3,
+  "columnId": "7d80de56-618f-4329-81e8-8b20c0723b12",
   "index": 4,
   "title": "Requeriment 1",
   "content": "Do tomorrow"
@@ -85,7 +85,7 @@ Exemplo de body:
 
 ```json
 {
-  "columnId": 2,
+  "columnId": "7d80de56-618f-4329-81e8-8b20c0723b12",
   "index": 2,
   "title": "Requeriment 1",
   "content": "Do Today"
@@ -99,40 +99,54 @@ Exemplo de resposta:
 ```json
 {
   "data": {
-    "id": 2,
+    "id": "186fced2-77a7-4545-9492-f8f18ed86ec8",
     "name": "Store Manager",
-    "ownerId": 2,
+    "ownerId": "672cfaa7-0c19-46e4-92b0-b377019ac381"
+  }
+}
+```
+
+- Com `includeColumns=true`
+
+Exemplo de resposta:
+
+```json
+{
+  "data": {
+    "id": "186fced2-77a7-4545-9492-f8f18ed86ec8",
+    "name": "Store Manager",
+    "ownerId": "672cfaa7-0c19-46e4-92b0-b377019ac381",
     "columns": [
       {
-        "id": 1,
+        "id": "7d80de56-618f-4329-81e8-8b20c0723b12",
         "title": "Para Fazer",
-        "workspaceId": 2,
+        "workspaceId": "186fced2-77a7-4545-9492-f8f18ed86ec8",
         "cards": [
           {
-            "id": 1,
+            "id": "d593be77-03ce-4749-9f71-98dff62dc182",
             "content": "Fazer req 10",
             "title": "Projeto Store Manager",
-            "columnId": 1
+            "columnId": "7d80de56-618f-4329-81e8-8b20c0723b12"
           }
         ]
       },
       {
-        "id": 2,
+        "id": "7d80de56-618f-4399-81e8-8b20c8723c12",
         "title": "Fazendo",
-        "workspaceId": 2,
+        "workspaceId": "186fced2-77a7-4545-9492-f8f18ed86ec8",
         "cards": [
           {
-            "id": 2,
+            "id": "9d5297b4-562a-4858-867c-fd70929cc6a5",
             "content": "Fazer req 5",
             "title": "Projeto Blogs Api",
-            "columnId": 2
+            "columnId": "7d80de56-618f-4399-81e8-8b20c8723c12"
           }
         ]
       },
       {
-        "id": 3,
+        "id": "781b54b4-263d-4851-9ff1-d5797ef6bc24",
         "title": "Finalizado",
-        "workspaceId": 2,
+        "workspaceId": "186fced2-77a7-4545-9492-f8f18ed86ec8",
         "cards": []
       }
     ]
@@ -172,6 +186,7 @@ Exemplo de resposta:
   - max(60)
   - required
 - ownerId
+  - string
   - required
   - tem que existir o userId correspondente
 
@@ -183,6 +198,7 @@ Exemplo de resposta:
   - max(60)
   - required
 - workspaceId
+  - string
   - required
   - tem que existir o workspaceId correspondente
 
@@ -198,5 +214,6 @@ Exemplo de resposta:
   - string
   - max(200)
 - columnId
+  - string
   - required
   - tem que existir o columnId correspondente

@@ -1,67 +1,88 @@
 import request from 'supertest';
 import app from '../src/app';
 import prisma from '../src/prisma';
-import { invalidBody } from './commonTests';
 import * as fakeData from './fakeData';
-import { IRequestWorkspace, userRegisterLogin } from './fakeData';
-import { fakeLogin } from './fakeData/interface/fakeLogin';
-import { resetDB } from './utils';
+import * as seeds from './seeds';
+import { verifyUuid } from './utils';
 
-describe('POST /workspace', () => {
-  let token: { token: string };
+describe('Testes em /workspace', () => {
+  describe('POST /workspace', () => {
+    let token: string;
 
-  beforeAll(async () => {
-    await resetDB();
-    const userRegister = await userRegisterLogin();
-    await prisma.user.create({ data: userRegister });
+    beforeAll(async () => {
+      const [matheus, pedro] = await Promise.all([seeds.matheus(), seeds.pedro()]);
 
-    const { body } = await request(app)
-    .post('/user/login')
-    .send(fakeLogin);
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [matheus, pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+      ]);
 
-    token = body;
-  });
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+    });
 
-  afterAll(async () => {
-    const deleteWorkspace = prisma.workspace.deleteMany();
-    const deleteUser = prisma.user.deleteMany();
-    
-    await prisma.$transaction([deleteWorkspace, deleteUser])
-    
-    await prisma.$disconnect();
-  });
-  
-  it('Quando o workspace é criado com sucesso', async () => {
-    const { status, body } = await request(app)
-    .post('/workspace')
-    .set('Authorization', token.token)
-    .send(fakeData.workspaceCreate.requestMock);
+    afterAll(async () => {
+      await prisma.$transaction([prisma.workspace.deleteMany(), prisma.user.deleteMany()]);
 
-    expect(status).toBe(201);
-    expect(body.data).toStrictEqual(fakeData.workspaceCreate.responseMock);
-  });
+      await prisma.$disconnect();
+    });
 
-  describe('quando o body do workspace é invalido', () => {
-    invalidBody<IRequestWorkspace, string | number>({
-      field: 'userId',
-      baseBody: fakeData.workspaceCreate.requestMock,
-      verb: 'post',
-      endpoint: '/workspace',
-      assertions: [
-        { title: 'não foi enviado', errorMessage: 'is required', bodyOverlaod: undefined },
-        { title: 'como uma string', errorMessage: 'must be a number', bodyOverlaod: "2" },
-      ]
-    })
+    it('quando o workspace é criado com sucesso', async () => {
+      const { status, body } = await request(app)
+        .post('/workspace')
+        .set('Authorization', token)
+        .send(fakeData.workspace.create.request);
 
-    invalidBody<IRequestWorkspace, string | number>({
-      field: 'workspaceName',
-      baseBody: fakeData.workspaceCreate.requestMock,
-      verb: 'post',
-      endpoint: '/workspace',
-      assertions: [
-        { title: 'não foi enviado', errorMessage: 'is required', bodyOverlaod: undefined },
-        { title: 'quando é vazio', errorMessage: 'is not allowed to be empty', bodyOverlaod: '' },
-      ]
-    })
+      expect(status).toBe(201);
+      expect(body.data.workspaceName).toBe(fakeData.workspace.create.response.workspaceName);
+      expect(verifyUuid(body.data.id)).toBe(true);
+    });
+
+    describe('quando o body do workspace é invalido', () => {
+      it('"workspaceName" não foi enviado', async () => {
+        const { status, body } = await request(app)
+          .post('/workspace')
+          .set('Authorization', token)
+          .send({ ...fakeData.workspace.create.request, workspaceName: undefined });
+
+        expect(status).toBe(400);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('"workspaceName" is required');
+      });
+
+      it('"workspaceName" é uma string vazia', async () => {
+        const { status, body } = await request(app)
+          .post('/workspace')
+          .set('Authorization', token)
+          .send({ ...fakeData.workspace.create.request, workspaceName: '' });
+
+        expect(status).toBe(400);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('"workspaceName" is not allowed to be empty');
+      });
+    });
+
+    describe('quando o auth da problema', () => {
+      it('token não enviado', async () => {
+        const { status, body } = await request(app)
+          .post('/workspace')
+          .send(fakeData.workspace.create.request);
+
+        expect(status).toBe(401);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('token not found');
+      });
+
+      it('token inválido', async () => {
+        const { status, body } = await request(app)
+          .post('/workspace')
+          .set('Authorization', 'matheuspedroprojectmanager')
+          .send(fakeData.workspace.create.request);
+
+        expect(status).toBe(401);
+        expect(body.error).toBeDefined();
+        expect(body.error.message).toMatch('expired or invalid token');
+      });
+    });
   });
 });

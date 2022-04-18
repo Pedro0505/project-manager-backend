@@ -1,7 +1,12 @@
 interface IWorkspaceCard {
-  columnId: number;
+  columnId: string;
   content: string;
-  title: string;
+  title: string | null;
 }
 
-export { IWorkspaceCard };
+interface IWorkspaceCardModel extends IWorkspaceCard {
+  id: string;
+  index: number;
+}
+
+export { IWorkspaceCard, IWorkspaceCardModel };

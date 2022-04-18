@@ -3,24 +3,30 @@ version: '3.9'
 services:
   db:
     image: mysql:latest
-    healthcheck:
-      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
-      timeout: 10s
-      retries: 5
-      start_period: 30s
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
+    container_name: db
     ports:
       - 3307:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=123456
+    restart: 'always'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"] # Deve aguardar o banco ficar operacional
+      timeout: 10s
+      retries: 5
+    cap_add:
+      - SYS_NICE # Deve omitir alertas menores
 
-  test:
+  backend:
     build: .
-    restart: always
-    environment:
-      - DATABASE_URL_TEST=mysql://root:password@db:3306/project_manager_test
-      - JWT_SECRET="20bf2315aa8fba365f91b02b3d3fe769"
     depends_on:
       db:
         condition: service_healthy
+    environment:
+      - NODE_ENV=test
+      - DATABASE_URL_TEST=mysql://root:123456@db/project-manager-test?schema=public
+      - JWT_SECRET=20bf2315aa8fba365f91b02b3d3fe769
+      - TOKEN_ADMIN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbkRhdGEiOnsiZW1haWwiOiJzaW1wc29uQGdtYWlsLmNvbSJ9LCJpYXQiOjE2NDg0NjcxODgsImV4cCI6MTY4MDAwMzE4OH0.7kXO5Lx0ofsZfV07ii-OhRrG0WNPz5JunCBye2wcAU
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3001"] # Caso utilize outra porta interna para o back, altere ela aqui também
+      timeout: 10s
+      retries: 5

@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
+  id         String      @id @default(uuid())
   firstName  String      @map("first_name")
   lastName   String      @map("last_name")
   email      String      @unique
@@ -22,9 +22,9 @@ model User {
 }
 
 model Workspace {
-  id      Int               @id @default(autoincrement())
+  id      String            @id @default(uuid())
   name    String
-  ownerId Int               @map("owner_id")
+  ownerId String            @map("owner_id")
   owner   User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   columns WorkspaceColumn[]
 
@@ -32,10 +32,10 @@ model Workspace {
 }
 
 model WorkspaceColumn {
-  id          Int             @id @default(autoincrement())
+  id          String          @id @default(uuid())
   index       Int             @default(999)
   title       String
-  workspaceId Int             @map("workspace_id")
+  workspaceId String          @map("workspace_id")
   workspace   Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   cards       WorkspaceCard[]
 
@@ -43,11 +43,11 @@ model WorkspaceColumn {
 }
 
 model WorkspaceCard {
-  id       Int             @id @default(autoincrement())
+  id       String          @id @default(uuid())
   index    Int             @default(999)
   content  String
   title    String?
-  columnId Int             @map("column_id")
+  columnId String          @map("column_id")
   column   WorkspaceColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
 
   @@map("workspace_card")

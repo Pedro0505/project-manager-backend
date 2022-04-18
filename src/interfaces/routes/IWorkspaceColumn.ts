@@ -1,6 +1,6 @@
 export interface IWorkspaceColumn {
   title: string;
-  workspaceId: number;
+  workspaceId: string;
   index?: number;
 }
 
@@ -10,8 +10,8 @@ export interface IWorkspaceColumnUpdate {
 }
 
 export interface IWorkspaceColumnReturn {
-  id: number;
+  id: string;
   title: string;
   index?: number;
-  workspaceId: number;
+  workspaceId: string;
 }
