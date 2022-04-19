@@ -313,4 +313,32 @@ describe('Testes em /user', () => {
       expect(body.error.message).toMatch('wrong password');
     });
   });
+  describe('GET /user/search', () => {
+    beforeAll(async () => {
+      await prisma.user.create({ data: await seeds.matheus() });
+    });
+
+    afterAll(async () => {
+      await prisma.user.deleteMany();
+
+      await prisma.$disconnect();
+    });
+
+    it('Testando caso de sucesso da busca por email', async () => {
+      const { status, body } = await request(app)
+      .get('/user/search?q=matheus@gmail.com')
+      
+      const user = await prisma.user.findFirst({ where: { email: 'matheus@gmail.com' } });
+
+      expect(status).toBe(200);
+      expect(body).toStrictEqual(user);
+    });
+    it('Testando caso de falha da busca por email', async () => {
+      const { status, body } = await request(app)
+      .get('/user/search?q=random@email.com')
+      
+      expect(status).toBe(404);
+      expect(body.error.message).toStrictEqual('User Not Found');
+    });
+  });
 });
