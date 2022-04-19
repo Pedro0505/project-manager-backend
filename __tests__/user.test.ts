@@ -9,15 +9,17 @@ import * as seeds from './seeds';
 import { IUserRegister } from '../src/interfaces/routes';
 
 describe('Testes em /user', () => {
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
+
   describe('POST /user/register', () => {
     beforeAll(async () => {
-      await prisma.user.create({ data: await seeds.matheus() });
+      await prisma.user.create({ data: seeds.matheus });
     });
 
     afterAll(async () => {
       await prisma.user.deleteMany();
-
-      await prisma.$disconnect();
     });
 
     it('quando o usuário é cadastrado com sucesso', async () => {
@@ -201,13 +203,11 @@ describe('Testes em /user', () => {
 
   describe('POST /user/login', () => {
     beforeAll(async () => {
-      await prisma.user.create({ data: await seeds.matheus() });
+      await prisma.user.create({ data: seeds.matheus });
     });
 
     afterAll(async () => {
       await prisma.user.deleteMany();
-
-      await prisma.$disconnect();
     });
 
     it('quando o login é feito com sucesso', async () => {
@@ -315,28 +315,24 @@ describe('Testes em /user', () => {
   });
   describe('GET /user/search', () => {
     beforeAll(async () => {
-      await prisma.user.create({ data: await seeds.matheus() });
+      await prisma.user.create({ data: seeds.matheus });
     });
 
     afterAll(async () => {
       await prisma.user.deleteMany();
-
-      await prisma.$disconnect();
     });
 
     it('Testando caso de sucesso da busca por email', async () => {
       const { status, body } = await request(app)
       .get('/user/search?q=matheus@gmail.com')
-      
-      const user = await prisma.user.findFirst({ where: { email: 'matheus@gmail.com' } });
 
       expect(status).toBe(200);
-      expect(body).toStrictEqual(user);
+      expect(body).toStrictEqual(seeds.matheus);
     });
     it('Testando caso de falha da busca por email', async () => {
       const { status, body } = await request(app)
       .get('/user/search?q=random@email.com')
-      
+
       expect(status).toBe(404);
       expect(body.error.message).toStrictEqual('User Not Found');
     });

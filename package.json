@@ -4,7 +4,7 @@
   "description": "-- Project Manager --",
   "main": "index.js",
   "scripts": {
-    "pretest": "npx prisma migrate deploy --schema src/prisma/schema.test.prisma",
+    "pretest": "npx prisma migrate reset --force --skip-seed --schema src/prisma/schema.test.prisma",
     "test": "NODE_ENV=test jest --runInBand --testTimeout=600000",
     "prestart": "tsc",
     "start": "node ./dist/server.js",

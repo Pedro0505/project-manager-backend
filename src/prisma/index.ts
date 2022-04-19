@@ -8,6 +8,6 @@ const DB_URLS = {
 };
 const url = DB_URLS[ENV as keyof typeof DB_URLS];
 
-const prisma = new PrismaClient({ datasources: { db: { url } } });
+const prisma = new PrismaClient({ datasources: { db: { url } }, log: ['query', 'info', 'warn', 'error'] });
 
 export default prisma;

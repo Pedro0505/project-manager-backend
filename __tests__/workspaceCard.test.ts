@@ -10,10 +10,8 @@ describe('Testes em /card', () => {
     let token: string;
 
     beforeAll(async () => {
-      const [matheus, pedro] = await Promise.all([seeds.matheus(), seeds.pedro()]);
-
       await prisma.$transaction([
-        prisma.user.createMany({ data: [matheus, pedro] }),
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
         prisma.workspace.createMany({ data: seeds.allWorkspaces }),
         prisma.workspaceColumn.createMany({ data: seeds.allWorkspaceColumns }),
         prisma.workspaceCard.createMany({ data: seeds.allWorkspaceCards }),

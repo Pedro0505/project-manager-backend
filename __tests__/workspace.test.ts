@@ -10,10 +10,8 @@ describe('Testes em /workspace', () => {
     let token: string;
 
     beforeAll(async () => {
-      const [matheus, pedro] = await Promise.all([seeds.matheus(), seeds.pedro()]);
-
       await prisma.$transaction([
-        prisma.user.createMany({ data: [matheus, pedro] }),
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
         prisma.workspace.createMany({ data: seeds.allWorkspaces }),
       ]);
 
@@ -84,5 +82,8 @@ describe('Testes em /workspace', () => {
         expect(body.error.message).toMatch('expired or invalid token');
       });
     });
+  });
+  describe('EXCLUDE /workspace', () => {
+
   });
 });
