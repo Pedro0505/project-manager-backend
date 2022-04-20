@@ -1,10 +1,10 @@
 import prisma from '../../prisma';
 
-const updateMany = async (payload: { id: string }[]) => {
-  const updateOperations = payload.map(({ id }, index) =>
+const updateMany = async (payload: { id: string; columnId?: string }[]) => {
+  const updateOperations = payload.map(({ id, columnId }, index) =>
     prisma.workspaceCard.update({
       where: { id },
-      data: { index },
+      data: { index, columnId },
     }),
   );
 
