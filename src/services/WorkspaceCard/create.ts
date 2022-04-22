@@ -5,11 +5,13 @@ import prisma from '../../prisma';
 const create = async (newcard: IWorkspaceCardCreate) => {
   const { content, title, columnId } = newcard;
 
-  const [{ index: greaterSavedIndex }] = await prisma.workspaceCard.findMany({
+  const result = await prisma.workspaceCard.findMany({
     where: { columnId },
     orderBy: { index: 'desc' },
     take: 1,
   });
+
+  const greaterSavedIndex = result[0]?.index || -1;
 
   return prisma.workspaceCard.create({
     data: { content, title, columnId, index: greaterSavedIndex + 1, id: generateUuid() },
