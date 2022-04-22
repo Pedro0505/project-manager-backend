@@ -8,12 +8,11 @@ const schema = joi.object<IWorkspaceCardCreate>({
   columnId: workspaceCard.columnId,
   content: workspaceCard.content,
   title: workspaceCard.title,
-  index: workspaceCard.index,
 });
 
 const validateCreateWorkspaceCard = (req: Request, _res: Response, next: NextFunction) => {
-  const { content, title, columnId, index }: IWorkspaceCardCreate = req.body;
-  const { error } = schema.validate({ content, title, columnId, index });
+  const { content, title, columnId }: IWorkspaceCardCreate = req.body;
+  const { error } = schema.validate({ content, title, columnId });
 
   if (error) return next(new BadRequestError(error.message));
 
