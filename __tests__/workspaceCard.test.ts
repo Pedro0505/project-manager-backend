@@ -32,19 +32,34 @@ describe('Testes em /card', () => {
       await prisma.$disconnect();
     });
 
-    it('quando o workspaceCard é criado com sucesso', async () => {
-      const { status, body } = await request(app)
-        .post('/card')
+    it('quando o workspaceCard é criado com sucesso com uma coluna nova', async () => {
+      const { body: { data: { id } } } = await request(app)
+        .post('/column')
         .set('Authorization', token)
-        .send(fakeData.workspaceCard.create.request);
+        .send({ title: 'Teste', workspaceId: 'b92b2836-1ee9-4621-81a4-906a7a80dec9' });
+
+      const { body, status } = await request(app)
+      .post('/card')
+      .set('Authorization', token)
+      .send({ content: 'Card Created', columnId: id });
 
       expect(status).toBe(201);
       expect(verifyUuid(body.data.id)).toBe(true);
-      expect({
-        content: body.data.content,
-        columnId: body.data.columnId,
-        index: body.data.index,
-      }).toStrictEqual(fakeData.workspaceCard.create.response);
+      expect({ content: body.data.content, columnId: body.data.columnId, index: body.data.index,})
+        .toStrictEqual({ content: 'Card Created', columnId: id, index: 0 });
+    });
+
+
+    it('quando o workspaceCard é criado com sucesso com uma coluna que já existe', async () => {
+      const { body, status } = await request(app)
+      .post('/card')
+      .set('Authorization', token)
+      .send(fakeData.workspaceCard.create.request);
+
+      expect(status).toBe(201);
+      expect(verifyUuid(body.data.id)).toBe(true);
+      expect({ content: body.data.content, columnId: body.data.columnId, index: body.data.index,})
+        .toStrictEqual(fakeData.workspaceCard.create.response);
     });
 
     describe('quando o body do workspaceCard é invalido', () => {
@@ -68,28 +83,6 @@ describe('Testes em /card', () => {
         expect(status).toBe(400);
         expect(body.error).toBeDefined();
         expect(body.error.message).toMatch('"columnId" must be a string');
-      });
-
-      it('"index" não foi enviado', async () => {
-        const { status, body } = await request(app)
-          .post('/card')
-          .set('Authorization', token)
-          .send({ ...fakeData.workspaceCard.create.request, index: undefined });
-
-        expect(status).toBe(400);
-        expect(body.error).toBeDefined();
-        expect(body.error.message).toMatch('"index" is required');
-      });
-
-      it('"index" como uma string', async () => {
-        const { status, body } = await request(app)
-          .post('/card')
-          .set('Authorization', token)
-          .send({ ...fakeData.workspaceCard.create.request, index: 'a' });
-
-        expect(status).toBe(400);
-        expect(body.error).toBeDefined();
-        expect(body.error.message).toMatch('"index" must be a number');
       });
 
       it('"content" não foi enviado', async () => {

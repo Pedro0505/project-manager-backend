@@ -11,7 +11,7 @@ const create = async (newcard: IWorkspaceCardCreate) => {
     take: 1,
   });
 
-  const greaterSavedIndex = result[0]?.index || -1;
+  const greaterSavedIndex = result[0]?.index ?? -1;
 
   return prisma.workspaceCard.create({
     data: { content, title, columnId, index: greaterSavedIndex + 1, id: generateUuid() },

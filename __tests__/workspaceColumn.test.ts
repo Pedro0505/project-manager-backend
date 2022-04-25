@@ -89,28 +89,6 @@ describe('Testes em /column', () => {
         expect(body.error).toBeDefined();
         expect(body.error.message).toMatch('"title" must be a string');
       });
-
-      it('"index" não foi enviado', async () => {
-        const { status, body } = await request(app)
-          .post('/column')
-          .set('Authorization', token)
-          .send({ ...fakeData.workspaceColumn.create.request, index: undefined });
-
-        expect(status).toBe(400);
-        expect(body.error).toBeDefined();
-        expect(body.error.message).toMatch('"index" is required');
-      });
-
-      it('"index" como uma string', async () => {
-        const { status, body } = await request(app)
-          .post('/column')
-          .set('Authorization', token)
-          .send({ ...fakeData.workspaceColumn.create.request, index: 'a' });
-
-        expect(status).toBe(400);
-        expect(body.error).toBeDefined();
-        expect(body.error.message).toMatch('"index" must be a number');
-      });
     });
 
     describe('quando o auth da problema', () => {
