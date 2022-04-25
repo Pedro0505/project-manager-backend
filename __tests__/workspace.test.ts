@@ -83,7 +83,47 @@ describe('Testes em /workspace', () => {
       });
     });
   });
-  describe('EXCLUDE /workspace', () => {
 
+  describe('EXCLUDE /workspace', () => {
+    let token: string;
+
+    beforeAll(async () => {
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+      ]);
+
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+    });
+
+    afterAll(async () => {
+      await prisma.$transaction([prisma.workspace.deleteMany(), prisma.user.deleteMany()]);
+
+      await prisma.$disconnect();
+    });
+
+    it('Teste caso de sucesso de excluir', async () => {
+      const { status: statusFirstTime } = await request(app)
+      .delete('/workspace/85e57338-db9d-4913-adbf-058b7a68d730')
+      .set('Authorization', token);
+
+      const { status: statusSecondTime, body } = await request(app)
+      .delete('/workspace/85e57338-db9d-4913-adbf-058b7a68d730')
+      .set('Authorization', token);
+
+      expect(statusFirstTime).toBe(204);
+      expect(statusSecondTime).toBe(404);
+      expect(body.error.message).toBe('Workspace not found');
+    });
+
+    it('Teste caso de falha de excluir quando o id exluido não existe', async () => {
+      const { status, body } = await request(app)
+      .delete('/workspace/notfound')
+      .set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBe('Workspace not found');
+    });
   });
 });
