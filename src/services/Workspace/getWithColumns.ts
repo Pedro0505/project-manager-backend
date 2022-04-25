@@ -8,8 +8,9 @@ const getWithColumns = async (workspaceId: string, ownerId: string) => {
     include: {
       columns: {
         include: {
-          cards: true,
+          cards: { orderBy: { index: 'asc' } },
         },
+        orderBy: { index: 'asc' },
       },
     },
   });

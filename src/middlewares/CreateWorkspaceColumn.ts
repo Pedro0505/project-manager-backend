@@ -7,12 +7,11 @@ import { IWorkspaceColumn } from '../interfaces/prisma';
 const schema = joi.object<IWorkspaceColumn>({
   workspaceId: workspaceColumn.workspaceId,
   title: workspaceColumn.title,
-  index: workspaceColumn.index,
 });
 
 const validateCreateWorkspaceColumn = (req: Request, _res: Response, next: NextFunction) => {
-  const { title, workspaceId, index }: IWorkspaceColumn = req.body;
-  const { error } = schema.validate({ title, workspaceId, index });
+  const { title, workspaceId }: IWorkspaceColumn = req.body;
+  const { error } = schema.validate({ title, workspaceId });
 
   if (error) return next(new BadRequestError(error.message));
 
