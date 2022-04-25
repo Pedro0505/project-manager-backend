@@ -8,7 +8,7 @@ const update: RequestHandler = async (req, res) => {
 
   const result = await Service.update(id, { columnId, content, index, title });
 
-  res.status(200).json(result);
+  res.status(200).json({ data: result });
 };
 
 export { update };

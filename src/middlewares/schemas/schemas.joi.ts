@@ -49,7 +49,6 @@ export const workspaceColumn = {
     .messages({
       'any.required': '"title" is required',
     }),
-  index: joi.number().required(),
 };
 
 export const workspaceCard = {
@@ -58,7 +57,6 @@ export const workspaceCard = {
       'any.required': '"columnId" is required',
     }),
   title: joi.string(),
-  index: joi.number().required(),
   content: joi.string().required()
     .messages({
       'any.required': '"content" is required',
@@ -69,10 +67,6 @@ export const workspaceCardUpdate = {
   columnId: joi.string().strict()
     .messages({
       'number.base': '"columnId" must be a number',
-    }),
-  index: joi.number().strict()
-    .messages({
-      'number.base': '"index" must be a number',
     }),
   title: joi.string()
     .messages({

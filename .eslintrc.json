@@ -22,6 +22,7 @@
         "object-curly-newline": ["error", { "consistent": true }],
         "consistent-return": "off",
         "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-        "implicit-arrow-linebreak": "off"
+        "implicit-arrow-linebreak": "off",
+        "function-paren-newline": "off"
       }
 }
