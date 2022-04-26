@@ -211,4 +211,40 @@ describe('Testes em /column', () => {
       expect(body.error.message).toBe('Column not found');
     });
   })
+
+  describe('PATCH /column', () => {
+    let token: string;
+
+    beforeAll(async () => {
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+        prisma.workspaceColumn.createMany({ data: seeds.allWorkspaceColumns }),
+      ]);
+
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+    });
+
+    afterAll(async () => {
+      await prisma.$transaction([
+        prisma.workspaceColumn.deleteMany(),
+        prisma.workspace.deleteMany(),
+        prisma.user.deleteMany(),
+      ]);
+
+      await prisma.$disconnect();
+    });
+
+    it('Caso de sucesso do updateMany', async () => {
+      const { body, status } = await request(app)
+      .patch('/column')
+      .send(fakeData.workspaceColumn.manyUpdate.request)
+      .set('Authorization', token);
+
+      expect(status).toBe(200);
+      expect(body.data).toBeDefined();
+      expect(body.data).toStrictEqual(fakeData.workspaceColumn.manyUpdate.response);
+    })
+  })
 });
