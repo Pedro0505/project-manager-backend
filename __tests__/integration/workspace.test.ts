@@ -84,7 +84,7 @@ describe('Testes em /workspace', () => {
     });
   });
 
-  describe('EXCLUDE /workspace', () => {
+  describe('DELETE /workspace', () => {
     let token: string;
 
     beforeAll(async () => {

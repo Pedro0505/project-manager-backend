@@ -108,4 +108,54 @@ describe('Testes em /card', () => {
       });
     });
   });
+
+  describe('DELETE /card', () => {
+    let token: string;
+
+    beforeAll(async () => {
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+        prisma.workspaceColumn.createMany({ data: seeds.allWorkspaceColumns }),
+        prisma.workspaceCard.createMany({ data: seeds.allWorkspaceCards }),
+      ]);
+
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+    });
+
+    afterAll(async () => {
+      await prisma.$transaction([
+        prisma.workspaceCard.deleteMany(),
+        prisma.workspaceColumn.deleteMany(),
+        prisma.workspace.deleteMany(),
+        prisma.user.deleteMany(),
+      ]);
+
+      await prisma.$disconnect();
+    });
+
+    it('Caso de suceso de um exlude card', async () => {
+      const { status: statusFirstTime } = await request(app)
+      .delete('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
+      .set('Authorization', token);
+
+      const { status: statusSecondTime, body } = await request(app)
+      .delete('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
+      .set('Authorization', token);
+
+      expect(statusFirstTime).toBe(204);
+      expect(statusSecondTime).toBe(404);
+      expect(body.error.message).toBe('Card not found');
+    })
+
+    it('Caso de suceso de um exlude card', async () => {
+      const { status, body } = await request(app)
+      .delete('/card/1e2caa3a-53909ac96933')
+      .set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBe('Card not found');
+    })
+  });
 });
