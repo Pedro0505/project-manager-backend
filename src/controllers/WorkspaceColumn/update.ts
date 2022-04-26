@@ -4,11 +4,11 @@ import * as Service from '../../services/WorkspaceColumn';
 
 const update = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { title, index } = req.body as IWorkspaceColumnUpdate;
+  const { title } = req.body as IWorkspaceColumnUpdate;
 
-  const result = await Service.update(id, { title, index });
+  const result = await Service.update(id, { title });
 
-  res.status(200).json(result);
+  res.status(200).json({ data: result });
 };
 
 export { update };
