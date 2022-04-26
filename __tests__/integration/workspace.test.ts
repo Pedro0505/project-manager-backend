@@ -225,6 +225,5 @@ describe('Testes em /workspace', () => {
       expect(body.error.message).toBeDefined();
       expect(body.error.message).toBe('operation not allowed');
     })
-
   });
 });

@@ -114,4 +114,52 @@ describe('Testes em /column', () => {
       });
     });
   });
+
+  describe('DELETE /column', () => {
+    let token: string;
+
+    beforeAll(async () => {
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+        prisma.workspaceColumn.createMany({ data: seeds.allWorkspaceColumns }),
+      ]);
+
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+    });
+
+    afterAll(async () => {
+      await prisma.$transaction([
+        prisma.workspaceColumn.deleteMany(),
+        prisma.workspace.deleteMany(),
+        prisma.user.deleteMany(),
+      ]);
+
+      await prisma.$disconnect();
+    });
+
+    it('Testando caso de sucesso do delete', async () => {
+      const { status: statusFirstTime } = await request(app)
+      .delete('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
+      .set('Authorization', token);
+
+      const { status: statusSecondTime, body } = await request(app)
+      .delete('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
+      .set('Authorization', token);
+
+      expect(statusFirstTime).toBe(204);
+      expect(statusSecondTime).toBe(404);
+      expect(body.error.message).toBe('Column not found');
+    });
+
+    it('Teste caso de falha de excluir quando o id exluido não existe', async () => {
+      const { status, body } = await request(app)
+      .delete('/column/notfound')
+      .set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBe('Column not found');
+    });
+  });
 });
