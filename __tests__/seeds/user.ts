@@ -5,7 +5,7 @@ export const matheus: IUserModel = {
   firstName: 'Matheus',
   lastName: 'Santos',
   email: 'matheus@gmail.com',
-  password: '$argon2i$v=19$m=4096,t=3,p=1$X7r4K8ujPAuRdFMiERDJrA$iwBZrXgdJD4+I8gzI/F7ZUlCtc/aQ+XwSnOjOUb521I',
+  password: '$argon2i$v=19$m=4096,t=3,p=1$X7r4K8ujPAuRdFMiERDJrA$iwBZrXgdJD4+I8gzI/F7ZUlCtc/aQ+XwSnOjOUb521I', // 12345678
 };
 
 export const pedro: IUserModel = {
@@ -13,5 +13,5 @@ export const pedro: IUserModel = {
   firstName: 'Pedro',
   lastName: 'Henrique',
   email: 'pedro@gmail.com',
-  password: '$argon2i$v=19$m=4096,t=3,p=1$ndoTB41e5ajszwTr2Qft/g$WTragLugvcACfzf3+0Q1gEpK2BQPTdxcy3MeJ4cBmRs',
+  password: '$argon2i$v=19$m=4096,t=3,p=1$ndoTB41e5ajszwTr2Qft/g$WTragLugvcACfzf3+0Q1gEpK2BQPTdxcy3MeJ4cBmRs', // 12345678
 };
