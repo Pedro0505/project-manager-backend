@@ -109,7 +109,7 @@ describe('Testes em /card', () => {
     });
   });
 
-  describe('DELETE /card', () => {
+  describe('DELETE /card/:id', () => {
     let token: string;
 
     beforeAll(async () => {
@@ -157,5 +157,68 @@ describe('Testes em /card', () => {
       expect(status).toBe(404);
       expect(body.error.message).toBe('Card not found');
     })
+  });
+
+  describe('PATCH /card/:id', () => {
+    let token: string;
+
+    beforeAll(async () => {
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+        prisma.workspaceColumn.createMany({ data: seeds.allWorkspaceColumns }),
+        prisma.workspaceCard.createMany({ data: seeds.allWorkspaceCards }),
+      ]);
+
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+    });
+
+    afterAll(async () => {
+      await prisma.$transaction([
+        prisma.workspaceCard.deleteMany(),
+        prisma.workspaceColumn.deleteMany(),
+        prisma.workspace.deleteMany(),
+        prisma.user.deleteMany(),
+      ]);
+
+      await prisma.$disconnect();
+    });
+
+    it('Caso de sucesso do update do card', async () => {
+      const { body, status } = await request(app)
+      .patch('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
+      .send(fakeData.workspaceCard.patch.request)
+      .set('Authorization', token);
+
+      const updateDB = await prisma.workspaceCard.findUnique({ where: { id: '1e2caa3a-a668-455b-bc1d-53909ac96933' } });
+
+      expect(status).toBe(200);
+      expect(body.data).toBeDefined();
+      expect(body.data).toStrictEqual(fakeData.workspaceCard.patch.response);
+      expect(updateDB).toStrictEqual(fakeData.workspaceCard.patch.response);
+    });
+
+    it('Caso de falha do update do card quando o id do card não existe', async () => {
+      const { body, status } = await request(app)
+      .patch('/card/bc1dss')
+      .send(fakeData.workspaceCard.patch.request)
+      .set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('Card not found');
+    });
+
+    it('Caso de falha do update do card quando o column id não existe', async () => {
+      const { body, status } = await request(app)
+      .patch('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
+      .send({ ...fakeData.workspaceCard.patch.request, columnId: 'osskdassdaks-s-sssss-sss' })
+      .set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('Column not found');
+    });
   });
 });
