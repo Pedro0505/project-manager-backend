@@ -1,9 +1,9 @@
 import request from 'supertest';
-import app from '../src/app';
-import prisma from '../src/prisma';
-import * as fakeData from './fakeData';
-import * as seeds from './seeds';
-import { verifyUuid } from './utils';
+import app from '../../src/app';
+import prisma from '../../src/prisma';
+import * as fakeData from '../fakeData';
+import * as seeds from '../seeds';
+import { verifyUuid } from '../utils';
 
 describe('Testes em /workspace', () => {
   describe('POST /workspace', () => {
