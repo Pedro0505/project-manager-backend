@@ -8,7 +8,7 @@ const update = async (req: Request, res: Response) => {
 
   const result = await Service.update(id, { title });
 
-  res.status(200).json(result);
+  res.status(200).json({ data: result });
 };
 
 export { update };

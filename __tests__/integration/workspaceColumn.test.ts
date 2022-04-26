@@ -162,4 +162,53 @@ describe('Testes em /column', () => {
       expect(body.error.message).toBe('Column not found');
     });
   });
+
+  describe('PUT /column', () => {
+    let token: string;
+
+    beforeAll(async () => {
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+        prisma.workspaceColumn.createMany({ data: seeds.allWorkspaceColumns }),
+      ]);
+
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+    });
+
+    afterAll(async () => {
+      await prisma.$transaction([
+        prisma.workspaceColumn.deleteMany(),
+        prisma.workspace.deleteMany(),
+        prisma.user.deleteMany(),
+      ]);
+
+      await prisma.$disconnect();
+    });
+
+    it('Caso de sucesso do update', async () => {
+      const { body, status } = await request(app)
+      .put('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
+      .send(fakeData.workspaceColumn.put.request) 
+      .set('Authorization', token);
+
+      const updateDB = await prisma.workspaceColumn.findUnique({ where: { id: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' } });
+
+      expect(status).toBe(200);
+      expect(body.data).toBeDefined();
+      expect(body.data).toStrictEqual(fakeData.workspaceColumn.put.response);
+      expect(updateDB).toStrictEqual(fakeData.workspaceColumn.put.response);
+    });
+
+    it('Caso de falha do update quando o id não é encontrado', async () => {
+      const { body, status } = await request(app)
+      .put('/column/6gferetg')
+      .send(fakeData.workspaceColumn.put.request) 
+      .set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBe('Column not found');
+    });
+  })
 });
