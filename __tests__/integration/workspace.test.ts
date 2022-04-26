@@ -134,6 +134,8 @@ describe('Testes em /workspace', () => {
       await prisma.$transaction([
         prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
         prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+        prisma.workspaceColumn.createMany({ data: seeds.allWorkspaceColumns }),
+        prisma.workspaceCard.createMany({ data: seeds.allWorkspaceCards }),
       ]);
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
@@ -189,5 +191,40 @@ describe('Testes em /workspace', () => {
       expect(body.error.message).toBeDefined();
       expect(body.error.message).toBe('operation not allowed');
     })
+
+    it('Caso de sucesso do getById workspace com columns e cards', async () => {
+      const { body, status } = await request(app)
+      .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9?includeColumns=true')
+      .set('Authorization', token);
+
+      expect(status).toBe(200);
+      expect(body.data).toBeDefined();
+      expect(body.data).toStrictEqual(fakeData.workspace.getWithColumns.response)
+    })
+
+    it('Caso de falha do getById workspace quando o workspace não é encontrado', async () => {
+      const { body, status } = await request(app)
+      .get('/workspace/sssssdasdasdasdas?includeColumns=true')
+      .set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('workspace not found');
+    })
+
+    it('Caso de falha do getById workspace quando o usuario não tem permissão para acessar o workspace', async () => {
+      const { body: { token: otherUserToken } } = await request(app)
+      .post('/user/login')
+      .send({ email: 'pedro@gmail.com',password: '12345678' });
+
+      const { body, status } = await request(app)
+      .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9?includeColumns=true')
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
+    })
+
   });
 });
