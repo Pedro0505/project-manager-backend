@@ -126,4 +126,33 @@ describe('Testes em /workspace', () => {
       expect(body.error.message).toBe('Workspace not found');
     });
   });
+
+  describe('GET /workspace', () => {
+    let token: string;
+
+    beforeAll(async () => {
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+      ]);
+
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+    });
+
+    afterAll(async () => {
+      await prisma.$transaction([prisma.workspace.deleteMany(), prisma.user.deleteMany()]);
+
+      await prisma.$disconnect();
+    });
+
+    it('Caso de sucesso do getAll workspace', async () => {
+      const { body, status } = await request(app)
+      .get('/workspace')
+      .set('Authorization', token);
+
+      expect(status).toBe(200);
+      expect(body.data).toStrictEqual(fakeData.workspace.getAll.response);      
+    });
+  });
 });
