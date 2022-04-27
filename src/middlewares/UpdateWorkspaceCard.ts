@@ -2,7 +2,7 @@ import joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
 import { workspaceCardUpdate } from './schemas/schemas.joi';
 import BadRequestError from '../helpers/BadRequestError';
-import { IWorkspaceCardUpdate } from '../interfaces/routes';
+import { IWorkspaceCardUpdate } from '../typescript/interfaces/routes';
 
 const schema = joi.object<IWorkspaceCardUpdate>({
   columnId: workspaceCardUpdate.columnId,

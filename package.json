@@ -4,17 +4,18 @@
   "description": "-- Project Manager --",
   "main": "index.js",
   "scripts": {
-    "pretest": "npx prisma migrate reset --force --skip-seed --schema src/prisma/schema.test.prisma",
+    "pretest": "npx prisma migrate reset --force --skip-seed --schema src/database/prisma/schema.test.prisma",
     "test": "NODE_ENV=test jest --runInBand --testTimeout=600000",
     "prestart": "tsc",
     "start": "node ./dist/server.js",
     "dev": "tsnd --exit-child ./src/server.ts",
     "migrate": "prisma migrate dev",
-    "reset": "prisma migrate reset --force"
+    "reset": "prisma migrate reset --force",
+    "lint": "npx eslint . --ext .ts"
   },
   "prisma": {
-    "seed": "ts-node src/prisma/seeders/seed.ts",
-    "schema": "src/prisma/schema.prisma"
+    "seed": "ts-node src/database/seeders/seed.ts",
+    "schema": "src/database/prisma/schema.prisma"
   },
   "repository": {
     "type": "git",

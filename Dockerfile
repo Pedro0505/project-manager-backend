@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . .
 
-RUN npx prisma generate --schema src/prisma/schema.test.prisma
+RUN npx prisma generate --schema src/database/prisma/schema.test.prisma
 
 CMD [ "npm", "start" ]

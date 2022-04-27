@@ -2,11 +2,11 @@ import request from 'supertest';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import app from '../../src/app';
-import prisma from '../../src/prisma';
+import prisma from '../../src/database/prisma';
 import { verifyUuid } from '../utils';
 import * as fakeData from '../fakeData';
 import * as seeds from '../seeds';
-import { IUserRegister } from '../../src/interfaces/routes';
+import { IUserRegister } from '../../src/typescript/interfaces/routes';
 
 describe('Testes em /user', () => {
   afterAll(async () => {

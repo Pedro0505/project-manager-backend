@@ -1,5 +1,5 @@
-import { IUser } from '../../../src/interfaces/prisma';
-import { IUserRegister } from '../../../src/interfaces/routes';
+import { IUser } from '../../../src/typescript/interfaces/prisma';
+import { IUserRegister } from '../../../src/typescript/interfaces/routes';
 
 interface IUserRegisterTest {
   requestMock: IUser;

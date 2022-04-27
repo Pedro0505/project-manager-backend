@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import joi from 'joi';
 import { workspace } from './schemas/schemas.joi';
 import BadRequestError from '../helpers/BadRequestError';
-import { IRequestWorkspaceBody } from '../interfaces/routes';
+import { IRequestWorkspaceBody } from '../typescript/interfaces/routes';
 
 const schema = joi.object<IRequestWorkspaceBody>({
   workspaceName: workspace.workspaceName,

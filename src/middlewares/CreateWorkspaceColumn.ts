@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import joi from 'joi';
 import { workspaceColumn } from './schemas/schemas.joi';
 import BadRequestError from '../helpers/BadRequestError';
-import { IWorkspaceColumn } from '../interfaces/prisma';
+import { IWorkspaceColumn } from '../typescript/interfaces/prisma';
 
 const schema = joi.object<IWorkspaceColumn>({
   workspaceId: workspaceColumn.workspaceId,

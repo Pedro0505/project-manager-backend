@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import joi from 'joi';
 import { user } from './schemas/schemas.joi';
 import BadRequestError from '../helpers/BadRequestError';
-import { IUserLogin } from '../interfaces/routes';
+import { IUserLogin } from '../typescript/interfaces/routes';
 
 const schema = joi.object<IUserLogin>({
   email: user.email,
