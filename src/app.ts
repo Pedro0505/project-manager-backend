@@ -1,8 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import { errorMiddleware } from './middlewares';
-import { UserRoutes, WorkspaceCardRoutes, WorkspaceColumnRoutes, WorkspaceRoutes } from './routes';
 import 'dotenv/config';
+import { UserRoutes } from './entities/User/User.routes';
+import { WorkspaceRoutes } from './entities/Workspace/Workspace.routes';
+import { WorkspaceColumnRoutes } from './entities/WorkspaceColumn/WorkspaceColumn.routes';
+import { WorkspaceCardRoutes } from './entities/WorkspaceCard/WorkspaceCard.routes';
 
 const app = express();
 

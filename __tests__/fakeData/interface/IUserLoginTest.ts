@@ -1,4 +1,4 @@
-import { IUserLogin } from '../../../src/interfaces/routes';
+import { IUserLogin } from '../../../src/typescript/interfaces/routes';
 
 interface IUserLoginTest {
   requestMock: IUserLogin;

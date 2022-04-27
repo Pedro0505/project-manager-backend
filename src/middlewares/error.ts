@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import IError from '../interfaces/Error';
+import IError from '../typescript/interfaces/Error';
 
 const errorMiddleware = (err: IError, _req: Request, res: Response, _next: NextFunction) => {
   if (err.code && typeof err.code === 'number') {

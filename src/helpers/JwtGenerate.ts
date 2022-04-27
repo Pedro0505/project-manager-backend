@@ -1,6 +1,6 @@
 import jwt, { SignOptions } from 'jsonwebtoken';
 import 'dotenv/config';
-import { IPayloadJwt } from '../interfaces/jwt/IPayloadJwt';
+import { IPayloadJwt } from '../typescript/interfaces/jwt/IPayloadJwt';
 
 const jwtConfig: SignOptions = {
   expiresIn: '1d',

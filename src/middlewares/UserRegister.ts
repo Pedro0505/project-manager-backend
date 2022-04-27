@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import joi from 'joi';
 import { user } from './schemas/schemas.joi';
 import BadRequestError from '../helpers/BadRequestError';
-import { IUser } from '../interfaces/prisma';
+import { IUser } from '../typescript/interfaces/prisma';
 
 const schema = joi.object<IUser>({
   email: user.email,

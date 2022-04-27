@@ -1,4 +1,4 @@
-import { IWorkspaceModel } from '../../src/interfaces/prisma';
+import { IWorkspaceModel } from '../../src/typescript/interfaces/prisma';
 
 export const blogsAPI: IWorkspaceModel = {
   id: '85e57338-db9d-4913-adbf-058b7a68d730',

@@ -1,4 +1,4 @@
-import { IUserModel } from '../../src/interfaces/prisma';
+import { IUserModel } from '../../src/typescript/interfaces/prisma';
 
 export const matheus: IUserModel = {
   id: '21119b9d-af80-4e9f-8987-047f8f50a5fa',
