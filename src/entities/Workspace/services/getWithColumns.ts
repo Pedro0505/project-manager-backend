@@ -1,8 +1,9 @@
-import NotFoundError from '../../../helpers/NotFoundError';
-import UnauthorizedError from '../../../helpers/UnauthorizedError';
 import prisma from '../../../database/prisma';
+import workspaceAuthorization from '../helper/authorization';
 
 const getWithColumns = async (workspaceId: string, ownerId: string) => {
+  await workspaceAuthorization(ownerId, workspaceId);
+
   const workspace = await prisma.workspace.findUnique({
     where: { id: workspaceId },
     include: {
@@ -14,9 +15,6 @@ const getWithColumns = async (workspaceId: string, ownerId: string) => {
       },
     },
   });
-
-  if (!workspace) throw new NotFoundError('workspace not found');
-  if (workspace.ownerId !== ownerId) throw new UnauthorizedError('operation not allowed');
 
   return workspace;
 };
