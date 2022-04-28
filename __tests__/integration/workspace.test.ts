@@ -103,6 +103,18 @@ describe('Testes em /workspace', () => {
       await prisma.$disconnect();
     });
 
+    it('Teste caso de excluir quando a operação é feita pela pessoa que não é dona do workspace', async () => {
+      const { body: otherUserToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+
+      const { status, body } = await request(app)
+      .delete('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
+      .set('Authorization', otherUserToken.token);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
+    });
+
     it('Teste caso de sucesso de excluir', async () => {
       const { status: statusFirstTime } = await request(app)
       .delete('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
