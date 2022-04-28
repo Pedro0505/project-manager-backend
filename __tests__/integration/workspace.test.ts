@@ -114,7 +114,7 @@ describe('Testes em /workspace', () => {
 
       expect(statusFirstTime).toBe(204);
       expect(statusSecondTime).toBe(404);
-      expect(body.error.message).toBe('Workspace not found');
+      expect(body.error.message).toBe('workspace not found');
     });
 
     it('Teste caso de falha de excluir quando o id exluido não existe', async () => {
@@ -123,7 +123,7 @@ describe('Testes em /workspace', () => {
       .set('Authorization', token);
 
       expect(status).toBe(404);
-      expect(body.error.message).toBe('Workspace not found');
+      expect(body.error.message).toBe('workspace not found');
     });
   });
 
@@ -192,7 +192,7 @@ describe('Testes em /workspace', () => {
       expect(body.error.message).toBe('operation not allowed');
     })
 
-    it('Caso de sucesso do getById workspace com columns e cards', async () => {
+    it('Caso de sucesso do getWithColumn workspace com columns e cards', async () => {
       const { body, status } = await request(app)
       .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9?includeColumns=true')
       .set('Authorization', token);
@@ -202,7 +202,7 @@ describe('Testes em /workspace', () => {
       expect(body.data).toStrictEqual(fakeData.workspace.getWithColumns.response)
     })
 
-    it('Caso de falha do getById workspace quando o workspace não é encontrado', async () => {
+    it('Caso de falha do getWithColumn workspace quando o workspace não é encontrado', async () => {
       const { body, status } = await request(app)
       .get('/workspace/sssssdasdasdasdas?includeColumns=true')
       .set('Authorization', token);
@@ -212,7 +212,7 @@ describe('Testes em /workspace', () => {
       expect(body.error.message).toBe('workspace not found');
     })
 
-    it('Caso de falha do getById workspace quando o usuario não tem permissão para acessar o workspace', async () => {
+    it('Caso de falha do getWithColumn workspace quando o usuario não tem permissão para acessar o workspace', async () => {
       const { body: { token: otherUserToken } } = await request(app)
       .post('/user/login')
       .send({ email: 'pedro@gmail.com',password: '12345678' });
