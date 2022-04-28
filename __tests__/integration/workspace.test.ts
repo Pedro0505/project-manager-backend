@@ -105,11 +105,11 @@ describe('Testes em /workspace', () => {
 
     it('Teste caso de sucesso de excluir', async () => {
       const { status: statusFirstTime } = await request(app)
-      .delete('/workspace/85e57338-db9d-4913-adbf-058b7a68d730')
+      .delete('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
       .set('Authorization', token);
 
       const { status: statusSecondTime, body } = await request(app)
-      .delete('/workspace/85e57338-db9d-4913-adbf-058b7a68d730')
+      .delete('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
       .set('Authorization', token);
 
       expect(statusFirstTime).toBe(204);
