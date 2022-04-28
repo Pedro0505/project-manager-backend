@@ -1,10 +1,8 @@
-import NotFoundError from '../../../helpers/NotFoundError';
 import prisma from '../../../database/prisma';
+import columnAuthorization from '../helper/authorization';
 
-const exclude = async (id: string) => {
-  const findColumn = await prisma.workspaceColumn.findUnique({ where: { id } });
-
-  if (!findColumn) throw new NotFoundError('Column not found');
+const exclude = async (userId: string, id: string) => {
+  await columnAuthorization(userId, id);
 
   return prisma.workspaceColumn.delete({ where: { id } });
 };
