@@ -3,8 +3,9 @@ import * as Services from '../services';
 
 const exclude = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { userId } = req.tokenData;
 
-  await Services.exclude(id);
+  await Services.exclude(id, userId);
 
   res.status(204).end();
 };
