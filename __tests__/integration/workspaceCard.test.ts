@@ -317,5 +317,18 @@ describe('Testes em /card', () => {
       expect(body.error.message).toBeDefined();
       expect(body.error.message).toBe('operation not allowed');
     });
+
+    it('Quando o card não é encontrado', async () => {
+      const { body, status } = await request(app)
+      .patch('/card')
+      .send([
+        { id: 'ewrwe-a668-qewrwe-bc1d-rwerwerew', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' },
+        { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' }
+      ]).set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('Card not found');
+    })
   });
 });
