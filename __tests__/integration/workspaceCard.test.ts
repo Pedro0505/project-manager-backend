@@ -126,6 +126,7 @@ describe('Testes em /card', () => {
 
   describe('DELETE /card/:id', () => {
     let token: string;
+    let otherUserToken: string;
 
     beforeAll(async () => {
       await prisma.$transaction([
@@ -137,6 +138,9 @@ describe('Testes em /card', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+      
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
     });
 
     afterAll(async () => {
@@ -148,6 +152,16 @@ describe('Testes em /card', () => {
       ]);
 
       await prisma.$disconnect();
+    });
+
+    it('Teste caso de criar quando a operação é feita pela pessoa que não é dona do workspace', async () => {
+      const { status, body } = await request(app)
+      .delete('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
     });
 
     it('Caso de suceso de um exlude card', async () => {
@@ -164,7 +178,7 @@ describe('Testes em /card', () => {
       expect(body.error.message).toBe('Card not found');
     })
 
-    it('Caso de falha de um exlude card', async () => {
+    it('Caso de falha de um exlude card quando o id não existe', async () => {
       const { status, body } = await request(app)
       .delete('/card/1e2caa3a-53909ac96933')
       .set('Authorization', token);
