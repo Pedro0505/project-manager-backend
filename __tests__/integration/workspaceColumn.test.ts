@@ -295,6 +295,17 @@ describe('Testes em /column', () => {
       expect(body.data).toStrictEqual(fakeData.workspaceColumn.manyUpdate.response);
     });
 
+    it('Caso de falha do updateMany workspaceColumn não encontrado', async () => {
+      const { body, status } = await request(app)
+      .patch('/column')
+      .send([{ id: 'dsadas-6fda-22-22-dsa' }, { id: 'sadasdsadasd-asdfsaddas' } ])
+      .set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toStrictEqual('Column not found');
+    });
+
     it('Teste caso de updateMany a coluna quando a operação é feita pela pessoa que não é dona do workspaceColumn', async () => {
       const { status, body } = await request(app)
       .patch('/column')
