@@ -227,7 +227,7 @@ describe('Testes em /workspace', () => {
     })
   });
 
-  describe('GET /workspace/:id??includeColumns=true', () => {
+  describe('GET /workspace/:id?includeColumns=true', () => {
     let token: string;
 
     beforeAll(async () => {

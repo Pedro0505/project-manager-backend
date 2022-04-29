@@ -8,6 +8,7 @@ import { verifyUuid } from '../utils';
 describe('Testes em /column', () => {
   describe('POST /column', () => {
     let token: string;
+    let otherUserToken: string;
 
     beforeAll(async () => {
       await prisma.$transaction([
@@ -18,6 +19,9 @@ describe('Testes em /column', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
     });
 
     afterAll(async () => {
@@ -43,6 +47,17 @@ describe('Testes em /column', () => {
         workspaceId: body.data.workspaceId,
         index: body.data.index,
       }).toStrictEqual(fakeData.workspaceColumn.create.response);
+    });
+
+    it('Teste caso de criar quando a operação é feita pela pessoa que não é dona do workspaceColumn', async () => {
+      const { status, body } = await request(app)
+        .post('/column')
+        .set('Authorization', otherUserToken)
+        .send(fakeData.workspaceColumn.create.request);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
     });
 
     describe('quando o body do workspace é invalido', () => {
