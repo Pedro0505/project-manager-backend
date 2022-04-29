@@ -322,6 +322,20 @@ describe('Testes em /card', () => {
       const { status, body } = await request(app)
       .patch('/card')
       .send([
+        { id: '1789d5d3-210a-426a-9c2d-a6fdf5444a95', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' },
+        { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' }
+      ])
+      .set('Authorization', token);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
+    });
+
+    it('Teste caso de atualizar muitos quando a operação é feita pela pessoa que não é dona de um card', async () => {
+      const { status, body } = await request(app)
+      .patch('/card')
+      .send([
         { id: '1e2caa3a-a668-455b-bc1d-53909ac96933', columnId: '3bd3fc3b-7de3-4a8e-b54d-2588eeabae6d' },
         { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' }
       ])
