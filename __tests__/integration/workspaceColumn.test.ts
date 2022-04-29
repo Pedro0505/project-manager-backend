@@ -49,7 +49,7 @@ describe('Testes em /column', () => {
       }).toStrictEqual(fakeData.workspaceColumn.create.response);
     });
 
-    it('Teste caso de criar quando a operação é feita pela pessoa que não é dona do workspaceColumn', async () => {
+    it('Teste caso de criar quando a operação é feita pela pessoa que não é dona do workspace', async () => {
       const { status, body } = await request(app)
         .post('/column')
         .set('Authorization', otherUserToken)
@@ -132,6 +132,7 @@ describe('Testes em /column', () => {
 
   describe('DELETE /column', () => {
     let token: string;
+    let otherUserToken: string;
 
     beforeAll(async () => {
       await prisma.$transaction([
@@ -142,6 +143,9 @@ describe('Testes em /column', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
     });
 
     afterAll(async () => {
@@ -152,6 +156,25 @@ describe('Testes em /column', () => {
       ]);
 
       await prisma.$disconnect();
+    });
+
+    it('Teste caso de falha de excluir quando o id exluido não existe', async () => {
+      const { status, body } = await request(app)
+      .delete('/column/notfound')
+      .set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBe('Column not found');
+    });
+
+    it('Teste caso de deletar a coluna quando a operação é feita pela pessoa que não é dona do workspace', async () => {
+      const { status, body } = await request(app)
+      .delete('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
     });
 
     it('Testando caso de sucesso do delete', async () => {
@@ -165,15 +188,6 @@ describe('Testes em /column', () => {
 
       expect(statusFirstTime).toBe(204);
       expect(statusSecondTime).toBe(404);
-      expect(body.error.message).toBe('Column not found');
-    });
-
-    it('Teste caso de falha de excluir quando o id exluido não existe', async () => {
-      const { status, body } = await request(app)
-      .delete('/column/notfound')
-      .set('Authorization', token);
-
-      expect(status).toBe(404);
       expect(body.error.message).toBe('Column not found');
     });
   });
