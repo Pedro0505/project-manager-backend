@@ -77,6 +77,18 @@ describe('Testes em /card', () => {
       expect(body.error.message).toBe('operation not allowed');
     });
 
+    it('Caso de falha do create do card quando o column id não existe', async () => {
+      const { status, body } = await request(app)
+      .post('/card')
+      .send({ content: 'Card Created', columnId: 'dasdas-0f7a-dasdas-dsad-212213' })
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('Column not found');
+    });
+
+
     describe('quando o body do workspaceCard é invalido', () => {
       it('"columnId" não foi enviado', async () => {
         const { status, body } = await request(app)
