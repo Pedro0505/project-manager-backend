@@ -169,6 +169,22 @@ describe('Testes em /workspace', () => {
       expect(body.data).toBeDefined();
       expect(body.data).toStrictEqual(fakeData.workspace.getAll.response);      
     });
+  });
+  
+  describe('GET /workspace/:id', () => {
+    let token: string;
+
+    beforeAll(async () => {
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+        prisma.workspaceColumn.createMany({ data: seeds.allWorkspaceColumns }),
+        prisma.workspaceCard.createMany({ data: seeds.allWorkspaceCards }),
+      ]);
+
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+    });
 
     it('Caso de sucesso do getById workspace sem columns', async () => {
       const { body, status } = await request(app)
@@ -203,6 +219,22 @@ describe('Testes em /workspace', () => {
       expect(body.error.message).toBeDefined();
       expect(body.error.message).toBe('operation not allowed');
     })
+  });
+
+  describe('GET /workspace/:id??includeColumns=true', () => {
+    let token: string;
+
+    beforeAll(async () => {
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+        prisma.workspaceColumn.createMany({ data: seeds.allWorkspaceColumns }),
+        prisma.workspaceCard.createMany({ data: seeds.allWorkspaceCards }),
+      ]);
+
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+    });
 
     it('Caso de sucesso do getWithColumn workspace com columns e cards', async () => {
       const { body, status } = await request(app)
