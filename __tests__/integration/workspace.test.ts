@@ -186,6 +186,12 @@ describe('Testes em /workspace', () => {
       token = body.token;
     });
 
+    afterAll(async () => {
+      await prisma.$transaction([prisma.workspace.deleteMany(), prisma.user.deleteMany()]);
+
+      await prisma.$disconnect();
+    });
+
     it('Caso de sucesso do getById workspace sem columns', async () => {
       const { body, status } = await request(app)
       .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
@@ -234,6 +240,12 @@ describe('Testes em /workspace', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+    });
+
+    afterAll(async () => {
+      await prisma.$transaction([prisma.workspace.deleteMany(), prisma.user.deleteMany()]);
+
+      await prisma.$disconnect();
     });
 
     it('Caso de sucesso do getWithColumn workspace com columns e cards', async () => {
