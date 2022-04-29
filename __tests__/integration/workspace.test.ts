@@ -86,6 +86,7 @@ describe('Testes em /workspace', () => {
 
   describe('DELETE /workspace', () => {
     let token: string;
+    let otherUserToken: string;
 
     beforeAll(async () => {
       await prisma.$transaction([
@@ -95,12 +96,25 @@ describe('Testes em /workspace', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
     });
 
     afterAll(async () => {
       await prisma.$transaction([prisma.workspace.deleteMany(), prisma.user.deleteMany()]);
 
       await prisma.$disconnect();
+    });
+
+    it('Teste caso de excluir quando a operação é feita pela pessoa que não é dona do workspace', async () => {
+      const { status, body } = await request(app)
+      .delete('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
     });
 
     it('Teste caso de sucesso de excluir', async () => {
@@ -157,6 +171,30 @@ describe('Testes em /workspace', () => {
       expect(body.data).toBeDefined();
       expect(body.data).toStrictEqual(fakeData.workspace.getAll.response);      
     });
+  });
+  
+  describe('GET /workspace/:id', () => {
+    let token: string;
+    let otherUserToken: string;
+
+    beforeAll(async () => {
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+      ]);
+
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
+    });
+
+    afterAll(async () => {
+      await prisma.$transaction([prisma.workspace.deleteMany(), prisma.user.deleteMany()]);
+
+      await prisma.$disconnect();
+    });
 
     it('Caso de sucesso do getById workspace sem columns', async () => {
       const { body, status } = await request(app)
@@ -179,10 +217,6 @@ describe('Testes em /workspace', () => {
     })
 
     it('Caso de falha do getById workspace quando o usuario não tem permissão para acessar o workspace', async () => {
-      const { body: { token: otherUserToken } } = await request(app)
-      .post('/user/login')
-      .send({ email: 'pedro@gmail.com',password: '12345678' });
-
       const { body, status } = await request(app)
       .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
       .set('Authorization', otherUserToken);
@@ -191,6 +225,32 @@ describe('Testes em /workspace', () => {
       expect(body.error.message).toBeDefined();
       expect(body.error.message).toBe('operation not allowed');
     })
+  });
+
+  describe('GET /workspace/:id?includeColumns=true', () => {
+    let token: string;
+    let otherUserToken: string;
+
+    beforeAll(async () => {
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+        prisma.workspaceColumn.createMany({ data: seeds.allWorkspaceColumns }),
+        prisma.workspaceCard.createMany({ data: seeds.allWorkspaceCards }),
+      ]);
+
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
+    });
+
+    afterAll(async () => {
+      await prisma.$transaction([prisma.workspace.deleteMany(), prisma.user.deleteMany()]);
+
+      await prisma.$disconnect();
+    });
 
     it('Caso de sucesso do getWithColumn workspace com columns e cards', async () => {
       const { body, status } = await request(app)
@@ -213,10 +273,6 @@ describe('Testes em /workspace', () => {
     })
 
     it('Caso de falha do getWithColumn workspace quando o usuario não tem permissão para acessar o workspace', async () => {
-      const { body: { token: otherUserToken } } = await request(app)
-      .post('/user/login')
-      .send({ email: 'pedro@gmail.com',password: '12345678' });
-
       const { body, status } = await request(app)
       .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9?includeColumns=true')
       .set('Authorization', otherUserToken);
