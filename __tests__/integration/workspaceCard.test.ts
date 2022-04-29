@@ -8,6 +8,7 @@ import { verifyUuid } from '../utils';
 describe('Testes em /card', () => {
   describe('POST /card', () => {
     let token: string;
+    let otherUserToken: string;
 
     beforeAll(async () => {
       await prisma.$transaction([
@@ -19,6 +20,9 @@ describe('Testes em /card', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
     });
 
     afterAll(async () => {
@@ -40,8 +44,8 @@ describe('Testes em /card', () => {
 
       const { body, status } = await request(app)
       .post('/card')
-      .set('Authorization', token)
-      .send({ content: 'Card Created', columnId: id });
+      .send({ content: 'Card Created', columnId: id })
+      .set('Authorization', token);
 
       expect(status).toBe(201);
       expect(verifyUuid(body.data.id)).toBe(true);
@@ -53,8 +57,8 @@ describe('Testes em /card', () => {
     it('quando o workspaceCard é criado com sucesso com uma coluna que já existe', async () => {
       const { body, status } = await request(app)
       .post('/card')
-      .set('Authorization', token)
-      .send(fakeData.workspaceCard.create.request);
+      .send(fakeData.workspaceCard.create.request)
+      .set('Authorization', token);
 
       expect(status).toBe(201);
       expect(verifyUuid(body.data.id)).toBe(true);
@@ -62,12 +66,23 @@ describe('Testes em /card', () => {
         .toStrictEqual(fakeData.workspaceCard.create.response);
     });
 
+    it('Teste caso de criar quando a operação é feita pela pessoa que não é dona do workspace', async () => {
+      const { status, body } = await request(app)
+      .post('/card')
+      .send(fakeData.workspaceCard.create.request)
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
+    });
+
     describe('quando o body do workspaceCard é invalido', () => {
       it('"columnId" não foi enviado', async () => {
         const { status, body } = await request(app)
           .post('/card')
-          .set('Authorization', token)
-          .send({ ...fakeData.workspaceCard.create.request, columnId: undefined });
+          .send({ ...fakeData.workspaceCard.create.request, columnId: undefined })
+          .set('Authorization', token);
 
         expect(status).toBe(400);
         expect(body.error).toBeDefined();
@@ -149,7 +164,7 @@ describe('Testes em /card', () => {
       expect(body.error.message).toBe('Card not found');
     })
 
-    it('Caso de suceso de um exlude card', async () => {
+    it('Caso de falha de um exlude card', async () => {
       const { status, body } = await request(app)
       .delete('/card/1e2caa3a-53909ac96933')
       .set('Authorization', token);
