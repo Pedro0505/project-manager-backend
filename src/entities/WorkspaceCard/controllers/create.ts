@@ -4,8 +4,9 @@ import * as Service from '../services';
 
 const create = async (req: Request, res: Response) => {
   const { content, title, columnId } = req.body as IWorkspaceCardCreate;
+  const { userId } = req.tokenData;
 
-  const newCard = await Service.create({ content, title, columnId });
+  const newCard = await Service.create({ content, title, columnId }, userId);
 
   res.status(201).json({ data: newCard });
 };

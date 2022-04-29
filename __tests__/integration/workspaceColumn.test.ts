@@ -8,6 +8,7 @@ import { verifyUuid } from '../utils';
 describe('Testes em /column', () => {
   describe('POST /column', () => {
     let token: string;
+    let otherUserToken: string;
 
     beforeAll(async () => {
       await prisma.$transaction([
@@ -18,6 +19,9 @@ describe('Testes em /column', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
     });
 
     afterAll(async () => {
@@ -43,6 +47,17 @@ describe('Testes em /column', () => {
         workspaceId: body.data.workspaceId,
         index: body.data.index,
       }).toStrictEqual(fakeData.workspaceColumn.create.response);
+    });
+
+    it('Teste caso de criar quando a operação é feita pela pessoa que não é dona do workspace', async () => {
+      const { status, body } = await request(app)
+        .post('/column')
+        .set('Authorization', otherUserToken)
+        .send(fakeData.workspaceColumn.create.request);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
     });
 
     describe('quando o body do workspace é invalido', () => {
@@ -117,6 +132,7 @@ describe('Testes em /column', () => {
 
   describe('DELETE /column', () => {
     let token: string;
+    let otherUserToken: string;
 
     beforeAll(async () => {
       await prisma.$transaction([
@@ -127,6 +143,9 @@ describe('Testes em /column', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
     });
 
     afterAll(async () => {
@@ -137,6 +156,25 @@ describe('Testes em /column', () => {
       ]);
 
       await prisma.$disconnect();
+    });
+
+    it('Teste caso de falha de excluir quando o id exluido não existe', async () => {
+      const { status, body } = await request(app)
+      .delete('/column/notfound')
+      .set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBe('Column not found');
+    });
+
+    it('Teste caso de deletar a coluna quando a operação é feita pela pessoa que não é dona do workspace', async () => {
+      const { status, body } = await request(app)
+      .delete('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
     });
 
     it('Testando caso de sucesso do delete', async () => {
@@ -152,19 +190,11 @@ describe('Testes em /column', () => {
       expect(statusSecondTime).toBe(404);
       expect(body.error.message).toBe('Column not found');
     });
-
-    it('Teste caso de falha de excluir quando o id exluido não existe', async () => {
-      const { status, body } = await request(app)
-      .delete('/column/notfound')
-      .set('Authorization', token);
-
-      expect(status).toBe(404);
-      expect(body.error.message).toBe('Column not found');
-    });
   });
 
   describe('PUT /column', () => {
     let token: string;
+    let otherUserToken: string;
 
     beforeAll(async () => {
       await prisma.$transaction([
@@ -175,6 +205,9 @@ describe('Testes em /column', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
     });
 
     afterAll(async () => {
@@ -201,6 +234,17 @@ describe('Testes em /column', () => {
       expect(updateDB).toStrictEqual(fakeData.workspaceColumn.put.response);
     });
 
+    it('Teste caso de atualizar a coluna quando a operação é feita pela pessoa que não é dona do workspaceColumn', async () => {
+      const { status, body } = await request(app)
+      .put('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
+      .send(fakeData.workspaceColumn.put.request) 
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
+    });
+
     it('Caso de falha do update quando o id não é encontrado', async () => {
       const { body, status } = await request(app)
       .put('/column/6gferetg')
@@ -214,6 +258,7 @@ describe('Testes em /column', () => {
 
   describe('PATCH /column', () => {
     let token: string;
+    let otherUserToken: string;
 
     beforeAll(async () => {
       await prisma.$transaction([
@@ -224,6 +269,9 @@ describe('Testes em /column', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
     });
 
     afterAll(async () => {
@@ -245,6 +293,28 @@ describe('Testes em /column', () => {
       expect(status).toBe(200);
       expect(body.data).toBeDefined();
       expect(body.data).toStrictEqual(fakeData.workspaceColumn.manyUpdate.response);
-    })
+    });
+
+    it('Caso de falha do updateMany workspaceColumn não encontrado', async () => {
+      const { body, status } = await request(app)
+      .patch('/column')
+      .send([{ id: 'dsadas-6fda-22-22-dsa' }, { id: 'sadasdsadasd-asdfsaddas' } ])
+      .set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toStrictEqual('Column not found');
+    });
+
+    it('Teste caso de updateMany a coluna quando a operação é feita pela pessoa que não é dona do workspaceColumn', async () => {
+      const { status, body } = await request(app)
+      .patch('/column')
+      .send(fakeData.workspaceColumn.manyUpdate.request)
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
+    });
   })
 });

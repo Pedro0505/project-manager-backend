@@ -1,9 +1,12 @@
 import { generateUuid } from '../../../helpers';
 import { IWorkspaceCardCreate } from '../../../typescript/interfaces/routes';
 import prisma from '../../../database/prisma';
+import columnAuthorization from '../../WorkspaceColumn/helper/authorization';
 
-const create = async (newcard: IWorkspaceCardCreate) => {
+const create = async (newcard: IWorkspaceCardCreate, userId: string) => {
   const { content, title, columnId } = newcard;
+
+  await columnAuthorization(userId, columnId);
 
   const result = await prisma.workspaceCard.findMany({
     where: { columnId },

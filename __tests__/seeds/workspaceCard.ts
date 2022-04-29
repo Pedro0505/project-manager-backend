@@ -46,4 +46,12 @@ export const req2 = {
   content: 'Fazer req 2',
 };
 
-export const allWorkspaceCards = [req1, req2, req3, req4, req5, req6];
+export const req7 = {
+  id: '1789d5d3-210a-426a-9c2d-a6fdf5444a95',
+  index: 1,
+  columnId: '3bd3fc3b-7de3-4a8e-b54d-2588eeabae6d',
+  title: null,
+  content: 'Fazer req 7',
+};
+
+export const allWorkspaceCards = [req1, req2, req3, req4, req5, req6, req7];

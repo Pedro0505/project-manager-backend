@@ -8,6 +8,7 @@ import { verifyUuid } from '../utils';
 describe('Testes em /card', () => {
   describe('POST /card', () => {
     let token: string;
+    let otherUserToken: string;
 
     beforeAll(async () => {
       await prisma.$transaction([
@@ -19,6 +20,9 @@ describe('Testes em /card', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
     });
 
     afterAll(async () => {
@@ -40,8 +44,8 @@ describe('Testes em /card', () => {
 
       const { body, status } = await request(app)
       .post('/card')
-      .set('Authorization', token)
-      .send({ content: 'Card Created', columnId: id });
+      .send({ content: 'Card Created', columnId: id })
+      .set('Authorization', token);
 
       expect(status).toBe(201);
       expect(verifyUuid(body.data.id)).toBe(true);
@@ -53,8 +57,8 @@ describe('Testes em /card', () => {
     it('quando o workspaceCard é criado com sucesso com uma coluna que já existe', async () => {
       const { body, status } = await request(app)
       .post('/card')
-      .set('Authorization', token)
-      .send(fakeData.workspaceCard.create.request);
+      .send(fakeData.workspaceCard.create.request)
+      .set('Authorization', token);
 
       expect(status).toBe(201);
       expect(verifyUuid(body.data.id)).toBe(true);
@@ -62,12 +66,23 @@ describe('Testes em /card', () => {
         .toStrictEqual(fakeData.workspaceCard.create.response);
     });
 
+    it('Teste caso de criar quando a operação é feita pela pessoa que não é dona do workspace', async () => {
+      const { status, body } = await request(app)
+      .post('/card')
+      .send(fakeData.workspaceCard.create.request)
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
+    });
+
     describe('quando o body do workspaceCard é invalido', () => {
       it('"columnId" não foi enviado', async () => {
         const { status, body } = await request(app)
           .post('/card')
-          .set('Authorization', token)
-          .send({ ...fakeData.workspaceCard.create.request, columnId: undefined });
+          .send({ ...fakeData.workspaceCard.create.request, columnId: undefined })
+          .set('Authorization', token);
 
         expect(status).toBe(400);
         expect(body.error).toBeDefined();
@@ -111,6 +126,7 @@ describe('Testes em /card', () => {
 
   describe('DELETE /card/:id', () => {
     let token: string;
+    let otherUserToken: string;
 
     beforeAll(async () => {
       await prisma.$transaction([
@@ -122,6 +138,9 @@ describe('Testes em /card', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+      
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
     });
 
     afterAll(async () => {
@@ -133,6 +152,16 @@ describe('Testes em /card', () => {
       ]);
 
       await prisma.$disconnect();
+    });
+
+    it('Teste caso de criar quando a operação é feita pela pessoa que não é dona do workspace', async () => {
+      const { status, body } = await request(app)
+      .delete('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
     });
 
     it('Caso de suceso de um exlude card', async () => {
@@ -149,7 +178,7 @@ describe('Testes em /card', () => {
       expect(body.error.message).toBe('Card not found');
     })
 
-    it('Caso de suceso de um exlude card', async () => {
+    it('Caso de falha de um exlude card quando o id não existe', async () => {
       const { status, body } = await request(app)
       .delete('/card/1e2caa3a-53909ac96933')
       .set('Authorization', token);
@@ -161,6 +190,7 @@ describe('Testes em /card', () => {
 
   describe('PATCH /card/:id', () => {
     let token: string;
+    let otherUserToken: string;
 
     beforeAll(async () => {
       await prisma.$transaction([
@@ -172,6 +202,9 @@ describe('Testes em /card', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
     });
 
     afterAll(async () => {
@@ -183,6 +216,17 @@ describe('Testes em /card', () => {
       ]);
 
       await prisma.$disconnect();
+    });
+
+    it('Teste caso de atualizar quando a operação é feita pela pessoa que não é dona do workspace', async () => {
+      const { status, body } = await request(app)
+      .patch('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
+      .send(fakeData.workspaceCard.patch.request)
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
     });
 
     it('Caso de sucesso do update do card', async () => {
@@ -224,6 +268,7 @@ describe('Testes em /card', () => {
 
   describe('PATCH /card', () => {
     let token: string;
+    let otherUserToken: string;
 
     beforeAll(async () => {
       await prisma.$transaction([
@@ -235,6 +280,9 @@ describe('Testes em /card', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
     });
 
     afterAll(async () => {
@@ -257,6 +305,71 @@ describe('Testes em /card', () => {
       expect(status).toBe(200);
       expect(body.data).toBeDefined();
       expect(body.data).toStrictEqual(fakeData.workspaceCard.patchMany.response);
+    });
+
+    it('Teste caso de atualizar muitos quando a operação é feita pela pessoa que não é dona do workspace', async () => {
+      const { status, body } = await request(app)
+      .patch('/card')
+      .send(fakeData.workspaceCard.patchMany.request)
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
+    });
+
+    it('Teste caso de atualizar muitos quando a operação é feita pela pessoa que não é dona de uma das colunas', async () => {
+      const { status, body } = await request(app)
+      .patch('/card')
+      .send([
+        { id: '1789d5d3-210a-426a-9c2d-a6fdf5444a95', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' },
+        { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' }
+      ])
+      .set('Authorization', token);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
+    });
+
+    it('Teste caso de atualizar muitos quando a operação é feita pela pessoa que não é dona de um card', async () => {
+      const { status, body } = await request(app)
+      .patch('/card')
+      .send([
+        { id: '1e2caa3a-a668-455b-bc1d-53909ac96933', columnId: '3bd3fc3b-7de3-4a8e-b54d-2588eeabae6d' },
+        { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' }
+      ])
+      .set('Authorization', token);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
+    });
+
+    it('Quando o card não é encontrado', async () => {
+      const { body, status } = await request(app)
+      .patch('/card')
+      .send([
+        { id: 'ewrwe-a668-qewrwe-bc1d-rwerwerew', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' },
+        { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' }
+      ]).set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('Card not found');
+    });
+
+    it('Quando o column não é encontrado', async () => {
+      const { body, status } = await request(app)
+      .patch('/card')
+      .send([
+        { id: '1e2caa3a-a668-455b-bc1d-53909ac96933', columnId: 'saddsa-dsadas-2123-dsadas-2131123123' },
+        { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' }
+      ]).set('Authorization', token);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('Column not found');
     });
   });
 });

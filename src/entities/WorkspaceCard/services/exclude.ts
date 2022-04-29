@@ -1,10 +1,8 @@
-import NotFoundError from '../../../helpers/NotFoundError';
 import prisma from '../../../database/prisma';
+import cardAuthorization from '../helper/authorization';
 
-const exclude = async (id: string) => {
-  const findColumn = await prisma.workspaceCard.findUnique({ where: { id } });
-
-  if (!findColumn) throw new NotFoundError('Card not found');
+const exclude = async (id: string, userId: string) => {
+  await cardAuthorization(userId, id);
 
   return prisma.workspaceCard.delete({ where: { id } });
 };

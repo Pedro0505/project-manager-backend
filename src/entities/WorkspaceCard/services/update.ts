@@ -1,11 +1,10 @@
 import NotFoundError from '../../../helpers/NotFoundError';
 import { IWorkspaceCardUpdate } from '../../../typescript/interfaces/routes';
 import prisma from '../../../database/prisma';
+import cardAuthorization from '../helper/authorization';
 
-const update = async (id: string, payload: IWorkspaceCardUpdate) => {
-  const selectedCard = await prisma.workspaceCard.findUnique({ where: { id } });
-
-  if (!selectedCard) throw new NotFoundError('Card not found');
+const update = async (id: string, payload: IWorkspaceCardUpdate, userId: string) => {
+  await cardAuthorization(userId, id);
 
   if (payload.columnId) {
     const column = await prisma.workspaceColumn.findUnique({ where: { id: payload.columnId } });
