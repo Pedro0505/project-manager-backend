@@ -6,7 +6,6 @@ import prisma from '../../src/database/prisma';
 import { verifyUuid } from '../utils';
 import * as fakeData from '../fakeData';
 import * as seeds from '../seeds';
-import { IUserRegister } from '../../src/typescript/interfaces/routes';
 
 describe('Testes em /user', () => {
   afterAll(async () => {
@@ -26,7 +25,7 @@ describe('Testes em /user', () => {
       const { status, body } = await request(app)
         .post('/user/register')
         .send(fakeData.user.register.request);
-      const { id, email, firstName, lastName } = body.data as IUserRegister;
+      const { id, email, firstName, lastName } = body.data;
 
       expect(status).toBe(201);
       expect(verifyUuid(id)).toBeTruthy();
