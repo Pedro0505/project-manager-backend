@@ -314,7 +314,7 @@ describe('Testes em /user', () => {
   });
   describe('GET /user/search', () => {
     beforeAll(async () => {
-      await prisma.user.create({ data: seeds.matheus });
+      await prisma.user.create({ data: fakeData.user.userEmail.response });
     });
 
     afterAll(async () => {
@@ -326,8 +326,9 @@ describe('Testes em /user', () => {
       .get('/user/search?q=matheus@gmail.com')
 
       expect(status).toBe(200);
-      expect(body).toStrictEqual(seeds.matheus);
+      expect(body).toStrictEqual(fakeData.user.userEmail.response);
     });
+
     it('Testando caso de falha da busca por email', async () => {
       const { status, body } = await request(app)
       .get('/user/search?q=random@email.com')

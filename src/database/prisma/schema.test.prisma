@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL_TEST")
 }
 
@@ -16,6 +16,7 @@ model User {
   lastName   String      @map("last_name")
   email      String      @unique
   password   String
+  uuid       String?
   workspaces Workspace[]
 
   @@map("users")
