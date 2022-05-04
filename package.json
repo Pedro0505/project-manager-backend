@@ -11,6 +11,7 @@
     "dev": "tsnd --exit-child ./src/server.ts",
     "migrate": "prisma migrate dev",
     "migrate:dev": "prisma migrate dev --schema src/database/prisma/schema.dev.prisma",
+    "studio:dev": "prisma studio --schema src/database/prisma/schema.dev.prisma",
     "reset": "prisma migrate reset --force",
     "lint": "npx eslint . --ext .ts"
   },
