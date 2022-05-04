@@ -2,15 +2,15 @@ version: '3.9'
 
 services:
   db:
-    image: mysql:latest
+    image: postgres:latest
     container_name: db
     ports:
-      - 3307:3306
+      - 5433:5432
     environment:
-      - MYSQL_ROOT_PASSWORD=123456
+      - POSTGRES_PASSWORD=12345678
     restart: 'always'
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"] # Deve aguardar o banco ficar operacional
+      test: ["CMD-SHELL", "pg_isready"] # Deve aguardar o banco ficar operacional
       timeout: 10s
       retries: 5
     cap_add:
@@ -23,9 +23,8 @@ services:
         condition: service_healthy
     environment:
       - NODE_ENV=test
-      - DATABASE_URL_TEST=mysql://root:123456@db/project-manager-test?schema=public
-      - JWT_SECRET=20bf2315aa8fba365f91b02b3d3fe769
-      - TOKEN_ADMIN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbkRhdGEiOnsiZW1haWwiOiJzaW1wc29uQGdtYWlsLmNvbSJ9LCJpYXQiOjE2NDg0NjcxODgsImV4cCI6MTY4MDAwMzE4OH0.7kXO5Lx0ofsZfV07ii-OhRrG0WNPz5JunCBye2wcAU
+      - DATABASE_URL_TEST=postgresql://postgres:12345678@db:5432/project-manager-test?schema=public
+      - JWT_SECRET=dsadsadas92je93ms02ms02new
     healthcheck:
       test: ["CMD", "lsof", "-t", "-i:3001"] # Caso utilize outra porta interna para o back, altere ela aqui também
       timeout: 10s
