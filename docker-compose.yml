@@ -9,6 +9,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=12345678
     restart: 'always'
+    user: postgres
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"] # Deve aguardar o banco ficar operacional
       timeout: 10s
