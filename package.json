@@ -14,7 +14,6 @@
     "studio:dev": "prisma studio --schema src/database/prisma/schema.dev.prisma",
     "reset": "prisma migrate reset --force",
     "lint": "npx eslint . --ext .ts",
-    "postinstall": "tsc",
     "deploy": "node ./dist/server.js"
   },
   "prisma": {
