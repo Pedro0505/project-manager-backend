@@ -309,18 +309,18 @@ describe('Testes em /workspace', () => {
 
     it('Quando o workspace tem seu nome atualizado com sucesso', async () => {
       const { body, status } = await request(app)
-      .patch('/workspace')
+      .patch('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
       .send(fakeData.workspace.patchName.request)
       .set('Authorization', token);
       
       expect(body.data).toBeDefined();
-      expect(body.data).toStrictEqual(fakeData.workspace.patchName.request);
+      expect(body.data).toStrictEqual(fakeData.workspace.patchName.response);
       expect(status).toBe(200);
     });
 
     it('Caso de falha do patch do workspaceName quando o usuario não tem permissão para alterar o workspace', async () => {
       const { body, status } = await request(app)
-      .patch('/workspace')
+      .patch('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
       .send(fakeData.workspace.patchName.request)
       .set('Authorization', otherUserToken);
 
