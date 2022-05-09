@@ -32,7 +32,7 @@ describe('Testes em /workspace', () => {
         .send(fakeData.workspace.create.request);
 
       expect(status).toBe(201);
-      expect(body.data.workspaceName).toBe(fakeData.workspace.create.response.workspaceName);
+      expect(body.data.name).toBe(fakeData.workspace.create.response.name);
       expect(verifyUuid(body.data.id)).toBe(true);
     });
 
@@ -157,7 +157,7 @@ describe('Testes em /workspace', () => {
     });
 
     afterAll(async () => {
-      await prisma.$transaction([prisma.workspace.deleteMany(), prisma.user.deleteMany()]);
+      await prisma.$transaction([prisma.workspace.deleteMany(), prisma.user.deleteMany(), prisma.workspaceCard.deleteMany(), prisma.workspaceColumn.deleteMany()]);
 
       await prisma.$disconnect();
     });
@@ -247,7 +247,7 @@ describe('Testes em /workspace', () => {
     });
 
     afterAll(async () => {
-      await prisma.$transaction([prisma.workspace.deleteMany(), prisma.user.deleteMany()]);
+      await prisma.$transaction([prisma.workspace.deleteMany(), prisma.user.deleteMany(), prisma.workspaceCard.deleteMany(), prisma.workspaceColumn.deleteMany()]);
 
       await prisma.$disconnect();
     });

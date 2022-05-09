@@ -3,7 +3,7 @@ export const create = {
     workspaceName: 'TrybeSmith',
   },
   response: {
-    workspaceName: 'TrybeSmith',
+    name: 'TrybeSmith',
   },
 };
 
