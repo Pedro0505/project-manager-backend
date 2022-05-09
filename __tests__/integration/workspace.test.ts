@@ -282,4 +282,52 @@ describe('Testes em /workspace', () => {
       expect(body.error.message).toBe('operation not allowed');
     })
   });
+
+
+  describe('PATCH /workspace', () => {
+    let token: string;
+    let otherUserToken: string;
+
+    beforeAll(async () => {
+      await prisma.$transaction([
+        prisma.user.createMany({ data: [seeds.matheus, seeds.pedro] }),
+        prisma.workspace.createMany({ data: seeds.allWorkspaces }),
+      ]);
+
+      const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
+      token = body.token;
+
+      const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
+      otherUserToken = secondToken.token;
+    });
+
+    afterAll(async () => {
+      await prisma.$transaction([prisma.workspace.deleteMany(), prisma.user.deleteMany()]);
+
+      await prisma.$disconnect();
+    });
+
+    it('Quando o workspace tem seu nome atualizado com sucesso', async () => {
+      const { body, status } = await request(app)
+      .patch('/workspace')
+      .send(fakeData.workspace.patchName.request)
+      .set('Authorization', token);
+      
+      expect(body.data).toBeDefined();
+      expect(body.data).toStrictEqual(fakeData.workspace.patchName.request);
+      expect(status).toBe(200);
+    });
+
+    it('Caso de falha do patch do workspaceName quando o usuario não tem permissão para alterar o workspace', async () => {
+      const { body, status } = await request(app)
+      .patch('/workspace')
+      .send(fakeData.workspace.patchName.request)
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(401);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('operation not allowed');
+    });
+  });
+
 });

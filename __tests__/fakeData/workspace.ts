@@ -99,3 +99,9 @@ export const getWithColumns = {
     ]
   }
 }
+
+export const patchName = {
+  request: { id: 'b92b2836-1ee9-4621-81a4-906a7a80dec9', name: 'Trybe Futebol Club' }
+}
+
+
