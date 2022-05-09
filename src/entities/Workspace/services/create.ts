@@ -11,7 +11,7 @@ const create = async (newWorksapce: IWorkspaceCreate): Promise<IWorkspaceCreateR
 
   return {
     id: result.id,
-    workspaceName,
+    name: workspaceName,
   };
 };
 

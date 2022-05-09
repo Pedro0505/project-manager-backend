@@ -5,7 +5,7 @@ interface IWorkspaceCreate {
 
 interface IWorkspaceCreateReturn {
   id: string;
-  workspaceName: string;
+  name: string;
 }
 
 interface IRequestWorkspaceBody {
