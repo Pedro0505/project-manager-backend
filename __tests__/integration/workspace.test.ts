@@ -328,6 +328,16 @@ describe('Testes em /workspace', () => {
       expect(body.error.message).toBeDefined();
       expect(body.error.message).toBe('operation not allowed');
     });
-  });
 
+    it('Quando o workspace não é encontrado', async () => {
+      const { body, status } = await request(app)
+      .patch('/workspace/notExistWorkspace')
+      .send(fakeData.workspace.patchName.request)
+      .set('Authorization', otherUserToken);
+
+      expect(status).toBe(404);
+      expect(body.error.message).toBeDefined();
+      expect(body.error.message).toBe('workspace not found');
+    });
+  });
 });
