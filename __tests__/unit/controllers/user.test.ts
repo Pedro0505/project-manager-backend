@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import * as Login from '../../../src/entities/User/services/login';
+import * as Register from '../../../src/entities/User/services/register';
 import * as Controllers from '../../../src/entities/User/controllers';
 import * as fakeData from '../../fakeData/unit';
+import * as JwtGenerate from '../../../src/helpers/JwtGenerate';
 
 describe('Users controllers', () => {
   describe('Teste Login controller', () => {
@@ -34,6 +36,33 @@ describe('Users controllers', () => {
   
       expect(res.json).toHaveBeenCalledTimes(1);
       expect(res.json).toHaveBeenCalledWith({ token: fakeData.userController.login.token });
+    });
+  });
+
+  describe('Teste Register controller', () => {
+    const req: Partial<Request>= {  };
+    
+    const res: Partial<Response> = {  };
+  
+    beforeEach(() => {
+      req.body = jest.fn().mockReturnValue(fakeData.userController.login.body);
+      
+      res.status = jest.fn().mockReturnValue(res);
+      res.json = jest.fn().mockReturnValue(res);
+      
+      jest.spyOn(Register, 'register').mockResolvedValue(fakeData.userController.register.body);
+      jest.spyOn(JwtGenerate, 'default').mockReturnValue(fakeData.userController.register.token);
+    });
+    
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+    
+    it('Teste se o controller responde com o status 200', async () => {
+      await Controllers.register(req as Request, res as Response);
+
+      expect(res.status).toHaveBeenCalledTimes(1);
+      expect(res.status).toHaveBeenCalledWith(201);
     });
   });
 })
