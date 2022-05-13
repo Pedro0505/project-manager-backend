@@ -29,5 +29,11 @@ describe('Users controllers', () => {
   
       expect(res.status).toHaveBeenCalledWith(200);
     });
+
+    it('Teste se o controller responde um json com um token', async () => {
+      await Controllers.login(req as Request, res as Response);
+  
+      expect(res.json).toHaveBeenCalledWith({ token: 'aRandomToken' });
+    });
   });
 })
