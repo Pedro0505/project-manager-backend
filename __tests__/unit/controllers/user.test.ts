@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as Login from '../../../src/entities/User/services/login';
 import * as Register from '../../../src/entities/User/services/register';
+import * as findUserByEmail from '../../../src/entities/User/services/findUserByEmail';
 import * as Controllers from '../../../src/entities/User/controllers';
 import * as fakeData from '../../fakeData/unit';
 import * as JwtGenerate from '../../../src/helpers/JwtGenerate';
@@ -58,14 +59,14 @@ describe('Users controllers', () => {
       jest.restoreAllMocks();
     });
     
-    it('Teste se o controller responde com o status 200', async () => {
+    it('Teste se o controller responde com o status 201', async () => {
       await Controllers.register(req as Request, res as Response);
 
       expect(res.status).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(201);
     });
 
-    it('Teste se o controller responde um json com um token', async () => {
+    it('Teste se o controller responde um json com um token e um data com a informação do usuario', async () => {
       await Controllers.register(req as Request, res as Response);
   
       expect(res.json).toHaveBeenCalledTimes(1);
