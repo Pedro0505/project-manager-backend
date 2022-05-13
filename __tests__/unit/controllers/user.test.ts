@@ -73,4 +73,30 @@ describe('Users controllers', () => {
       expect(res.json).toHaveBeenCalledWith({data: { ...fakeData.userController.register.body }, token: fakeData.userController.register.token });
     });
   });
+
+  describe('Teste findUserByEmail controller', () => {
+    const req: Partial<Request>= {  };
+    
+    const res: Partial<Response> = {  };
+  
+    beforeEach(() => {
+      req.query = fakeData.userController.findUserByEmail.query
+      
+      res.status = jest.fn().mockReturnValue(res);
+      res.json = jest.fn().mockReturnValue(res);
+      
+      jest.spyOn(findUserByEmail, 'findUserByEmail').mockResolvedValue(fakeData.userController.findUserByEmail.serviceMock);
+    });
+    
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+    
+    it('Teste se o controller responde com o status 200', async () => {
+      await Controllers.findUserByEmail(req as Request, res as Response);
+
+      expect(res.status).toHaveBeenCalledTimes(1);
+      expect(res.status).toHaveBeenCalledWith(200);
+    });
+  });
 })
