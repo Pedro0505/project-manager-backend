@@ -15,7 +15,7 @@ describe('Users controllers', () => {
       res.status = jest.fn().mockReturnValue(res);
       res.json = jest.fn().mockReturnValue(res);
       
-      jest.spyOn(Login, 'login').mockResolvedValue('aRandomToken');
+      jest.spyOn(Login, 'login').mockResolvedValue(fakeData.userController.login.token);
     });
     
     afterEach(() => {
@@ -24,14 +24,16 @@ describe('Users controllers', () => {
     
     it('Teste se o controller responde com o status 200', async () => {
       await Controllers.login(req as Request, res as Response);
-  
+
+      expect(res.status).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(200);
     });
 
     it('Teste se o controller responde um json com um token', async () => {
       await Controllers.login(req as Request, res as Response);
   
-      expect(res.json).toHaveBeenCalledWith({ token: 'aRandomToken' });
+      expect(res.json).toHaveBeenCalledTimes(1);
+      expect(res.json).toHaveBeenCalledWith({ token: fakeData.userController.login.token });
     });
   });
 })
