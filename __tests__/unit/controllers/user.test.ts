@@ -11,11 +11,8 @@ describe('Users controllers', () => {
     beforeEach(() => {
       req.body = jest.fn().mockReturnValue({ email: 'pedro@gmail.com', password: '12345678' });
       
-      res.json = jest.fn().mockReturnValue(res);
       res.status = jest.fn().mockReturnValue(res);
-  
       res.json = jest.fn().mockReturnValue(res);
-      res.status = jest.fn().mockReturnValue(res);
   
       jest.spyOn(Login, 'login').mockResolvedValue(Promise.resolve('aRandomToken'));
     });
