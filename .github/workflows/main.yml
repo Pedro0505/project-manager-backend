@@ -28,8 +28,11 @@ jobs:
       - name: Sobe os containers
         run: docker-compose up --build -d
 
-      - name: Run tests
+      - name: Run tests integration
         run: docker-compose exec -T backend npm test
+
+      - name: Run tests unit
+        run: docker-compose exec -T backend npm run test:unit
 
       - name: Derruba os containers
         if: always()
