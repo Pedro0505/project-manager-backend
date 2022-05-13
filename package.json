@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "pretest": "npx prisma migrate reset --force --skip-seed --schema src/database/prisma/schema.test.prisma",
-    "test": "NODE_ENV=test jest --runInBand --testTimeout=600000",
+    "test": "NODE_ENV=test jest --runInBand --testTimeout=600000 ./__tests__/integration",
     "test:unit": "jest --runInBand --testTimeout=600000 ./__tests__/unit",
     "prestart": "tsc",
     "start": "node ./dist/server.js",
