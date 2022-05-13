@@ -104,5 +104,12 @@ describe('Users controllers', () => {
   
       expect(findUserByEmail.findUserByEmail).toHaveBeenCalledWith('pedro@gmail.com');
     });
+
+    it('Teste se o controller responde um json com um email e um uuid', async () => {
+      await Controllers.findUserByEmail(req as Request, res as Response);
+  
+      expect(res.json).toHaveBeenCalledTimes(1);
+      expect(res.json).toHaveBeenCalledWith(fakeData.userController.findUserByEmail.serviceMock);
+    });
   });
 })
