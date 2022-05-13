@@ -314,7 +314,7 @@ describe('Testes em /user', () => {
   });
   describe('GET /user/search', () => {
     beforeAll(async () => {
-      await prisma.user.create({ data: fakeData.user.userEmail.response });
+      await prisma.user.create({ data: fakeData.user.userEmail.request });
     });
 
     afterAll(async () => {
