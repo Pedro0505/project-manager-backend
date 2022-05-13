@@ -64,5 +64,12 @@ describe('Users controllers', () => {
       expect(res.status).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(201);
     });
+
+    it('Teste se o controller responde um json com um token', async () => {
+      await Controllers.register(req as Request, res as Response);
+  
+      expect(res.json).toHaveBeenCalledTimes(1);
+      expect(res.json).toHaveBeenCalledWith({data: { ...fakeData.userController.register.body }, token: fakeData.userController.register.token });
+    });
   });
 })
