@@ -98,5 +98,11 @@ describe('Users controllers', () => {
       expect(res.status).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(200);
     });
+
+    it('Teste se o service é chamado responde com o valor da querry', async () => {
+      await Controllers.findUserByEmail(req as Request, res as Response);
+  
+      expect(findUserByEmail.findUserByEmail).toHaveBeenCalledWith('pedro@gmail.com');
+    });
   });
 })
