@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from '../../src/app';
 import prisma from '../../src/database/prisma';
-import * as fakeData from '../fakeData';
+import * as fakeData from '../fakeData/integration';
 import * as seeds from '../seeds';
 import { verifyUuid } from '../utils';
 

@@ -4,7 +4,7 @@ import 'dotenv/config';
 import app from '../../src/app';
 import prisma from '../../src/database/prisma';
 import { verifyUuid } from '../utils';
-import * as fakeData from '../fakeData';
+import * as fakeData from '../fakeData/integration';
 import * as seeds from '../seeds';
 
 describe('Testes em /user', () => {
