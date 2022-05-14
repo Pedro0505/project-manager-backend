@@ -3,6 +3,7 @@ import prisma from '../../../src/database/prisma';
 import * as Service from '../../../src/entities/User/services';
 import ConflictError from '../../../src/helpers/ConflictError';
 import NotFoundError from '../../../src/helpers/NotFoundError';
+import { IUserTest } from '../../interfaces/user';
 import UnauthorizedError from '../../../src/helpers/UnauthorizedError';
 import * as fakeData from '../../fakeData/unit';
 import { IDecoded } from '../../interfaces/jwt';
@@ -111,6 +112,25 @@ describe('Teste User Service', () => {
             expect(error.message).toBe(fakeData.userService.serviceConflict.responseError.error.message);
           }
         }
+      });
+    });
+  });
+
+  describe('Testando o service de findUserByEmail', () => {
+    describe('Testando caso de sucesso do findUserByEmail', () => {
+      beforeEach(() => {
+        jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(fakeData.userService.findUserByEmail.mock as IUserTest);
+      });
+  
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it ('Testando a responta do service', async () => {
+        const find = await Service.findUserByEmail('pedro@gmail.com');
+
+        expect(() => find).not.toThrow();
+        expect(find).toStrictEqual(fakeData.userService.findUserByEmail.response);
       });
     });
   });

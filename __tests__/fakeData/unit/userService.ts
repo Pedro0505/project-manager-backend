@@ -60,3 +60,19 @@ export const serviceConflict = {
   code: 409,
   responseError: { error: { message: 'email already registered' } },
 }; 
+
+export const findUserByEmail = {
+  mock: {
+    email: 'pedro@gmail.com',
+    uuid: '13e213-3ae1a-21a2'
+  },
+  response: {
+    email: 'pedro@gmail.com',
+    uuid: '13e213-3ae1a-21a2'
+  },
+};
+
+export const findByUserNotFound = {
+  code: 404,
+  responseError: { error: { message: 'User Not Found' } },
+} 
