@@ -133,5 +133,28 @@ describe('Teste User Service', () => {
         expect(find).toStrictEqual(fakeData.userService.findUserByEmail.response);
       });
     });
+
+
+    describe('Testando caso de erro do findUserByEmail', () => {
+      beforeEach(() => {
+        jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(null);
+      });
+  
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it ('Testando a responta de erro do service', async () => {
+        try {
+          await Service.findUserByEmail('pedro@gmail.com');
+        } catch (error) {
+          expect(error).toBeInstanceOf(NotFoundError);
+          if (error instanceof NotFoundError) {
+            expect(error.code).toBe(fakeData.userService.findByUserNotFound.code);
+            expect(error.message).toBe(fakeData.userService.findByUserNotFound.responseError.error.message);
+          }
+        }
+      });
+    });
   });
 });
