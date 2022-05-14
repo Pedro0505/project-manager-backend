@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import prisma from '../../../src/database/prisma';
 import * as Service from '../../../src/entities/User/services';
+import ConflictError from '../../../src/helpers/ConflictError';
 import NotFoundError from '../../../src/helpers/NotFoundError';
 import UnauthorizedError from '../../../src/helpers/UnauthorizedError';
 import * as fakeData from '../../fakeData/unit';
@@ -88,6 +89,28 @@ describe('Teste User Service', () => {
 
         expect(() => register).not.toThrow();
         expect(register).toStrictEqual(fakeData.userService.service.response);
+      });
+    });
+
+    describe('Testando caso de error do register service quando o email já existe', () => {
+      beforeEach(() => {
+        jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(fakeData.userService.serviceConflict.mock);
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it('Testando se o error é um ConflictError', async () => {
+        try {
+          await Service.register(fakeData.userService.service.user);
+        } catch (error) {
+          expect(error).toBeInstanceOf(ConflictError);
+          if (error instanceof ConflictError) {
+            expect(error.code).toBe(409);
+            expect(error.message).toBe(fakeData.userService.serviceConflict.responseError.error.message);
+          }
+        }
       });
     });
   });

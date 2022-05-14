@@ -47,3 +47,16 @@ export const service = {
     uuid: '921-aec231d2-ea21'
   }
 };
+
+export const serviceConflict = {
+  mock: {
+    id: 'a3bb213e123b2', 
+    firstName: 'Pedro', 
+    lastName: 'Silva', 
+    email: 'pedro@gmail.com', 
+    password: '$argon2d$v=19$m=12,t=3,p=1$bm83enlvdTU0NTAwMDAwMA$ewelLOYW/KJoVS9nu3sHnQ',
+    uuid: 'abb213e1asd'
+  },
+  code: 409,
+  responseError: { error: { message: 'email already registered' } },
+}; 
