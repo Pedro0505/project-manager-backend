@@ -6,7 +6,7 @@ import { IDecoded } from '../../interfaces/jwt';
 
 describe('Teste User Service', () => {
   describe('Testando o service de login', () => {
-    describe('Testando caso de sucesso do ', () => {
+    describe('Testando caso de sucesso do login', () => {
       beforeEach(() => {
         jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(fakeData.userService.login.mock);
       })
@@ -22,6 +22,24 @@ describe('Teste User Service', () => {
 
         expect(() => decoded).not.toThrow();
         expect(decoded.tokenData).toStrictEqual(fakeData.userService.login.jwtResponse);
+      });
+    });
+    
+    describe('Testando caso de error do login quando o usuario não é encontrado', () => {
+      beforeEach(() => {
+        jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(null);
+      })
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+    
+      it('Teste de caso de sucesso do login', () => {
+        expect(async () => (
+          await Service.login(fakeData.userService.loginUserNotFound.serviceParams)
+        ))
+        .rejects
+        .toThrow('email not found');
       });
     });
   });

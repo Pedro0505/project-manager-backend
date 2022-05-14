@@ -10,3 +10,8 @@ export const login = {
   serviceParams: { email: 'pedro@gmail.com', password: '12345678' },
   jwtResponse: { userId: 'a3bb213e123b2', email: 'pedro@gmail.com' }
 };
+
+export const loginUserNotFound = {
+  serviceParams: { email: 'wrong@email.com', password: '12345678' },
+  responseError: { error: { message: 'email not found' } }
+};
