@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import prisma from '../../../src/database/prisma';
 import * as Service from '../../../src/entities/User/services';
+import NotFoundError from '../../../src/helpers/NotFoundError';
 import * as fakeData from '../../fakeData/unit';
 import { IDecoded } from '../../interfaces/jwt';
 
@@ -34,12 +35,16 @@ describe('Teste User Service', () => {
         jest.restoreAllMocks();
       });
     
-      it('Teste de caso de sucesso do login', () => {
-        expect(async () => (
+      it('Teste de caso de error testando a menssagem ', async () => {
+        try {
           await Service.login(fakeData.userService.loginUserNotFound.serviceParams)
-        ))
-        .rejects
-        .toThrow('email not found');
+        } catch (error) {
+          expect(error).toBeInstanceOf(NotFoundError)
+          if (error instanceof NotFoundError) {
+            expect(error.code).toBe(fakeData.userService.loginUserNotFound.code)
+            expect(error.message).toBe(fakeData.userService.loginUserNotFound.responseError.error.message)
+          }
+        }
       });
     });
   });

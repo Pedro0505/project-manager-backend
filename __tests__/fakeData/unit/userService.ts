@@ -13,5 +13,12 @@ export const login = {
 
 export const loginUserNotFound = {
   serviceParams: { email: 'wrong@email.com', password: '12345678' },
-  responseError: { error: { message: 'email not found' } }
+  responseError: { error: { message: 'email not found' } },
+  code: 404
+};
+
+export const loginUserWrongPassword = {
+  serviceParams: { email: 'pedro@gmail.com', password: 'wrongPassword' },
+  responseError: { error: { message: 'wrong password' } },
+  code: 401
 };
