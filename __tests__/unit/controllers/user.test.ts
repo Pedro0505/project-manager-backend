@@ -13,7 +13,7 @@ describe('Users controllers', () => {
     const res: Partial<Response> = {  };
   
     beforeEach(() => {
-      req.body = jest.fn().mockReturnValue(fakeData.userController.login.body);
+      req.body = fakeData.userController.login.body;
       
       res.status = jest.fn().mockReturnValue(res);
       res.json = jest.fn().mockReturnValue(res);
@@ -41,17 +41,17 @@ describe('Users controllers', () => {
   });
 
   describe('Teste Register controller', () => {
-    const req: Partial<Request>= {  };
+    const req: Partial<Request> = {  };
     
     const res: Partial<Response> = {  };
   
     beforeEach(() => {
-      req.body = jest.fn().mockReturnValue(fakeData.userController.login.body);
+      req.body = fakeData.userController.register.body;
       
       res.status = jest.fn().mockReturnValue(res);
       res.json = jest.fn().mockReturnValue(res);
       
-      jest.spyOn(Register, 'register').mockResolvedValue(fakeData.userController.register.body);
+      jest.spyOn(Register, 'register').mockResolvedValue(fakeData.userController.register.mock);
       jest.spyOn(JwtGenerate, 'default').mockReturnValue(fakeData.userController.register.token);
     });
     
@@ -66,11 +66,18 @@ describe('Users controllers', () => {
       expect(res.status).toHaveBeenCalledWith(201);
     });
 
+    it('Teste se o service é chamado com o valor que é passado no body', async () => {
+      await Controllers.register(req as Request, res as Response);
+
+      expect(Register.register).toHaveBeenCalledTimes(1);
+      expect(Register.register).toHaveBeenCalledWith(fakeData.userController.register.body);
+    });
+
     it('Teste se o controller responde um json com um token e um data com a informação do usuario', async () => {
       await Controllers.register(req as Request, res as Response);
   
       expect(res.json).toHaveBeenCalledTimes(1);
-      expect(res.json).toHaveBeenCalledWith({data: { ...fakeData.userController.register.body }, token: fakeData.userController.register.token });
+      expect(res.json).toHaveBeenCalledWith({data: { ...fakeData.userController.register.mock }, token: fakeData.userController.register.token });
     });
   });
 
