@@ -120,5 +120,12 @@ describe('Testando o controller do workspace', () => {
       expect(res.status).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(200);
     });
+
+    it('Testando o service do getAll e vendo se ele é chamado com o userId', async () => {
+      await Controllers.getAll(req as Request, res as Response)
+      
+      expect(GetAll.getAll).toHaveBeenCalledTimes(1);
+      expect(GetAll.getAll).toHaveBeenCalledWith(fakeData.workspaceController.getAll.tokenData.userId);
+    });
   });
 });
