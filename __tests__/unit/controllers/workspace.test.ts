@@ -72,5 +72,12 @@ describe('Testando o controller do workspace', () => {
       expect(res.end).toHaveBeenCalledTimes(1);
       expect(res.end).toHaveBeenCalled();
     });
+
+    it('Testando a chamada do status do exclude retorna 204', async () => {
+      await Controllers.exclude(req as Request, res as Response)
+      
+      expect(res.status).toHaveBeenCalledTimes(1);
+      expect(res.status).toHaveBeenCalledWith(204);
+    });
   });
 });
