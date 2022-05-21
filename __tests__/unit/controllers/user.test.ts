@@ -32,6 +32,13 @@ describe('Users controllers', () => {
       expect(res.status).toHaveBeenCalledWith(200);
     });
 
+    it('Teste se o service é chamado com o valor que é passado no body', async () => {
+      await Controllers.login(req as Request, res as Response);
+
+      expect(Login.login).toHaveBeenCalledTimes(1);
+      expect(Login.login).toHaveBeenCalledWith(fakeData.userController.login.body);
+    });
+
     it('Teste se o controller responde um json com um token', async () => {
       await Controllers.login(req as Request, res as Response);
   
