@@ -31,5 +31,12 @@ describe('Testando o controller do workspace', () => {
       expect(res.json).toHaveBeenCalledTimes(1);
       expect(res.json).toHaveBeenCalledWith({ data: fakeData.workspaceController.create.service });
     });
+
+    it('Testando a chamada do status do create retorna 201', async () => {
+      await Controllers.create(req as Request, res as Response)
+      
+      expect(res.status).toHaveBeenCalledTimes(1);
+      expect(res.status).toHaveBeenCalledWith(201);
+    });
   });
 });
