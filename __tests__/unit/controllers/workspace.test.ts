@@ -46,4 +46,31 @@ describe('Testando o controller do workspace', () => {
       expect(Create.create).toHaveBeenCalledWith(fakeData.workspaceController.create.callService);
     });
   });
+
+  describe('Testando o exclude do workspace controller', () => {
+    const req: Partial<IRequestToken>= {  };
+    
+    const res: Partial<Response> = {  };
+  
+    beforeEach(() => {
+      req.params = fakeData.workspaceController.exclude.params;
+      req.tokenData = fakeData.workspaceController.exclude.tokenData;
+
+      res.status = jest.fn().mockReturnValue(res);
+      res.end = jest.fn().mockReturnValue(res);
+
+      jest.spyOn(Exclude, 'exclude').mockResolvedValue(undefined);
+    });
+  
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+  
+    it('Testando a chamada do json do exclude', async () => {
+      await Controllers.exclude(req as Request, res as Response)
+      
+      expect(res.end).toHaveBeenCalledTimes(1);
+      expect(res.end).toHaveBeenCalled();
+    });
+  });
 });
