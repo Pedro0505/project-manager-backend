@@ -79,5 +79,12 @@ describe('Testando o controller do workspace', () => {
       expect(res.status).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(204);
     });
+
+    it('Testando o service do exclude e vendo se ele é chamado com o userId e o id do workspace', async () => {
+      await Controllers.exclude(req as Request, res as Response)
+      
+      expect(Exclude.exclude).toHaveBeenCalledTimes(1);
+      expect(Exclude.exclude).toHaveBeenCalledWith(fakeData.workspaceController.exclude.callService.id, fakeData.workspaceController.exclude.callService.userId);
+    });
   });
 });
