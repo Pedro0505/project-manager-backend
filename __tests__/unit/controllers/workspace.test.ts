@@ -3,6 +3,7 @@ import * as Create from '../../../src/entities/Workspace/services/create';
 import * as Exclude from '../../../src/entities/Workspace/services/exclude';
 import * as GetAll from '../../../src/entities/Workspace/services/getAll';
 import * as GetById from '../../../src/entities/Workspace/services/getById';
+import * as GetWithColumns from '../../../src/entities/Workspace/services/getWithColumns';
 import { IRequestToken } from '../../interfaces/express';
 import * as Controllers from '../../../src/entities/Workspace/controllers';
 import * as fakeData from '../../fakeData/unit';
@@ -170,6 +171,34 @@ describe('Testando o controller do workspace', () => {
       expect(GetById.getById).toHaveBeenCalled();
       expect(GetById.getById).toHaveBeenCalledTimes(1);
       expect(GetById.getById).toHaveBeenCalledWith(fakeData.workspaceController.getById.callService.id, fakeData.workspaceController.getById.callService.userId);
+    });
+  });
+
+  describe('Testando o getWithColumns do workspace controller', () => {
+    const req: Partial<IRequestToken>= {  };
+    
+    const res: Partial<Response> = {  };
+  
+    beforeEach(() => {
+      req.tokenData = fakeData.workspaceController.getWithColumns.tokenData;
+      req.query = fakeData.workspaceController.getWithColumns.query;
+      req.params = fakeData.workspaceController.getWithColumns.params;
+
+      res.status = jest.fn().mockReturnValue(res);
+      res.json = jest.fn().mockReturnValue(res);
+
+      jest.spyOn(GetWithColumns, 'getWithColumns').mockResolvedValue(fakeData.workspaceController.getWithColumns.mockService);
+    });
+  
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+  
+    it('Testando a chamada do json do getWithColumns', async () => {
+      await Controllers.getById(req as Request, res as Response)
+      
+      expect(res.json).toHaveBeenCalledTimes(1);
+      expect(res.json).toHaveBeenCalledWith({ data: fakeData.workspaceController.getWithColumns.mockService });
     });
   });
 });
