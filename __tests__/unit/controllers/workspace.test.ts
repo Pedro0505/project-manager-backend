@@ -251,5 +251,13 @@ describe('Testando o controller do workspace', () => {
       expect(res.status).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(200);
     });
+
+    it('Testando o service do updateName e vendo se ele é chamado com o userId, id e name', async () => {
+      await Controllers.updateName(req as Request, res as Response)
+      
+      expect(UpdateName.updateName).toHaveBeenCalled();
+      expect(UpdateName.updateName).toHaveBeenCalledTimes(1);
+      expect(UpdateName.updateName).toHaveBeenCalledWith(fakeData.workspaceController.updateName.callService.name, fakeData.workspaceController.updateName.callService.id, fakeData.workspaceController.updateName.callService.userId);
+    });
   });
 });
