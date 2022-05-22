@@ -160,8 +160,8 @@ describe('Testes em /column', () => {
 
     it('Teste caso de falha de excluir quando o id exluido não existe', async () => {
       const { status, body } = await request(app)
-      .delete('/column/notfound')
-      .set('Authorization', token);
+        .delete('/column/notfound')
+        .set('Authorization', token);
 
       expect(status).toBe(404);
       expect(body.error.message).toBe('Column not found');
@@ -169,8 +169,8 @@ describe('Testes em /column', () => {
 
     it('Teste caso de deletar a coluna quando a operação é feita pela pessoa que não é dona do workspace', async () => {
       const { status, body } = await request(app)
-      .delete('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
-      .set('Authorization', otherUserToken);
+        .delete('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
+        .set('Authorization', otherUserToken);
 
       expect(status).toBe(401);
       expect(body.error.message).toBeDefined();
@@ -179,12 +179,12 @@ describe('Testes em /column', () => {
 
     it('Testando caso de sucesso do delete', async () => {
       const { status: statusFirstTime } = await request(app)
-      .delete('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
-      .set('Authorization', token);
+        .delete('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
+        .set('Authorization', token);
 
       const { status: statusSecondTime, body } = await request(app)
-      .delete('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
-      .set('Authorization', token);
+        .delete('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
+        .set('Authorization', token);
 
       expect(statusFirstTime).toBe(204);
       expect(statusSecondTime).toBe(404);
@@ -222,9 +222,9 @@ describe('Testes em /column', () => {
 
     it('Caso de sucesso do update', async () => {
       const { body, status } = await request(app)
-      .put('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
-      .send(fakeData.workspaceColumn.put.request) 
-      .set('Authorization', token);
+        .put('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
+        .send(fakeData.workspaceColumn.put.request)
+        .set('Authorization', token);
 
       const updateDB = await prisma.workspaceColumn.findUnique({ where: { id: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' } });
 
@@ -236,9 +236,9 @@ describe('Testes em /column', () => {
 
     it('Teste caso de atualizar a coluna quando a operação é feita pela pessoa que não é dona do workspaceColumn', async () => {
       const { status, body } = await request(app)
-      .put('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
-      .send(fakeData.workspaceColumn.put.request) 
-      .set('Authorization', otherUserToken);
+        .put('/column/67b97db2-0f7a-4f2a-b515-9d7054f94a32')
+        .send(fakeData.workspaceColumn.put.request)
+        .set('Authorization', otherUserToken);
 
       expect(status).toBe(401);
       expect(body.error.message).toBeDefined();
@@ -247,14 +247,14 @@ describe('Testes em /column', () => {
 
     it('Caso de falha do update quando o id não é encontrado', async () => {
       const { body, status } = await request(app)
-      .put('/column/6gferetg')
-      .send(fakeData.workspaceColumn.put.request) 
-      .set('Authorization', token);
+        .put('/column/6gferetg')
+        .send(fakeData.workspaceColumn.put.request)
+        .set('Authorization', token);
 
       expect(status).toBe(404);
       expect(body.error.message).toBe('Column not found');
     });
-  })
+  });
 
   describe('PATCH /column', () => {
     let token: string;
@@ -286,9 +286,9 @@ describe('Testes em /column', () => {
 
     it('Caso de sucesso do updateMany', async () => {
       const { body, status } = await request(app)
-      .patch('/column')
-      .send(fakeData.workspaceColumn.manyUpdate.request)
-      .set('Authorization', token);
+        .patch('/column')
+        .send(fakeData.workspaceColumn.manyUpdate.request)
+        .set('Authorization', token);
 
       expect(status).toBe(200);
       expect(body.data).toBeDefined();
@@ -297,9 +297,9 @@ describe('Testes em /column', () => {
 
     it('Caso de falha do updateMany workspaceColumn não encontrado', async () => {
       const { body, status } = await request(app)
-      .patch('/column')
-      .send([{ id: 'dsadas-6fda-22-22-dsa' }, { id: 'sadasdsadasd-asdfsaddas' } ])
-      .set('Authorization', token);
+        .patch('/column')
+        .send([{ id: 'dsadas-6fda-22-22-dsa' }, { id: 'sadasdsadasd-asdfsaddas' }])
+        .set('Authorization', token);
 
       expect(status).toBe(404);
       expect(body.error.message).toBeDefined();
@@ -308,13 +308,13 @@ describe('Testes em /column', () => {
 
     it('Teste caso de updateMany a coluna quando a operação é feita pela pessoa que não é dona do workspaceColumn', async () => {
       const { status, body } = await request(app)
-      .patch('/column')
-      .send(fakeData.workspaceColumn.manyUpdate.request)
-      .set('Authorization', otherUserToken);
+        .patch('/column')
+        .send(fakeData.workspaceColumn.manyUpdate.request)
+        .set('Authorization', otherUserToken);
 
       expect(status).toBe(401);
       expect(body.error.message).toBeDefined();
       expect(body.error.message).toBe('operation not allowed');
     });
-  })
+  });
 });

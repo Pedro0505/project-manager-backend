@@ -43,34 +43,33 @@ describe('Testes em /card', () => {
         .send({ title: 'Teste', workspaceId: 'b92b2836-1ee9-4621-81a4-906a7a80dec9' });
 
       const { body, status } = await request(app)
-      .post('/card')
-      .send({ content: 'Card Created', columnId: id })
-      .set('Authorization', token);
+        .post('/card')
+        .send({ content: 'Card Created', columnId: id })
+        .set('Authorization', token);
 
       expect(status).toBe(201);
       expect(verifyUuid(body.data.id)).toBe(true);
-      expect({ content: body.data.content, columnId: body.data.columnId, index: body.data.index,})
+      expect({ content: body.data.content, columnId: body.data.columnId, index: body.data.index })
         .toStrictEqual({ content: 'Card Created', columnId: id, index: 0 });
     });
 
-
     it('quando o workspaceCard é criado com sucesso com uma coluna que já existe', async () => {
       const { body, status } = await request(app)
-      .post('/card')
-      .send(fakeData.workspaceCard.create.request)
-      .set('Authorization', token);
+        .post('/card')
+        .send(fakeData.workspaceCard.create.request)
+        .set('Authorization', token);
 
       expect(status).toBe(201);
       expect(verifyUuid(body.data.id)).toBe(true);
-      expect({ content: body.data.content, columnId: body.data.columnId, index: body.data.index,})
+      expect({ content: body.data.content, columnId: body.data.columnId, index: body.data.index })
         .toStrictEqual(fakeData.workspaceCard.create.response);
     });
 
     it('Teste caso de criar quando a operação é feita pela pessoa que não é dona do workspace', async () => {
       const { status, body } = await request(app)
-      .post('/card')
-      .send(fakeData.workspaceCard.create.request)
-      .set('Authorization', otherUserToken);
+        .post('/card')
+        .send(fakeData.workspaceCard.create.request)
+        .set('Authorization', otherUserToken);
 
       expect(status).toBe(401);
       expect(body.error.message).toBeDefined();
@@ -79,15 +78,14 @@ describe('Testes em /card', () => {
 
     it('Caso de falha do create do card quando o column id não existe', async () => {
       const { status, body } = await request(app)
-      .post('/card')
-      .send({ content: 'Card Created', columnId: 'dasdas-0f7a-dasdas-dsad-212213' })
-      .set('Authorization', otherUserToken);
+        .post('/card')
+        .send({ content: 'Card Created', columnId: 'dasdas-0f7a-dasdas-dsad-212213' })
+        .set('Authorization', otherUserToken);
 
       expect(status).toBe(404);
       expect(body.error.message).toBeDefined();
       expect(body.error.message).toBe('Column not found');
     });
-
 
     describe('quando o body do workspaceCard é invalido', () => {
       it('"columnId" não foi enviado', async () => {
@@ -150,7 +148,7 @@ describe('Testes em /card', () => {
 
       const { body } = await request(app).post('/user/login').send(fakeData.user.login.request);
       token = body.token;
-      
+
       const { body: secondToken } = await request(app).post('/user/login').send({ email: 'pedro@gmail.com', password: '12345678' });
       otherUserToken = secondToken.token;
     });
@@ -168,8 +166,8 @@ describe('Testes em /card', () => {
 
     it('Teste caso de criar quando a operação é feita pela pessoa que não é dona do workspace', async () => {
       const { status, body } = await request(app)
-      .delete('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
-      .set('Authorization', otherUserToken);
+        .delete('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
+        .set('Authorization', otherUserToken);
 
       expect(status).toBe(401);
       expect(body.error.message).toBeDefined();
@@ -178,26 +176,26 @@ describe('Testes em /card', () => {
 
     it('Caso de suceso de um exlude card', async () => {
       const { status: statusFirstTime } = await request(app)
-      .delete('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
-      .set('Authorization', token);
+        .delete('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
+        .set('Authorization', token);
 
       const { status: statusSecondTime, body } = await request(app)
-      .delete('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
-      .set('Authorization', token);
+        .delete('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
+        .set('Authorization', token);
 
       expect(statusFirstTime).toBe(204);
       expect(statusSecondTime).toBe(404);
       expect(body.error.message).toBe('Card not found');
-    })
+    });
 
     it('Caso de falha de um exlude card quando o id não existe', async () => {
       const { status, body } = await request(app)
-      .delete('/card/1e2caa3a-53909ac96933')
-      .set('Authorization', token);
+        .delete('/card/1e2caa3a-53909ac96933')
+        .set('Authorization', token);
 
       expect(status).toBe(404);
       expect(body.error.message).toBe('Card not found');
-    })
+    });
   });
 
   describe('PATCH /card/:id', () => {
@@ -232,9 +230,9 @@ describe('Testes em /card', () => {
 
     it('Teste caso de atualizar quando a operação é feita pela pessoa que não é dona do workspace', async () => {
       const { status, body } = await request(app)
-      .patch('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
-      .send(fakeData.workspaceCard.patch.request)
-      .set('Authorization', otherUserToken);
+        .patch('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
+        .send(fakeData.workspaceCard.patch.request)
+        .set('Authorization', otherUserToken);
 
       expect(status).toBe(401);
       expect(body.error.message).toBeDefined();
@@ -243,9 +241,9 @@ describe('Testes em /card', () => {
 
     it('Caso de sucesso do update do card', async () => {
       const { body, status } = await request(app)
-      .patch('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
-      .send(fakeData.workspaceCard.patch.request)
-      .set('Authorization', token);
+        .patch('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
+        .send(fakeData.workspaceCard.patch.request)
+        .set('Authorization', token);
 
       const updateDB = await prisma.workspaceCard.findUnique({ where: { id: '1e2caa3a-a668-455b-bc1d-53909ac96933' } });
 
@@ -257,9 +255,9 @@ describe('Testes em /card', () => {
 
     it('Caso de falha do update do card quando o id do card não existe', async () => {
       const { body, status } = await request(app)
-      .patch('/card/bc1dss')
-      .send(fakeData.workspaceCard.patch.request)
-      .set('Authorization', token);
+        .patch('/card/bc1dss')
+        .send(fakeData.workspaceCard.patch.request)
+        .set('Authorization', token);
 
       expect(status).toBe(404);
       expect(body.error.message).toBeDefined();
@@ -268,9 +266,9 @@ describe('Testes em /card', () => {
 
     it('Caso de falha do update do card quando o column id não existe', async () => {
       const { body, status } = await request(app)
-      .patch('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
-      .send({ ...fakeData.workspaceCard.patch.request, columnId: 'osskdassdaks-s-sssss-sss' })
-      .set('Authorization', token);
+        .patch('/card/1e2caa3a-a668-455b-bc1d-53909ac96933')
+        .send({ ...fakeData.workspaceCard.patch.request, columnId: 'osskdassdaks-s-sssss-sss' })
+        .set('Authorization', token);
 
       expect(status).toBe(404);
       expect(body.error.message).toBeDefined();
@@ -310,9 +308,9 @@ describe('Testes em /card', () => {
 
     it('Caso de sucesso do updateMany', async () => {
       const { body, status } = await request(app)
-      .patch('/card')
-      .send(fakeData.workspaceCard.patchMany.request)
-      .set('Authorization', token);
+        .patch('/card')
+        .send(fakeData.workspaceCard.patchMany.request)
+        .set('Authorization', token);
 
       expect(status).toBe(200);
       expect(body.data).toBeDefined();
@@ -321,9 +319,9 @@ describe('Testes em /card', () => {
 
     it('Teste caso de atualizar muitos quando a operação é feita pela pessoa que não é dona do workspace', async () => {
       const { status, body } = await request(app)
-      .patch('/card')
-      .send(fakeData.workspaceCard.patchMany.request)
-      .set('Authorization', otherUserToken);
+        .patch('/card')
+        .send(fakeData.workspaceCard.patchMany.request)
+        .set('Authorization', otherUserToken);
 
       expect(status).toBe(401);
       expect(body.error.message).toBeDefined();
@@ -332,12 +330,12 @@ describe('Testes em /card', () => {
 
     it('Teste caso de atualizar muitos quando a operação é feita pela pessoa que não é dona de uma das colunas', async () => {
       const { status, body } = await request(app)
-      .patch('/card')
-      .send([
-        { id: '1789d5d3-210a-426a-9c2d-a6fdf5444a95', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' },
-        { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' }
-      ])
-      .set('Authorization', token);
+        .patch('/card')
+        .send([
+          { id: '1789d5d3-210a-426a-9c2d-a6fdf5444a95', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' },
+          { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' },
+        ])
+        .set('Authorization', token);
 
       expect(status).toBe(401);
       expect(body.error.message).toBeDefined();
@@ -346,12 +344,12 @@ describe('Testes em /card', () => {
 
     it('Teste caso de atualizar muitos quando a operação é feita pela pessoa que não é dona de um card', async () => {
       const { status, body } = await request(app)
-      .patch('/card')
-      .send([
-        { id: '1e2caa3a-a668-455b-bc1d-53909ac96933', columnId: '3bd3fc3b-7de3-4a8e-b54d-2588eeabae6d' },
-        { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' }
-      ])
-      .set('Authorization', token);
+        .patch('/card')
+        .send([
+          { id: '1e2caa3a-a668-455b-bc1d-53909ac96933', columnId: '3bd3fc3b-7de3-4a8e-b54d-2588eeabae6d' },
+          { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' },
+        ])
+        .set('Authorization', token);
 
       expect(status).toBe(401);
       expect(body.error.message).toBeDefined();
@@ -360,11 +358,11 @@ describe('Testes em /card', () => {
 
     it('Quando o card não é encontrado', async () => {
       const { body, status } = await request(app)
-      .patch('/card')
-      .send([
-        { id: 'ewrwe-a668-qewrwe-bc1d-rwerwerew', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' },
-        { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' }
-      ]).set('Authorization', token);
+        .patch('/card')
+        .send([
+          { id: 'ewrwe-a668-qewrwe-bc1d-rwerwerew', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' },
+          { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' },
+        ]).set('Authorization', token);
 
       expect(status).toBe(404);
       expect(body.error.message).toBeDefined();
@@ -373,11 +371,11 @@ describe('Testes em /card', () => {
 
     it('Quando o column não é encontrado', async () => {
       const { body, status } = await request(app)
-      .patch('/card')
-      .send([
-        { id: '1e2caa3a-a668-455b-bc1d-53909ac96933', columnId: 'saddsa-dsadas-2123-dsadas-2131123123' },
-        { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' }
-      ]).set('Authorization', token);
+        .patch('/card')
+        .send([
+          { id: '1e2caa3a-a668-455b-bc1d-53909ac96933', columnId: 'saddsa-dsadas-2123-dsadas-2131123123' },
+          { id: 'fbbeef8d-99e3-49a1-895c-beb88592da53', columnId: '67b97db2-0f7a-4f2a-b515-9d7054f94a32' },
+        ]).set('Authorization', token);
 
       expect(status).toBe(404);
       expect(body.error.message).toBeDefined();
