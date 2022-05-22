@@ -64,3 +64,14 @@ export const getWithColumns = {
   params: { id: 'b92b2836-1ee9-4621-81a4-906a7a80dec9' },
   callService: { id: 'b92b2836-1ee9-4621-81a4-906a7a80dec9', userId: '9e1e71ff-1643-4d4c-822a-98d5e0f609d1' },
 }
+
+export const updateName = {
+  mockService: {
+    id: 'b92b2836-1ee9-4621-81a4-906a7a80dec9',
+    name: 'Nome Mudado',
+  },
+  tokenData: { email: 'pedro@gmail.com', userId: '9e1e71ff-1643-4d4c-822a-98d5e0f609d1' },
+  body: { name: 'Nome Mudado' },
+  params: { id: 'b92b2836-1ee9-4621-81a4-906a7a80dec9' },
+  callService: { name: 'Nome Mudado', id: 'b92b2836-1ee9-4621-81a4-906a7a80dec9', userId: '9e1e71ff-1643-4d4c-822a-98d5e0f609d1' }
+}

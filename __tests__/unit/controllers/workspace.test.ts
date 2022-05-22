@@ -4,6 +4,7 @@ import * as Exclude from '../../../src/entities/Workspace/services/exclude';
 import * as GetAll from '../../../src/entities/Workspace/services/getAll';
 import * as GetById from '../../../src/entities/Workspace/services/getById';
 import * as GetWithColumns from '../../../src/entities/Workspace/services/getWithColumns';
+import * as UpdateName from '../../../src/entities/Workspace/services/updateName';
 import { IRequestToken } from '../../interfaces/express';
 import * as Controllers from '../../../src/entities/Workspace/controllers';
 import * as fakeData from '../../fakeData/unit';
@@ -214,6 +215,34 @@ describe('Testando o controller do workspace', () => {
       expect(GetWithColumns.getWithColumns).toHaveBeenCalled();
       expect(GetWithColumns.getWithColumns).toHaveBeenCalledTimes(1);
       expect(GetWithColumns.getWithColumns).toHaveBeenCalledWith(fakeData.workspaceController.getWithColumns.callService.id, fakeData.workspaceController.getWithColumns.callService.userId);
+    });
+  });
+
+  describe('Testando o updateName do workspace controller', () => {
+    const req: Partial<IRequestToken>= {  };
+    
+    const res: Partial<Response> = {  };
+  
+    beforeEach(() => {
+      req.tokenData = fakeData.workspaceController.updateName.tokenData;
+      req.body = fakeData.workspaceController.updateName.body;
+      req.params = fakeData.workspaceController.updateName.params;
+
+      res.status = jest.fn().mockReturnValue(res);
+      res.json = jest.fn().mockReturnValue(res);
+
+      jest.spyOn(UpdateName, 'updateName').mockResolvedValue(fakeData.workspaceController.updateName.mockService);
+    });
+  
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+  
+    it('Testando a chamada do json do updateName', async () => {
+      await Controllers.updateName(req as Request, res as Response)
+      
+      expect(res.json).toHaveBeenCalledTimes(1);
+      expect(res.json).toHaveBeenCalledWith({ data: fakeData.workspaceController.updateName.mockService });
     });
   });
 });
