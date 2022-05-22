@@ -207,5 +207,13 @@ describe('Testando o controller do workspace', () => {
       expect(res.status).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(200);
     });
+
+    it('Testando o service do getWithColumns e vendo se ele é chamado com o userId e id', async () => {
+      await Controllers.getById(req as Request, res as Response)
+      
+      expect(GetWithColumns.getWithColumns).toHaveBeenCalled();
+      expect(GetWithColumns.getWithColumns).toHaveBeenCalledTimes(1);
+      expect(GetWithColumns.getWithColumns).toHaveBeenCalledWith(fakeData.workspaceController.getWithColumns.callService.id, fakeData.workspaceController.getWithColumns.callService.userId);
+    });
   });
 });
