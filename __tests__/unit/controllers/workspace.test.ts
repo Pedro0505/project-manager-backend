@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import * as Create from '../../../src/entities/Workspace/services/create';
 import * as Exclude from '../../../src/entities/Workspace/services/exclude';
 import * as GetAll from '../../../src/entities/Workspace/services/getAll';
+import * as GetById from '../../../src/entities/Workspace/services/getById';
 import { IRequestToken } from '../../interfaces/express';
 import * as Controllers from '../../../src/entities/Workspace/controllers';
 import * as fakeData from '../../fakeData/unit';
@@ -89,7 +90,7 @@ describe('Testando o controller do workspace', () => {
     });
   });
 
-  describe('Testando o create do workspace controller', () => {
+  describe('Testando o getAll do workspace controller', () => {
     const req: Partial<IRequestToken>= {  };
     
     const res: Partial<Response> = {  };
@@ -126,6 +127,34 @@ describe('Testando o controller do workspace', () => {
       
       expect(GetAll.getAll).toHaveBeenCalledTimes(1);
       expect(GetAll.getAll).toHaveBeenCalledWith(fakeData.workspaceController.getAll.tokenData.userId);
+    });
+  });
+
+  describe('Testando o getById do workspace controller', () => {
+    const req: Partial<IRequestToken>= {  };
+    
+    const res: Partial<Response> = {  };
+  
+    beforeEach(() => {
+      req.tokenData = fakeData.workspaceController.getById.tokenData;
+      req.query = fakeData.workspaceController.getById.query;
+      req.params = fakeData.workspaceController.getById.params;
+
+      res.status = jest.fn().mockReturnValue(res);
+      res.json = jest.fn().mockReturnValue(res);
+
+      jest.spyOn(GetById, 'getById').mockResolvedValue(fakeData.workspaceController.getById.mockService);
+    });
+  
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+  
+    it('Testando a chamada do json do getById', async () => {
+      await Controllers.getById(req as Request, res as Response)
+      
+      expect(res.json).toHaveBeenCalledTimes(1);
+      expect(res.json).toHaveBeenCalledWith({ data: fakeData.workspaceController.getById.mockService });
     });
   });
 });
