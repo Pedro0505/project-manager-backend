@@ -156,5 +156,12 @@ describe('Testando o controller do workspace', () => {
       expect(res.json).toHaveBeenCalledTimes(1);
       expect(res.json).toHaveBeenCalledWith({ data: fakeData.workspaceController.getById.mockService });
     });
+
+    it('Testando a chamada do status do getById retorna 200', async () => {
+      await Controllers.getById(req as Request, res as Response)
+      
+      expect(res.status).toHaveBeenCalledTimes(1);
+      expect(res.status).toHaveBeenCalledWith(200);
+    });
   });
 });
