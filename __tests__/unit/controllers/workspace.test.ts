@@ -244,5 +244,12 @@ describe('Testando o controller do workspace', () => {
       expect(res.json).toHaveBeenCalledTimes(1);
       expect(res.json).toHaveBeenCalledWith({ data: fakeData.workspaceController.updateName.mockService });
     });
+
+    it('Testando a chamada do status do updateName retorna 200', async () => {
+      await Controllers.updateName(req as Request, res as Response)
+      
+      expect(res.status).toHaveBeenCalledTimes(1);
+      expect(res.status).toHaveBeenCalledWith(200);
+    });
   });
 });
