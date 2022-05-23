@@ -4,8 +4,8 @@
   "description": "-- Project Manager --",
   "main": "index.js",
   "scripts": {
-    "pretest": "npx prisma migrate reset --force --skip-seed --schema src/database/prisma/schema.test.prisma",
-    "test": "NODE_ENV=test jest --runInBand ./__tests__/integration",
+    "pretest:integration": "npx prisma migrate reset --force --skip-seed --schema src/database/prisma/schema.test.prisma",
+    "test:integration": "NODE_ENV=test jest --runInBand ./__tests__/integration",
     "test:unit": "jest --runInBand ./__tests__/unit",
     "prestart": "tsc",
     "start": "node ./dist/server.js",
