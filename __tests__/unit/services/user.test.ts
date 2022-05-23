@@ -60,7 +60,7 @@ describe('Teste User Service', () => {
         jest.restoreAllMocks();
       });
 
-      it('Teste de caso de sucesso do login', async () => {
+      it('Testando quando o usuario não é encontrado o service lança o erro', async () => {
         try {
           await Service.login(fakeData.userService.loginUserWrongPassword.serviceParams);
         } catch (error) {
@@ -75,7 +75,7 @@ describe('Teste User Service', () => {
   });
   
   describe('Testando o service de register', () => {
-    describe('Testando caso de sucesso so register', () => {
+    describe('Testando caso de sucesso do register', () => {
       beforeEach(() => {
         jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(null);
         jest.spyOn(prisma.user, 'create').mockResolvedValue(fakeData.userService.service.mockCreate);
