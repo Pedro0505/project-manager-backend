@@ -38,7 +38,8 @@ describe('Teste User Service', () => {
         jest.restoreAllMocks();
       });
 
-      it('Teste de caso de error testando a menssagem ', async () => {
+      it('Teste de caso de error testando a menssagem se ela é um NotFoundError', async () => {
+        expect.assertions(3);
         try {
           await Service.login(fakeData.userService.loginUserNotFound.serviceParams);
         } catch (error) {
@@ -51,7 +52,7 @@ describe('Teste User Service', () => {
       });
     });
 
-    describe('Testando caso de error do login quando o usuario não é encontrado', () => {
+    describe('Testando quando a senha do usurio está errada', () => {
       beforeEach(() => {
         jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(fakeData.userService.login.mock);
       });
@@ -60,7 +61,8 @@ describe('Teste User Service', () => {
         jest.restoreAllMocks();
       });
 
-      it('Testando quando o usuario não é encontrado o service lança o erro', async () => {
+      it('Testando se a responsta é um UnauthorizedError', async () => {
+        expect.assertions(3);
         try {
           await Service.login(fakeData.userService.loginUserWrongPassword.serviceParams);
         } catch (error) {
@@ -103,6 +105,7 @@ describe('Teste User Service', () => {
       });
 
       it('Testando se o error é um ConflictError', async () => {
+        expect.assertions(3);
         try {
           await Service.register(fakeData.userService.service.user);
         } catch (error) {
@@ -144,7 +147,8 @@ describe('Teste User Service', () => {
         jest.restoreAllMocks();
       });
 
-      it ('Testando a responta de erro do service', async () => {
+      it ('Testando a responta de erro do service quando o usuario não é encontrado', async () => {
+        expect.assertions(3);
         try {
           await Service.findUserByEmail('pedro@gmail.com');
         } catch (error) {
