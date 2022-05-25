@@ -171,7 +171,7 @@ describe('Testando o service do workspace', () => {
         it('Testando se o error é um UnauthorizedError, sua mensagem e se o code é 401', async () => {
           expect.assertions(3);
           try {
-            await Service.exclude(fakeData.workspaceService.getByIdUnauthorized.serviceCall.id, fakeData.workspaceService.getByIdUnauthorized.serviceCall.userId);
+            await Service.getById(fakeData.workspaceService.getByIdUnauthorized.serviceCall.id, fakeData.workspaceService.getByIdUnauthorized.serviceCall.userId);
           } catch (error) {
             expect(error).toBeInstanceOf(UnauthorizedError);
             if (error instanceof UnauthorizedError) {
