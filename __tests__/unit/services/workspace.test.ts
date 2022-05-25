@@ -133,5 +133,54 @@ describe('Testando o service do workspace', () => {
         expect(workspace).toStrictEqual(fakeData.workspaceService.getById.serviceReturn);
       });
     });
+
+
+    describe('Testando o caso de erro do workspace', () => {
+      describe('Testando quando o workspace não é encontrado', () => {
+        beforeEach(() => {
+          jest.spyOn(prisma.workspace, 'findFirst').mockResolvedValue(null);
+        });
+
+        afterEach(() => {
+          jest.restoreAllMocks();
+        });
+
+        it('Testando se a resposta é um NotFoundError, se o code é 404, e a mensagem', async () => {
+          expect.assertions(3);
+          try {
+            await Service.getById(fakeData.workspaceService.getByIdNotFound.id, fakeData.workspaceService.getByIdNotFound.userId);
+          } catch (error) {
+            expect(error).toBeInstanceOf(NotFoundError);
+            if (error instanceof NotFoundError) {
+              expect(error.code).toBe(fakeData.workspaceService.getByIdNotFound.code);
+              expect(error.message).toBe(fakeData.workspaceService.getByIdNotFound.message);
+            }
+          }
+        });
+      });
+
+      describe('Testando quando o usuario não tem autorização', () => {
+        beforeEach(() => {
+          jest.spyOn(prisma.workspace, 'findFirst').mockResolvedValue(fakeData.workspaceService.getByIdUnauthorized.findFirstMock);
+        });
+  
+        afterEach(() => {
+          jest.restoreAllMocks();
+        });
+
+        it('Testando se o error é um UnauthorizedError, sua mensagem e se o code é 401', async () => {
+          expect.assertions(3);
+          try {
+            await Service.exclude(fakeData.workspaceService.getByIdUnauthorized.serviceCall.id, fakeData.workspaceService.getByIdUnauthorized.serviceCall.userId);
+          } catch (error) {
+            expect(error).toBeInstanceOf(UnauthorizedError);
+            if (error instanceof UnauthorizedError) {
+              expect(error.code).toBe(fakeData.workspaceService.getByIdUnauthorized.code);
+              expect(error.message).toBe(fakeData.workspaceService.getByIdUnauthorized.message);
+            }
+          }
+        });
+      });
+    });
   })
 });
