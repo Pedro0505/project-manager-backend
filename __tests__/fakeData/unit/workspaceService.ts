@@ -53,3 +53,38 @@ export const getAll = {
 		}
 	]
 }
+
+export const getById = {
+  findUnique: {
+		id: 'b92b2836-1ee9-4621-81a4-906a7a80dec9',
+		name: 'Store Manager',
+		ownerId: '21119b9d-af80-4e9f-8987-047f8f50a5fa'
+	},
+  serviceCall: {
+    ownerId: '21119b9d-af80-4e9f-8987-047f8f50a5fa',
+    workspaceId: 'b92b2836-1ee9-4621-81a4-906a7a80dec9'
+  },
+  serviceReturn: {
+    id: 'b92b2836-1ee9-4621-81a4-906a7a80dec9',
+		name: 'Store Manager',
+		ownerId: '21119b9d-af80-4e9f-8987-047f8f50a5fa'
+  }
+};
+
+export const getByIdNotFound = {
+  id: '6d6ef621-d0a0-44f2-aee6-5a156aeac16d',
+  userId: '3222a682-1d91-48c8-95bb-f89104dc4df5',
+  code: 404,
+  message: 'workspace not found',
+};
+
+export const getByIdUnauthorized = {
+  findFirstMock: { id: 'fd6fb177-ad92-42d9-9020-6c045a64b4c5', name: 'Project Manager', ownerId: '6989d096-c300-4715-b369-cd3baed51c70' },
+  serviceCall: {
+    id: '6d6ef621-d0a0-44f2-aee6-5a156aeac16d',
+    userId: '3222a682-1d91-48c8-95bb-f89104dc4df5',
+  },
+  code: 401,
+  message: 'operation not allowed',
+}
+

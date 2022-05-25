@@ -89,7 +89,7 @@ describe('Testando o service do workspace', () => {
               expect(error.message).toBe(fakeData.workspaceService.excludeUnauthorized.message);
             }
           }
-        })
+        });
       });
     });
   });
@@ -114,4 +114,24 @@ describe('Testando o service do workspace', () => {
       });
     });
   });
+
+  describe('Testando o getById do workspace', () => {
+    describe('Testando o caso de suscesso', () => {
+      beforeEach(() => {
+        jest.spyOn(prisma.workspace, 'findUnique').mockResolvedValue(fakeData.workspaceService.getById.findUnique);
+        jest.spyOn(workspaceAuthorization, 'default').mockResolvedValue(undefined);
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it('Testando o retorno do service', async () => {
+        const workspace = await Service.getById(fakeData.workspaceService.getById.serviceCall.workspaceId, fakeData.workspaceService.getById.serviceCall.ownerId);
+
+        expect(() => workspace).not.toThrow();
+        expect(workspace).toStrictEqual(fakeData.workspaceService.getById.serviceReturn);
+      });
+    });
+  })
 });
