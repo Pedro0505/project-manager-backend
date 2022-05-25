@@ -15,3 +15,13 @@ export const excludeNotFound = {
   code: 404,
   message: 'workspace not found',
 };
+
+export const excludeUnauthorized = {
+  findFirstMock: { id: 'fd6fb177-ad92-42d9-9020-6c045a64b4c5', name: 'Project Manager', ownerId: '6989d096-c300-4715-b369-cd3baed51c70' },
+  serviceCall: {
+    id: '6d6ef621-d0a0-44f2-aee6-5a156aeac16d',
+    userId: '3222a682-1d91-48c8-95bb-f89104dc4df5',
+  },
+  code: 401,
+  message: 'operation not allowed',
+}
