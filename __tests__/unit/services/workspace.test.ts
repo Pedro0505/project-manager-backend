@@ -4,6 +4,7 @@ import * as Service from '../../../src/entities/Workspace/services';
 import * as workspaceAuthorization from '../../../src/entities/Workspace/helper/authorization';
 import NotFoundError from '../../../src/helpers/NotFoundError';
 import UnauthorizedError from '../../../src/helpers/UnauthorizedError';
+import { IWorkspaceTest } from '../../interfaces/workspace';
 
 describe('Testando o service do workspace', () => {
   describe('Testando o create do workspace', () => {
@@ -88,6 +89,27 @@ describe('Testando o service do workspace', () => {
               expect(error.message).toBe(fakeData.workspaceService.excludeUnauthorized.message);
             }
           }
+        })
+      });
+    });
+  });
+
+  describe('Testando o getAll do workspace', () => {
+    describe('Testando o caso de sucesso', () => {
+      beforeEach(() => {
+        jest.spyOn(prisma.workspace, 'findMany').mockResolvedValue(fakeData.workspaceService.getAll.findManyMock);
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it('Testando o retorno do workspace', async () => {
+        const workspaces = await Service.getAll(fakeData.workspaceService.getAll.owerId);
+
+        expect(workspaces).toStrictEqual(fakeData.workspaceService.getAll.serviceReturn);
+        workspaces.forEach((e: IWorkspaceTest) => {
+          expect(e.ownerId).toBe(fakeData.workspaceService.getAll.owerId);
         })
       });
     });

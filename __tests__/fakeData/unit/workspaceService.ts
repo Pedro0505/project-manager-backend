@@ -25,3 +25,31 @@ export const excludeUnauthorized = {
   code: 401,
   message: 'operation not allowed',
 }
+
+export const getAll = {
+  findManyMock: [
+		{
+			id: '85e57338-db9d-4913-adbf-058b7a68d730',
+			name: 'BlogsAPI',
+			ownerId: 'e6dea152-388a-49a4-8c70-3cb73b3c97c2'
+		},
+		{
+			id: '3b6b213c-49ef-44e2-b2a3-efe9ef9504ab',
+			name: 'Store Manager',
+			ownerId: 'e6dea152-388a-49a4-8c70-3cb73b3c97c2'
+		}
+	],
+  owerId: 'e6dea152-388a-49a4-8c70-3cb73b3c97c2',
+  serviceReturn: [
+		{
+			id: '85e57338-db9d-4913-adbf-058b7a68d730',
+			name: 'BlogsAPI',
+			ownerId: 'e6dea152-388a-49a4-8c70-3cb73b3c97c2'
+		},
+		{
+			id: '3b6b213c-49ef-44e2-b2a3-efe9ef9504ab',
+			name: 'Store Manager',
+			ownerId: 'e6dea152-388a-49a4-8c70-3cb73b3c97c2'
+		}
+	]
+}
