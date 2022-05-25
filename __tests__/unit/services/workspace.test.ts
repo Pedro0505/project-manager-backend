@@ -42,5 +42,30 @@ describe('Testando o service do workspace', () => {
         expect(deleted).toBeUndefined();
       });
     });
+
+    describe('Testando o caso de erro do workspace service', () => {
+      describe('Quando o workspace não é encontrado', () => {
+        beforeEach(() => {
+          jest.spyOn(prisma.workspace, 'findFirst').mockResolvedValue(null);
+        });
+  
+        afterEach(() => {
+          jest.restoreAllMocks();
+        });
+  
+        it('Testando se ele é um not found error, retorna um code 404, e sua mensagem', async () => {
+          expect.assertions(3);
+          try {
+            await Service.exclude(fakeData.workspaceService.excludeNotFound.id, fakeData.workspaceService.excludeNotFound.userId);
+          } catch (error) {
+            expect(error).toBeInstanceOf(NotFoundError);
+            if (error instanceof NotFoundError) {
+              expect(error.code).toBe(fakeData.workspaceService.excludeNotFound.code);
+              expect(error.message).toBe(fakeData.workspaceService.excludeNotFound.message);
+            }
+          }
+        });
+      });
+    });
   });
 });
