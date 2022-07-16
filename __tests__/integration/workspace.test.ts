@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from '../../src/app';
 import prisma from '../../src/database/prisma';
-import * as fakeData from '../fakeData';
+import * as fakeData from '../fakeData/integration';
 import * as seeds from '../seeds';
 import { verifyUuid } from '../utils';
 
@@ -109,8 +109,8 @@ describe('Testes em /workspace', () => {
 
     it('Teste caso de excluir quando a operação é feita pela pessoa que não é dona do workspace', async () => {
       const { status, body } = await request(app)
-      .delete('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
-      .set('Authorization', otherUserToken);
+        .delete('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
+        .set('Authorization', otherUserToken);
 
       expect(status).toBe(401);
       expect(body.error.message).toBeDefined();
@@ -119,12 +119,12 @@ describe('Testes em /workspace', () => {
 
     it('Teste caso de sucesso de excluir', async () => {
       const { status: statusFirstTime } = await request(app)
-      .delete('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
-      .set('Authorization', token);
+        .delete('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
+        .set('Authorization', token);
 
       const { status: statusSecondTime, body } = await request(app)
-      .delete('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
-      .set('Authorization', token);
+        .delete('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
+        .set('Authorization', token);
 
       expect(statusFirstTime).toBe(204);
       expect(statusSecondTime).toBe(404);
@@ -133,8 +133,8 @@ describe('Testes em /workspace', () => {
 
     it('Teste caso de falha de excluir quando o id exluido não existe', async () => {
       const { status, body } = await request(app)
-      .delete('/workspace/notfound')
-      .set('Authorization', token);
+        .delete('/workspace/notfound')
+        .set('Authorization', token);
 
       expect(status).toBe(404);
       expect(body.error.message).toBe('workspace not found');
@@ -164,15 +164,15 @@ describe('Testes em /workspace', () => {
 
     it('Caso de sucesso do getAll workspace', async () => {
       const { body, status } = await request(app)
-      .get('/workspace')
-      .set('Authorization', token);
+        .get('/workspace')
+        .set('Authorization', token);
 
       expect(status).toBe(200);
       expect(body.data).toBeDefined();
-      expect(body.data).toStrictEqual(fakeData.workspace.getAll.response);      
+      expect(body.data).toStrictEqual(fakeData.workspace.getAll.response);
     });
   });
-  
+
   describe('GET /workspace/:id', () => {
     let token: string;
     let otherUserToken: string;
@@ -198,33 +198,33 @@ describe('Testes em /workspace', () => {
 
     it('Caso de sucesso do getById workspace sem columns', async () => {
       const { body, status } = await request(app)
-      .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
-      .set('Authorization', token);
+        .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
+        .set('Authorization', token);
 
       expect(status).toBe(200);
       expect(body.data).toBeDefined();
       expect(body.data).toStrictEqual(fakeData.workspace.getById.response);
-    })
-    
+    });
+
     it('Caso de falha do getById workspace quando o workspace não é encontrado', async () => {
       const { body, status } = await request(app)
-      .get('/workspace/sssssdasdasdasdas')
-      .set('Authorization', token);
+        .get('/workspace/sssssdasdasdasdas')
+        .set('Authorization', token);
 
       expect(status).toBe(404);
       expect(body.error.message).toBeDefined();
       expect(body.error.message).toBe('workspace not found');
-    })
+    });
 
     it('Caso de falha do getById workspace quando o usuario não tem permissão para acessar o workspace', async () => {
       const { body, status } = await request(app)
-      .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
-      .set('Authorization', otherUserToken);
+        .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
+        .set('Authorization', otherUserToken);
 
       expect(status).toBe(401);
       expect(body.error.message).toBeDefined();
       expect(body.error.message).toBe('operation not allowed');
-    })
+    });
   });
 
   describe('GET /workspace/:id?includeColumns=true', () => {
@@ -254,35 +254,34 @@ describe('Testes em /workspace', () => {
 
     it('Caso de sucesso do getWithColumn workspace com columns e cards', async () => {
       const { body, status } = await request(app)
-      .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9?includeColumns=true')
-      .set('Authorization', token);
+        .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9?includeColumns=true')
+        .set('Authorization', token);
 
       expect(status).toBe(200);
       expect(body.data).toBeDefined();
-      expect(body.data).toStrictEqual(fakeData.workspace.getWithColumns.response)
-    })
+      expect(body.data).toStrictEqual(fakeData.workspace.getWithColumns.response);
+    });
 
     it('Caso de falha do getWithColumn workspace quando o workspace não é encontrado', async () => {
       const { body, status } = await request(app)
-      .get('/workspace/sssssdasdasdasdas?includeColumns=true')
-      .set('Authorization', token);
+        .get('/workspace/sssssdasdasdasdas?includeColumns=true')
+        .set('Authorization', token);
 
       expect(status).toBe(404);
       expect(body.error.message).toBeDefined();
       expect(body.error.message).toBe('workspace not found');
-    })
+    });
 
     it('Caso de falha do getWithColumn workspace quando o usuario não tem permissão para acessar o workspace', async () => {
       const { body, status } = await request(app)
-      .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9?includeColumns=true')
-      .set('Authorization', otherUserToken);
+        .get('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9?includeColumns=true')
+        .set('Authorization', otherUserToken);
 
       expect(status).toBe(401);
       expect(body.error.message).toBeDefined();
       expect(body.error.message).toBe('operation not allowed');
-    })
+    });
   });
-
 
   describe('PATCH /workspace', () => {
     let token: string;
@@ -309,10 +308,10 @@ describe('Testes em /workspace', () => {
 
     it('Quando o workspace tem seu nome atualizado com sucesso', async () => {
       const { body, status } = await request(app)
-      .patch('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
-      .send(fakeData.workspace.patchName.request)
-      .set('Authorization', token);
-      
+        .patch('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
+        .send(fakeData.workspace.patchName.request)
+        .set('Authorization', token);
+
       expect(body.data).toBeDefined();
       expect(body.data).toStrictEqual(fakeData.workspace.patchName.response);
       expect(status).toBe(200);
@@ -320,9 +319,9 @@ describe('Testes em /workspace', () => {
 
     it('Caso de falha do patch do workspaceName quando o usuario não tem permissão para alterar o workspace', async () => {
       const { body, status } = await request(app)
-      .patch('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
-      .send(fakeData.workspace.patchName.request)
-      .set('Authorization', otherUserToken);
+        .patch('/workspace/b92b2836-1ee9-4621-81a4-906a7a80dec9')
+        .send(fakeData.workspace.patchName.request)
+        .set('Authorization', otherUserToken);
 
       expect(status).toBe(401);
       expect(body.error.message).toBeDefined();
@@ -331,9 +330,9 @@ describe('Testes em /workspace', () => {
 
     it('Quando o workspace não é encontrado', async () => {
       const { body, status } = await request(app)
-      .patch('/workspace/notExistWorkspace')
-      .send(fakeData.workspace.patchName.request)
-      .set('Authorization', otherUserToken);
+        .patch('/workspace/notExistWorkspace')
+        .send(fakeData.workspace.patchName.request)
+        .set('Authorization', otherUserToken);
 
       expect(status).toBe(404);
       expect(body.error.message).toBeDefined();

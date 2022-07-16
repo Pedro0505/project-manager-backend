@@ -28,8 +28,11 @@ jobs:
       - name: Sobe os containers
         run: docker-compose up --build -d
 
-      - name: Run tests
-        run: docker-compose exec -T backend npm test
+      - name: Roda os testes de integração
+        run: docker-compose exec -T backend npm run test:integration
+
+      - name: Roda os testes unitarios
+        run: docker-compose exec -T backend npm run test:unit
 
       - name: Derruba os containers
         if: always()

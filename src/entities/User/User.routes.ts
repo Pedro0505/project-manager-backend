@@ -7,6 +7,6 @@ const UserRoutes = express.Router();
 
 UserRoutes.post('/register', validateUserRegister, rescue(Controllers.register));
 UserRoutes.post('/login', validateUserLogin, rescue(Controllers.login));
-UserRoutes.get('/search', rescue(Controllers.findeUserByEmail));
+UserRoutes.get('/search', rescue(Controllers.findUserByEmail));
 
 export { UserRoutes };

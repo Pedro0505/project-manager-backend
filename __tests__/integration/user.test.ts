@@ -4,7 +4,7 @@ import 'dotenv/config';
 import app from '../../src/app';
 import prisma from '../../src/database/prisma';
 import { verifyUuid } from '../utils';
-import * as fakeData from '../fakeData';
+import * as fakeData from '../fakeData/integration';
 import * as seeds from '../seeds';
 
 describe('Testes em /user', () => {
@@ -314,7 +314,7 @@ describe('Testes em /user', () => {
   });
   describe('GET /user/search', () => {
     beforeAll(async () => {
-      await prisma.user.create({ data: fakeData.user.userEmail.response });
+      await prisma.user.create({ data: fakeData.user.userEmail.request });
     });
 
     afterAll(async () => {
@@ -323,7 +323,7 @@ describe('Testes em /user', () => {
 
     it('Testando caso de sucesso da busca por email', async () => {
       const { status, body } = await request(app)
-      .get('/user/search?q=matheus@gmail.com')
+        .get('/user/search?q=matheus@gmail.com');
 
       expect(status).toBe(200);
       expect(body).toStrictEqual(fakeData.user.userEmail.response);
@@ -331,7 +331,7 @@ describe('Testes em /user', () => {
 
     it('Testando caso de falha da busca por email', async () => {
       const { status, body } = await request(app)
-      .get('/user/search?q=random@email.com')
+        .get('/user/search?q=random@email.com');
 
       expect(status).toBe(404);
       expect(body.error.message).toStrictEqual('User Not Found');
