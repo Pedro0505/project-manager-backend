@@ -45,7 +45,7 @@ describe('Testando o service do workspace', () => {
       });
     });
 
-    describe('Testando o caso de erro do workspace service', () => {
+    describe('Testando o caso de erro do workspace service - exclude', () => {
       describe('Quando o workspace não é encontrado', () => {
         beforeEach(() => {
           jest.spyOn(prisma.workspace, 'findFirst').mockResolvedValue(null);
@@ -54,7 +54,7 @@ describe('Testando o service do workspace', () => {
         afterEach(() => {
           jest.restoreAllMocks();
         });
-  
+
         it('Testando se ele é um not found error, retorna um code 404, e sua mensagem', async () => {
           expect.assertions(3);
           try {
@@ -135,7 +135,7 @@ describe('Testando o service do workspace', () => {
     });
 
 
-    describe('Testando o caso de erro do workspace', () => {
+    describe('Testando o caso de erro do workspace - getById', () => {
       describe('Testando quando o workspace não é encontrado', () => {
         beforeEach(() => {
           jest.spyOn(prisma.workspace, 'findFirst').mockResolvedValue(null);
