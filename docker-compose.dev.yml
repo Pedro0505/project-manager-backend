@@ -20,13 +20,16 @@ services:
   backend:
     build:
       context: .
-      dockerfile: Dockerfile.test
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3001:3001
     depends_on:
       db:
         condition: service_healthy
+    command: bash -c "npx prisma migrate reset --force --schema src/database/prisma/schema.dev.prisma && npm start"
     environment:
-      - NODE_ENV=test
-      - DATABASE_URL_TEST=postgresql://postgres:12345678@db:5432/project-manager-test?schema=public
+      - NODE_ENV=dev
+      - DATABASE_URL_DEV=postgresql://postgres:12345678@db:5432/project-manager-dev?schema=public
       - JWT_SECRET=dsadsadas92je93ms02ms02new
     healthcheck:
       test: ["CMD", "lsof", "-t", "-i:3001"] # Caso utilize outra porta interna para o back, altere ela aqui também
