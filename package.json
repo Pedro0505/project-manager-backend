@@ -15,7 +15,8 @@
     "studio:dev": "prisma studio --schema src/database/prisma/schema.dev.prisma",
     "reset": "prisma migrate reset --force --schema src/database/prisma/schema.dev.prisma",
     "lint": "npx eslint . --ext .ts",
-    "deploy": "node ./dist/server.js"
+    "deploy": "node ./dist/server.js",
+    "dev:docker": "tsnd --exit-child --poll ./src/server.ts"
   },
   "prisma": {
     "seed": "ts-node src/database/seeders/seed.ts",
