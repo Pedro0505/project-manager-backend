@@ -18,7 +18,9 @@ services:
       - SYS_NICE # Deve omitir alertas menores
 
   backend:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.test
     depends_on:
       db:
         condition: service_healthy
