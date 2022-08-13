@@ -176,7 +176,7 @@ describe('Testando o service do workspace', () => {
             expect(error).toBeInstanceOf(UnauthorizedError);
             if (error instanceof UnauthorizedError) {
               expect(error.code).toBe(fakeData.workspaceService.getByIdUnauthorized.code);
-              expect(error.message).toBe('fakeData.workspaceService.getByIdUnauthorized.message');
+              expect(error.message).toBe(fakeData.workspaceService.getByIdUnauthorized.message);
             }
           }
         });
