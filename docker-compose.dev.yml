@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: db
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_PASSWORD=12345678
+    restart: 'always'
+    user: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      timeout: 10s
+      retries: 5
+    cap_add:
+      - SYS_NICE
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3001:3001
+    depends_on:
+      db:
+        condition: service_healthy
+    command: bash -c "npx prisma migrate reset --force --schema src/database/prisma/schema.dev.prisma && npm start"
+    environment:
+      - NODE_ENV=dev
+      - DATABASE_URL_DEV=postgresql://postgres:12345678@db:5432/project-manager-dev?schema=public
+      - JWT_SECRET=dsadsadas92je93ms02ms02new
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3001"] # Caso utilize outra porta interna para o back, altere ela aqui também
+      timeout: 10s
+      retries: 5
