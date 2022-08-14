@@ -29,7 +29,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: bash -c "npx prisma migrate reset --force --skip-seed --schema src/database/prisma/schema.dev.prisma && npm run dev:docker"
+    command: bash -c "npx prisma migrate reset --force --schema src/database/prisma/schema.dev.prisma && npm run dev:docker"
     environment:
       - NODE_ENV=dev
       - DATABASE_URL_DEV=postgresql://postgres:12345678@db:5432/project-manager-dev?schema=public
