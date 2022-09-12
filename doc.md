@@ -13,7 +13,7 @@ Exemplo de body:
   "firstName": "John",
   "lastName": "Doe",
   "email": "johndoe@gmail.com",
-  "password": "123"
+  "password": "12345678"
 }
 ```
 
@@ -24,7 +24,7 @@ Exemplo de body:
 ```json
 {
   "email": "johndoe@gmail.com",
-  "password": "123"
+  "password": "12345678"
 }
 ```
 
