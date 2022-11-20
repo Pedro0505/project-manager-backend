@@ -61,7 +61,7 @@ A execução local pode ser dada das seguintes formas: Docker ou Node
   6. Para derrubar os containers
 
   ```bash
-    docker-compose -f docker-compose.test.yml down --rmi all --volumes --remove-orphans
+    docker-compose -f docker-compose.dev.yml down --rmi all --volumes --remove-orphans
   ```
 </details>
 
