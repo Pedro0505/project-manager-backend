@@ -4,19 +4,20 @@
   "description": "-- Project Manager --",
   "main": "index.js",
   "scripts": {
-    "pretest:integration": "npx prisma migrate reset --force --skip-seed --schema src/database/prisma/schema.test.prisma",
+    "dev": "tsnd --exit-child ./src/server.ts",
+    "dev:docker": "tsnd --exit-child --poll ./src/server.ts",
+    "dev:supabase": "NODE_ENV=prod tsnd --exit-child ./src/server.ts",
     "test:integration": "NODE_ENV=test jest --runInBand ./__tests__/integration",
     "test:unit": "jest --runInBand ./__tests__/unit",
+    "pretest:integration": "npx prisma migrate reset --force --skip-seed --schema src/database/prisma/schema.test.prisma",
     "prestart": "tsc",
     "start": "node ./dist/server.js",
-    "dev": "tsnd --exit-child ./src/server.ts",
     "migrate": "prisma migrate dev",
     "migrate:dev": "prisma migrate dev --schema src/database/prisma/schema.dev.prisma",
     "studio:dev": "prisma studio --schema src/database/prisma/schema.dev.prisma",
     "reset": "prisma migrate reset --force --schema src/database/prisma/schema.dev.prisma",
     "lint": "npx eslint . --ext .ts",
-    "deploy": "node ./dist/server.js",
-    "dev:docker": "tsnd --exit-child --poll ./src/server.ts"
+    "deploy": "node ./dist/server.js && NODE_ENV=prod npx prisma generate && NODE_ENV=prod npx prisma migrate deploy"
   },
   "prisma": {
     "seed": "ts-node src/database/seeders/seed.ts",
