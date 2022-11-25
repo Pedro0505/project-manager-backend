@@ -11,6 +11,8 @@ const DB_URLS = {
 
 const url = DB_URLS[ENV as keyof typeof DB_URLS];
 
+console.log(url);
+
 const prisma = new PrismaClient({ datasources: { db: { url } } });
 
 export default prisma;
