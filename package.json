@@ -10,6 +10,7 @@
     "test:integration": "NODE_ENV=test jest --runInBand ./__tests__/integration",
     "test:unit": "jest --runInBand ./__tests__/unit",
     "pretest:integration": "npx prisma migrate reset --force --skip-seed --schema src/database/prisma/schema.test.prisma",
+    "build":"tsc",
     "prestart": "tsc",
     "start": "node ./dist/server.js",
     "migrate": "prisma migrate dev",
