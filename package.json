@@ -17,9 +17,7 @@
     "migrate:dev": "prisma migrate dev --schema src/database/prisma/schema.dev.prisma",
     "studio:dev": "prisma studio --schema src/database/prisma/schema.dev.prisma",
     "reset": "prisma migrate reset --force --schema src/database/prisma/schema.dev.prisma",
-    "lint": "npx eslint . --ext .ts",
-    "deploy": "NODE_ENV=prod npm run prestart && NODE_ENV=prod npx prisma generate && NODE_ENV=prod npx prisma migrate deploy",
-    "vercel-build": "NODE_ENV=prod prisma generate && NODE_ENV=prod prisma migrate deploy && npm run build"
+    "lint": "npx eslint . --ext .ts"
   },
   "prisma": {
     "seed": "ts-node src/database/seeders/seed.ts",
