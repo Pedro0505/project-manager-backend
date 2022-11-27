@@ -11,6 +11,7 @@
     "test:unit": "jest --runInBand ./__tests__/unit",
     "pretest:integration": "npx prisma migrate reset --force --skip-seed --schema src/database/prisma/schema.test.prisma",
     "build":"tsc",
+    "prisma-deploy": "NODE_ENV=prod npx prisma generate && NODE_ENV=prod npx prisma migrate deploy",
     "prestart": "tsc",
     "start": "node ./dist/server.js",
     "migrate": "prisma migrate dev",

@@ -8,7 +8,7 @@ phases:
   build:
     commands:
       - echo Create build...
-      - npm run build
+      - npm run build && npm run prisma-deploy
   post_build:
     commands:
       - echo Removing unnecessary files...
