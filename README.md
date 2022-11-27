@@ -20,7 +20,7 @@ Testes:
 > Jest
 
 DevOps:
-> Docker, Heroku
+> Docker, Render
 
 DataBase:
 > PostgreSql
